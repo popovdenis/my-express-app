@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/auth';
 
 const SignIn = () => {
     const [formData, setFormData] = useState({ email: '', password: '' });
     const [message, setMessage] = useState('');
+    const navigate = useNavigate();
+    const { login } = useAuth();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -22,8 +26,8 @@ const SignIn = () => {
             const data = await response.json();
 
             if (response.ok) {
-                setMessage('Sign In Successful');
-                localStorage.setItem('token', data.token); // Save token in localStorage
+                login(data.user);
+                navigate('/');
             } else {
                 setMessage(data.message || 'Sign In Failed');
             }
@@ -67,7 +71,7 @@ const SignIn = () => {
                     Sign In
                 </button>
             </form>
-            {message && <p className="mt-4 text-red-500">{message}</p>}
+            {message && <p className="mt-4 text-green-500">{message}</p>}
         </div>
     );
 };
