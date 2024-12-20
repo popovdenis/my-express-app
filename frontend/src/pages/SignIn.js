@@ -22,13 +22,13 @@ const SignIn = () => {
             const data = await response.json();
 
             if (response.ok) {
-                setMessage(data.message);
+                setMessage('Sign In Successful');
+                localStorage.setItem('token', data.token); // Save token in localStorage
             } else {
                 setMessage(data.message || 'Sign In Failed');
             }
         } catch (error) {
             setMessage('Error: Unable to connect to the server.');
-            console.error('Error:', error);
         }
     };
 

@@ -1,4 +1,4 @@
-exports.handleRegister = (req, res) => {
+exports.handleSignUp = (req, res) => {
     const { username, email, password } = req.body;
 
     if (!username || !email || !password) {

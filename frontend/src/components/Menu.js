@@ -20,6 +20,11 @@ const Menu = () => {
                         Sign Up
                     </Link>
                 </li>
+                <li>
+                    <Link to="/signout" className="text-white no-underline hover:underline">
+                        Sign Out
+                    </Link>
+                </li>
             </ul>
         </nav>
     );
