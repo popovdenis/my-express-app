@@ -24,6 +24,9 @@ class UserRepository {
     async updatePassword(userId, newPassword) {
         return await UserResource.updatePassword(userId, newPassword);
     }
+    async updateUser(userId, newPassword) {
+        return await UserResource.update(userId, newPassword);
+    }
 }
 
 module.exports = new UserRepository();

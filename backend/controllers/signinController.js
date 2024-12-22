@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const UserRepository = require('../models/UserRepository');
-const { needRehash } = require("../middleware/passwordUnitils");
+const { needRehash } = require("../middlewares/passwordUnitils");
 
 exports.handleSignIn = async (req, res) => {
     const { email, password } = req.body;
@@ -45,9 +45,6 @@ exports.handleSignIn = async (req, res) => {
         });
     } catch (error) {
         console.error('Error in registerUser:', error);
-        res.status(500).json({
-            message: 'Server error',
-            error: error.message
-        });
+        res.status(500).json({ message: 'Server error', error: error.message });
     }
 };

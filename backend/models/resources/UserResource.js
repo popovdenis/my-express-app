@@ -7,6 +7,9 @@ class UserResource {
     async create(userData) {
         return await User.create(userData);
     }
+    async update(userId, updates) {
+        return await User.findByIdAndUpdate(userId, updates, { new: true });
+    }
     async updatePassword(userId, newPassword) {
         return await User.findByIdAndUpdate(userId, { password_hash: newPassword }, { new: true });
     }
