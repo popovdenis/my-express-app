@@ -1,5 +1,5 @@
 const bcrypt = require('bcryptjs');
-const User = require('../models/user');
+const UserRepository = require('../models/UserRepository');
 
 exports.handleSignUp = async (req, res) => {
     const { firstname, lastname, email, password } = req.body;
@@ -9,33 +9,17 @@ exports.handleSignUp = async (req, res) => {
     }
 
     try {
-        // Check if the user already exists
-        const userExists = await User.findOne({ email });
+        const userExists = await UserRepository.findByEmail(email);
         if (userExists) {
             return res.status(400).json({ message: 'User already exists' });
         }
 
-        // Hash the password
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password_hash, salt);
-
-        // Create a new user
-        const user = await User.create({
-            firstname: lastname,
-            middlename: null,
-            lastname: firstname,
-            email: email,
-            group_id: null,
-            store_id: null,
-            website_id: null,
-            created_at: new Date(),
-            updated_at: new Date(),
-            is_active: 1,
-            created_in: 'Australia Store View',
-            dob: new Date('19982-12-21'),
-            password_hash: hashedPassword
+        const user = await UserRepository.createUser({
+            lastname,
+            firstname,
+            email,
+            password_hash: await bcrypt.hash(password, await bcrypt.genSalt(10))
         });
-
         res.status(201).json({
             message: 'User registered successfully',
             user: {

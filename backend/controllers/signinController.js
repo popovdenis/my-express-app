@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const User = require('../models/user');
+const UserRepository = require('../models/UserRepository');
+const { needRehash } = require("../middleware/passwordUnitils");
 
 exports.handleSignIn = async (req, res) => {
     const { email, password } = req.body;
@@ -10,7 +11,7 @@ exports.handleSignIn = async (req, res) => {
     }
 
     try {
-        const user = await User.findOne({ email });
+        const user = await UserRepository.findByEmail(email);
         if (!user) {
             return res.status(404).json({ message: 'Invalid email or password' });
         }
@@ -18,6 +19,12 @@ exports.handleSignIn = async (req, res) => {
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             return res.status(401).json({ message: 'Invalid email or password' });
+        }
+
+        const saltRounds = parseInt(process.env.BCRYPT_SALT_ROUNDS) || 10;
+        if (needRehash(user.password, saltRounds)) {
+            const needHashedPassword = await bcrypt.hash(password, saltRounds);
+            await UserRepository.updatePassword(user._id, needHashedPassword);
         }
 
         const token = jwt.sign(
