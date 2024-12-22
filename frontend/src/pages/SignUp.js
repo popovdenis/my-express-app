@@ -38,12 +38,24 @@ const SignUp = () => {
             <h1 className="text-2xl font-bold mb-4">Sign Up</h1>
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                    <label htmlFor="username" className="block text-gray-700">Username:</label>
+                    <label htmlFor="firstname" className="block text-gray-700">First Name:</label>
                     <input
                         type="text"
-                        id="username"
-                        name="username"
-                        value={formData.username}
+                        id="firstname"
+                        name="firstname"
+                        value={formData.firstname}
+                        onChange={handleChange}
+                        className="w-full border border-gray-300 rounded p-2"
+                        required
+                    />
+                </div>
+                <div>
+                    <label htmlFor="lastname" className="block text-gray-700">Last Name:</label>
+                    <input
+                        type="text"
+                        id="lastname"
+                        name="lastname"
+                        value={formData.lastname}
                         onChange={handleChange}
                         className="w-full border border-gray-300 rounded p-2"
                         required
