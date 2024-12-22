@@ -1,5 +1,5 @@
-const User = require('../models/User');
 const bcrypt = require('bcryptjs');
+const User = require('../models/user');
 
 exports.handleSignUp = async (req, res) => {
     const { firstname, lastname, email, password } = req.body;
@@ -17,14 +17,23 @@ exports.handleSignUp = async (req, res) => {
 
         // Hash the password
         const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password, salt);
+        const hashedPassword = await bcrypt.hash(password_hash, salt);
 
         // Create a new user
         const user = await User.create({
-            firstname,
-            lastname,
-            email,
-            password: hashedPassword,
+            firstname: lastname,
+            middlename: null,
+            lastname: firstname,
+            email: email,
+            group_id: null,
+            store_id: null,
+            website_id: null,
+            created_at: new Date(),
+            updated_at: new Date(),
+            is_active: 1,
+            created_in: 'Australia Store View',
+            dob: new Date('19982-12-21'),
+            password_hash: hashedPassword
         });
 
         res.status(201).json({
