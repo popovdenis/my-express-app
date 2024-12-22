@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 
 const SignOut = () => {
     useEffect(() => {
-        localStorage.removeItem('token'); // Remove token
+        localStorage.removeItem('token');
         console.log('User signed out');
     }, []);
 

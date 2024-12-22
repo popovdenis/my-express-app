@@ -7,19 +7,23 @@ export const AuthProvider = ({ children }) => {
         const storedUser = localStorage.getItem('user');
         return storedUser ? JSON.parse(storedUser) : null;
     });
+    const [token, setToken] = useState(() => localStorage.getItem('token'));
 
-    const login = (userData) => {
+    const login = (userData, userToken) => {
         localStorage.setItem('user', JSON.stringify(userData));
+        localStorage.setItem('token', userToken);
         setUser(userData);
+        setToken(userToken);
     };
 
     const logout = () => {
         localStorage.removeItem('user');
+        localStorage.removeItem('token');
         setUser(null);
     };
 
     return (
-        <AuthContext.Provider value={{ user, login, logout }}>
+        <AuthContext.Provider value={{ user, token, login, logout }}>
             {children}
         </AuthContext.Provider>
     );

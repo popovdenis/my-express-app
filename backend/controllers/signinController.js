@@ -27,8 +27,9 @@ exports.handleSignIn = async (req, res) => {
             await UserRepository.updatePassword(user._id, needHashedPassword);
         }
 
+        const payload = { id: user._id, email: user.email };
         const token = jwt.sign(
-            { id: user._id, email: user.email },
+            payload,
             process.env.JWT_SECRET,
             { expiresIn: process.env.JWT_EXPIRES_IN }
         );

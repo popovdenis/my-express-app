@@ -1,17 +1,18 @@
 const UserRepository = require('../models/UserRepository');
+const jwt = require("jsonwebtoken");
 
 exports.updateUserProfile = async (req, res) => {
     const userId = req.user.id;
     const { firstname, lastname, email, password } = req.body;
 
-    if (!name && !email && !password) {
+    if (!firstname && lastname && !email && !password) {
         return res.status(400).json({ message: 'No data provided for update' });
     }
 
     try {
         const updates = {};
-        if (name) updates.firstname = firstname;
-        if (name) updates.lastname = lastname;
+        if (firstname) updates.firstname = firstname;
+        if (lastname) updates.lastname = lastname;
         if (email) updates.email = email;
 
         if (password) {
@@ -21,9 +22,12 @@ exports.updateUserProfile = async (req, res) => {
         }
 
         const updatedUser = await UserRepository.updateUser(userId, updates);
+        const payload = { id: user._id, email: user.email };
+        const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN });
 
         res.status(200).json({
             message: 'User profile updated successfully',
+            token,
             user: {
                 id: updatedUser._id,
                 firstname: updatedUser.firstname,

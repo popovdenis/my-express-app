@@ -5,6 +5,6 @@ const router = express.Router();
 router.use('/signup', require('./signup'));
 router.use('/signin', require('./signin'));
 router.use('/signout', require('./signout'));
-router.use('/protected', require('./protected'));
+router.use('/my-account', require('./myAccount'));
 
 module.exports = router;

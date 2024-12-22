@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../contexts/auth';
 
 const MyAccount = () => {
-    const { user, setUser, logout } = useAuth();
+    const { user, token, login } = useAuth();
     const [formData, setFormData] = useState({
         firstname: user?.firstname || '',
         lastname: user?.lastname || '',
@@ -10,6 +10,7 @@ const MyAccount = () => {
         password: '',
     });
     const [message, setMessage] = useState('');
+    const [error, setError] = useState('');
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -20,8 +21,7 @@ const MyAccount = () => {
         e.preventDefault();
 
         try {
-            const token = localStorage.getItem('token');
-            const response = await fetch('http://localhost:5001/api/my-account', {
+            const response = await fetch(process.env.REACT_APP_API_URL + '/api/my-account', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -33,13 +33,16 @@ const MyAccount = () => {
             const data = await response.json();
 
             if (response.ok) {
-                setUser(data.user);
+                login(data.user, token);
                 setMessage('Profile updated successfully');
+                setError(''); // Clear any previous error
             } else {
-                setMessage(data.message || 'Failed to update profile');
+                setError(data.message || 'Failed to update profile');
+                setMessage('');
             }
         } catch (error) {
-            setMessage('Error: Unable to connect to the server.');
+            setError('Error: Unable to connect to the server.');
+            setMessage('');
         }
     };
 
@@ -98,7 +101,8 @@ const MyAccount = () => {
                     Save Changes
                 </button>
             </form>
-            {message && <p className="mt-4 text-green-500">{message}</p>}
+            {message && <p className="mt-4 text-green-500">{message}</p>} {/* Display success message */}
+            {error && <p className="mt-4 text-red-500">{error}</p>} {/* Display error message */}
         </div>
     );
 };
