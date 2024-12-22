@@ -1,23 +1,36 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Menu from './components/Menu';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './contexts/auth';
+import ProtectedRoute from './components/ProtectedRoute';
+import MyAccount from './pages/MyAccount';
 import Home from './pages/Home';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
-import SignOut from "./pages/SignOut";
+import SignOut from './pages/SignOut';
+import Menu from './components/Menu';
 
-function App() {
+const App = () => {
     return (
-        <Router>
-            <Menu />
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/signin" element={<SignIn />} />
-                <Route path="/signup" element={<SignUp />} />
-                <Route path="/signout" element={<SignOut />} />
-            </Routes>
-        </Router>
+        <AuthProvider>
+            <Router>
+                <Menu />
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/signin" element={<SignIn />} />
+                    <Route path="/signup" element={<SignUp />} />
+                    <Route path="/signout" element={<SignOut />} />
+                    <Route
+                        path="/my-account"
+                        element={
+                            <ProtectedRoute>
+                                <MyAccount />
+                            </ProtectedRoute>
+                        }
+                    />
+                </Routes>
+            </Router>
+        </AuthProvider>
     );
-}
+};
 
 export default App;

@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useAuth } from '../contexts/auth';
 
 const MyAccount = () => {
-    const { user, setUser } = useAuth();
+    const { user, setUser, logout } = useAuth();
     const [formData, setFormData] = useState({
-        name: user?.name || '',
+        firstname: user?.firstname || '',
+        lastname: user?.lastname || '',
         email: user?.email || '',
         password: '',
     });
@@ -47,12 +48,23 @@ const MyAccount = () => {
             <h1 className="text-2xl font-bold mb-4">My Account</h1>
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                    <label htmlFor="name" className="block text-gray-700">Name:</label>
+                    <label htmlFor="firstname" className="block text-gray-700">First Name:</label>
                     <input
                         type="text"
-                        id="name"
-                        name="name"
-                        value={formData.name}
+                        id="firstname"
+                        name="firstname"
+                        value={formData.firstname}
+                        onChange={handleChange}
+                        className="w-full border border-gray-300 rounded p-2"
+                    />
+                </div>
+                <div>
+                    <label htmlFor="lastname" className="block text-gray-700">Last Name:</label>
+                    <input
+                        type="text"
+                        id="lastname"
+                        name="lastname"
+                        value={formData.lastname}
                         onChange={handleChange}
                         className="w-full border border-gray-300 rounded p-2"
                     />

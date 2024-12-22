@@ -21,6 +21,11 @@ const Menu = () => {
                     <>
                         <li className="text-white">Welcome, {user.firstname} {user.lastname}</li>
                         <li>
+                            <Link to="/my-account" className="text-white no-underline hover:underline">
+                                My Account
+                            </Link>
+                        </li>
+                        <li>
                             <button
                                 onClick={handleLogout}
                                 className="text-white no-underline hover:underline bg-transparent border-none cursor-pointer"

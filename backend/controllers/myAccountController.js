@@ -2,7 +2,7 @@ const UserRepository = require('../models/UserRepository');
 
 exports.updateUserProfile = async (req, res) => {
     const userId = req.user.id;
-    const { name, email, password } = req.body;
+    const { firstname, lastname, email, password } = req.body;
 
     if (!name && !email && !password) {
         return res.status(400).json({ message: 'No data provided for update' });
@@ -10,7 +10,8 @@ exports.updateUserProfile = async (req, res) => {
 
     try {
         const updates = {};
-        if (name) updates.name = name;
+        if (name) updates.firstname = firstname;
+        if (name) updates.lastname = lastname;
         if (email) updates.email = email;
 
         if (password) {
