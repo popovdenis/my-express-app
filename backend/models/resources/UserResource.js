@@ -11,7 +11,7 @@ class UserResource {
         return await User.findByIdAndUpdate(userId, updates, { new: true });
     }
     async updatePassword(userId, newPassword) {
-        return await User.findByIdAndUpdate(userId, { password_hash: newPassword }, { new: true });
+        return await User.findByIdAndUpdate(userId, { password: newPassword }, { new: true });
     }
 }
 

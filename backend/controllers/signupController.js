@@ -18,7 +18,7 @@ exports.handleSignUp = async (req, res) => {
             lastname,
             firstname,
             email,
-            password_hash: await bcrypt.hash(password, await bcrypt.genSalt(10))
+            password: await bcrypt.hash(password, await bcrypt.genSalt(10))
         });
         res.status(201).json({
             message: 'User registered successfully',
