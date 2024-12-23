@@ -4,7 +4,7 @@ const config = require('../config/jwt.config');
 const authenticateToken = (req, res, next) => {
     const token = req.cookies.accessToken;
     if (!token) {
-        return res.status(401).json({ message: 'Unauthorized: No token provided' });
+        return res.status(205).json({ message: 'Unauthorized: No token provided' });
     }
 
     try {

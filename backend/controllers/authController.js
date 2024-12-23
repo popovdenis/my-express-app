@@ -58,7 +58,7 @@ exports.logout = async (req, res) => {
 exports.meAction = async (req, res) => {
     try {
         if (!req.user || !req.user.id) {
-            return res.status(401).json({ message: 'Unauthorized: Invalid token' });
+            return res.status(205).json({ message: 'Unauthorized: Invalid token' });
         }
         const user = await UserRepository.findByIdExclPassword(req.user.id);
         if (!user) {
