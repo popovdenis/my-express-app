@@ -1,5 +1,6 @@
 const UserRepository = require('../models/UserRepository');
 const jwt = require("jsonwebtoken");
+const config = require("../config/jwt.config");
 
 exports.updateUserProfile = async (req, res) => {
     const userId = req.user.id;
@@ -23,7 +24,7 @@ exports.updateUserProfile = async (req, res) => {
 
         const updatedUser = await UserRepository.updateUser(userId, updates);
         const payload = { id: updatedUser._id, email: updatedUser.email };
-        const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN });
+        const token = jwt.sign(payload, config.refreshTokenSecret, { expiresIn: config.accessTokenExpiresIn });
 
         res.status(200).json({
             message: 'User profile updated successfully',

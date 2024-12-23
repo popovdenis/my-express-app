@@ -1,10 +1,8 @@
 const express = require('express');
 const router = express.Router();
+const authenticateToken = require('../middlewares/authenticateToken');
 
-// Use the routes
-router.use('/signup', require('./signup'));
-router.use('/signin', require('./signin'));
-router.use('/signout', require('./signout'));
-router.use('/my-account', require('./myAccount'));
+router.use('/auth', require('./authRoutes'));
+router.use('/my-account', authenticateToken, require('./myAccount'));
 
 module.exports = router;

@@ -1,21 +1,16 @@
 const jwt = require('jsonwebtoken');
+const config = require('../config/jwt.config');
 
 const authenticateToken = (req, res, next) => {
-    const authHeader = req.headers['authorization'];
-
-    if (!authHeader) {
-        return res.status(401).json({ message: 'Access token is required' });
-    }
-
-    const token = authHeader.split(' ')[1];
-    console.log('Extracted Token:', token);
-
+    const token = req.cookies.accessToken;
     if (!token) {
-        return res.status(401).json({ message: 'Token not found in Authorization header' });
+        return res.status(401).json({ message: 'Unauthorized: No token provided' });
     }
 
     try {
         req.user = jwt.verify(token, process.env.JWT_SECRET);
+        console.log("Logged in user");
+        console.log(req.user);
         next();
     } catch (err) {
         return res.status(403).json({

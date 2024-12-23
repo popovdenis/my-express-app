@@ -1,4 +1,3 @@
-const bcrypt = require('bcryptjs');
 const UserResource = require('./resources/UserResource');
 
 class UserRepository {
@@ -20,6 +19,9 @@ class UserRepository {
     }
     async findByEmail(email) {
         return await UserResource.findByEmail(email);
+    }
+    async findByIdExclPassword(userId) {
+        return UserResource.findByIdExclPassword(userId);
     }
     async updatePassword(userId, newPassword) {
         return await UserResource.updatePassword(userId, newPassword);

@@ -6,19 +6,17 @@ import MyAccount from './pages/MyAccount';
 import Home from './pages/Home';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
-import SignOut from './pages/SignOut';
 import Menu from './components/Menu';
 
 const App = () => {
     return (
-        <AuthProvider>
+        // <AuthProvider>
             <Router>
                 <Menu />
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/signin" element={<SignIn />} />
                     <Route path="/signup" element={<SignUp />} />
-                    <Route path="/signout" element={<SignOut />} />
                     <Route
                         path="/my-account"
                         element={
@@ -29,7 +27,7 @@ const App = () => {
                     />
                 </Routes>
             </Router>
-        </AuthProvider>
+        // </AuthProvider>
     );
 };
 

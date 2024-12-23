@@ -1,25 +1,33 @@
 require('dotenv').config();
 const express = require('express');
+const cookieParser = require('cookie-parser');
+const cors = require('cors');
+const authRoutes = require('./routes/authRoutes');
+const authenticateToken = require('./middlewares/authenticateToken');
+const routes = require('./routes');
 const connectDB = require('./config/db');
 const errorHandler = require('./middlewares/errorHandler');
 
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const app = express();
-const routes = require('./routes'); // Import all routes
+require('dotenv').config();
 
 connectDB();
 
-// Middleware
+const app = express();
+
+app.use(express.json());
+app.use(cookieParser());
+app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true,
+}));
 app.use(errorHandler);
-app.use(bodyParser.json());
-app.use(cors());
+app.use('/api', routes);
+app.use('/auth', authRoutes);
+app.use('/protected', authenticateToken, (req, res) => {
+    res.json({ message: `Hello ${req.user.id} ` })
+});
 
-// API routes
-app.use('/api', routes); // Prefix all routes with /api
-
-// Start the server
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+    console.log(`Server running on port ${PORT}`);
 });

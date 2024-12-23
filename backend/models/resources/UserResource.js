@@ -1,6 +1,9 @@
 const User = require('../User');
 
 class UserResource {
+    async findByIdExclPassword(userId) {
+        return User.findById(userId).select('-password');
+    }
     async findByEmail(email) {
         return await User.findOne({ email });
     }

@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/auth';
 
 const Menu = () => {
-    const { user, logout } = useAuth();
+    const { user, isAuthenticated, logout } = useAuth();
 
-    const handleLogout = () => {
-        logout();
+    const handleLogout = async () => {
+        await logout();
     };
 
     return (
@@ -17,9 +17,9 @@ const Menu = () => {
                         Home
                     </Link>
                 </li>
-                {user ? (
+                {isAuthenticated ? (
                     <>
-                        <li className="text-white">Welcome, {user.firstname} {user.lastname}</li>
+                        <li className="text-white">Welcome, {user?.firstname} {user?.lastname}</li>
                         <li>
                             <Link to="/my-account" className="text-white no-underline hover:underline">
                                 My Account

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../contexts/auth';
 
 const MyAccount = () => {
-    const { user, token, login } = useAuth();
+    const { user, login } = useAuth();
     const [formData, setFormData] = useState({
         firstname: user?.firstname || '',
         lastname: user?.lastname || '',
@@ -23,19 +23,17 @@ const MyAccount = () => {
         try {
             const response = await fetch(process.env.REACT_APP_API_URL + '/api/my-account', {
                 method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`,
-                },
+                headers: {'Content-Type': 'application/json'},
+                credentials: "include",
                 body: JSON.stringify(formData),
             });
 
             const data = await response.json();
 
             if (response.ok) {
-                login(data.user, token);
+                login(data.user);
                 setMessage('Profile updated successfully');
-                setError(''); // Clear any previous error
+                setError('');
             } else {
                 setError(data.message || 'Failed to update profile');
                 setMessage('');
