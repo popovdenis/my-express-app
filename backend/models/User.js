@@ -20,16 +20,16 @@ const userSchema = new mongoose.Schema(
             unique: [true, 'Email is unique'],
             match: [/^\S+@\S+\.\S+$/, 'Please provide a valid email'],
         },
-        password: {
+        password_hash: {
             type: String,
             required: [true, 'Password is required'],
             minlength: [6, 'Password must be at least 6 characters'],
         },
-        created_at: {
+        createdAt: {
             type: Date,
             default: Date.now,
         },
-        updated_at: {
+        updatedAt: {
             type: Date,
             default: Date.now,
         },
