@@ -1,6 +1,5 @@
 const bcrypt = require('bcryptjs');
 const UserRepository = require('../models/UserRepository');
-const User = require('../models/User');
 const tokenService = require('../services/tokenService');
 
 exports.signIn = async (req, res) => {
@@ -21,12 +20,6 @@ exports.signIn = async (req, res) => {
             return res.status(401).json({ message: 'Invalid email or password' });
         }
 
-        // const saltRounds = parseInt(process.env.BCRYPT_SALT_ROUNDS) || 10;
-        // if (needRehash(user.password, saltRounds)) {
-        //     const needHashedPassword = await bcrypt.hash(password, saltRounds);
-        //     await UserRepository.updatePassword(user._id, needHashedPassword);
-        // }
-
         const accessToken = tokenService.generateAccessToken(user);
         const refreshToken = tokenService.generateRefreshToken(user);
 
@@ -42,13 +35,6 @@ exports.signIn = async (req, res) => {
             sameSite: 'strict',
             maxAge: 7 * 24 * 60 * 60 * 1000,
         });
-
-        // const payload = { id: user._id, email: user.email };
-        // const token = jwt.sign(
-        //     payload,
-        //     process.env.JWT_SECRET,
-        //     { expiresIn: process.env.JWT_EXPIRES_IN }
-        // );
 
         res.status(200).json({
             message: 'Sign In successful',

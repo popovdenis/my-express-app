@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/auth';
 
 const Menu = () => {
-    const { user, isAuthenticated, logout } = useAuth();
+    const { user, logout } = useAuth();
 
     const handleLogout = async () => {
         await logout();
@@ -17,7 +17,7 @@ const Menu = () => {
                         Home
                     </Link>
                 </li>
-                {isAuthenticated ? (
+                {user ? (
                     <>
                         <li className="text-white">Welcome, {user?.firstname} {user?.lastname}</li>
                         <li>

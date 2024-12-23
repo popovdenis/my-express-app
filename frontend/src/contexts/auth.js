@@ -4,7 +4,6 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [loading, setLoading] = useState(true);
 
     const fetchUser = async () => {
@@ -17,15 +16,12 @@ export const AuthProvider = ({ children }) => {
             if (response.ok) {
                 const data = await response.json();
                 setUser(data.user);
-                setIsAuthenticated(true);
             } else {
                 setUser(null);
-                setIsAuthenticated(false);
             }
         } catch (error) {
             console.error('Error fetching user:', error);
             setUser(null);
-            setIsAuthenticated(false);
         } finally {
             setLoading(false);
         }
@@ -37,7 +33,6 @@ export const AuthProvider = ({ children }) => {
 
     const login = (userData) => {
         setUser(userData);
-        setIsAuthenticated(true);
     };
 
     const logout = async () => {
@@ -47,14 +42,13 @@ export const AuthProvider = ({ children }) => {
                 credentials: 'include',
             });
             setUser(null);
-            setIsAuthenticated(false);
         } catch (error) {
             console.error('Logout error:', error);
         }
     };
 
     return (
-        <AuthContext.Provider value={{ user, isAuthenticated, login, logout, loading }}>
+        <AuthContext.Provider value={{ user, login, logout, loading }}>
             {children}
         </AuthContext.Provider>
     );
