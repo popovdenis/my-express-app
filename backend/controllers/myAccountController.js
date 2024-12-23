@@ -22,7 +22,7 @@ exports.updateUserProfile = async (req, res) => {
         }
 
         const updatedUser = await UserRepository.updateUser(userId, updates);
-        const payload = { id: user._id, email: user.email };
+        const payload = { id: updatedUser._id, email: updatedUser.email };
         const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN });
 
         res.status(200).json({
