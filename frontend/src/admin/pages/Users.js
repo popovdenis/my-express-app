@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 
 const Users = () => {
     const [users, setUsers] = useState([]);
@@ -43,7 +43,13 @@ const Users = () => {
 
     return (
         <div>
-            <h1 className="text-2xl font-bold mb-4">Users</h1>
+            <div className="flex justify-between items-center mb-4">
+                <h1 className="text-2xl font-bold mb-4">Users</h1>
+                <Link to="/admin/users/new"
+                      className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
+                    New User
+                </Link>
+            </div>
             <table className="min-w-full bg-white border border-gray-300">
                 <thead>
                 <tr>

@@ -5,6 +5,7 @@ import Dashboard from './pages/Dashboard';
 import Users from './pages/Users';
 import Courses from "./pages/Courses";
 import Settings from "./pages/Settings";
+import NewUser from './pages/NewUser';
 
 const AdminApp = () => {
     return (
@@ -14,6 +15,7 @@ const AdminApp = () => {
                 <Routes>
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/users" element={<Users />} />
+                    <Route path="/users/new" element={<NewUser />} />
                     <Route path="/courses" element={<Courses />} />
                     <Route path="/settings" element={<Settings />} />
                 </Routes>

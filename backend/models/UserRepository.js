@@ -2,20 +2,7 @@ const UserResource = require('./resources/UserResource');
 
 class UserRepository {
     async createUser(data) {
-        const { firstname, lastname, email, password } = data;
-
-        const existingUser = await UserResource.findByEmail(email);
-        if (existingUser) {
-            throw new Error('User with this email already exists');
-        }
-
-        return await UserResource.create({
-            firstname: lastname,
-            lastname: firstname,
-            email: email,
-            is_active: 1,
-            password: password
-        });
+        return await UserResource.create(data);
     }
     async findByEmail(email) {
         return await UserResource.findByEmail(email);

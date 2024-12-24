@@ -1,4 +1,6 @@
 const User = require('../../models/User');
+const UserRepository = require('../../models/UserRepository');
+const bcrypt = require("bcryptjs");
 // const Product = require('../models/Product');
 
 exports.getAllUsers = async (req, res) => {
@@ -11,7 +13,7 @@ exports.getAllUsers = async (req, res) => {
     }
 };
 
-exports.AddCourse = async (req, res) => {
+exports.addCourse = async (req, res) => {
     try {
         const { name, price, description } = req.body;
 
@@ -33,25 +35,34 @@ exports.AddCourse = async (req, res) => {
     }
 };
 
-exports.AddUser = async (req, res) => {
+exports.addUser = async (req, res) => {
     try {
-        const { name, price, description } = req.body;
+        const { firstname, lastname, email, password, role } = req.body;
 
-        if (!name || !price) {
-            return res.status(400).json({ message: 'Name and price are required' });
+        if (!firstname || !lastname || !email || !password) {
+            return res.status(400).json({ message: 'All fields are required' });
         }
 
-        // const product = new Product({
-        //     name,
-        //     price,
-        //     description,
-        // });
-        //
-        // await product.save();
-        // res.status(201).json({ message: 'Course added successfully', course });
+        const existingUser = await UserRepository.findByEmail(email);
+        if (existingUser) {
+            return res.status(400).json({ message: 'User already exists' });
+        }
+
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+
+        const newUser = await UserRepository.createUser({
+            firstname,
+            lastname,
+            email,
+            role: role,
+            password: hashedPassword,
+        });
+
+        res.status(201).json({ message: 'User created successfully', user: newUser });
     } catch (error) {
-        console.error('Error adding product:', error);
-        res.status(500).json({ message: 'Failed to add product' });
+        console.error('Error creating user:', error);
+        res.status(500).json({ message: 'Server error', error: error.message });
     }
 };
 
@@ -81,12 +92,7 @@ exports.updateUserRole = async (req, res) => {
             return res.status(400).json({ message: 'Invalid role' });
         }
 
-        const user = await User.findByIdAndUpdate(
-            id,
-            { role },
-            { new: true } // Возвращаем обновлённый документ
-        );
-
+        const user = await User.findByIdAndUpdate(id, { role }, { new: true });
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
