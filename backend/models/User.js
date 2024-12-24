@@ -25,6 +25,11 @@ const userSchema = new mongoose.Schema(
             required: [true, 'Password is required'],
             minlength: [6, 'Password must be at least 6 characters'],
         },
+        role: {
+            type: String,
+            enum: ['user', 'admin'],
+            default: 'user'
+        },
         createdAt: {
             type: Date,
             default: Date.now,
@@ -33,8 +38,10 @@ const userSchema = new mongoose.Schema(
             type: Date,
             default: Date.now,
         },
-    },
-    { timestamps: true }
+    }, { timestamps: true }
 );
+userSchema.methods.matchPassword = async function (password) {
+    return await bcrypt.compare(password, this.password);
+}
 
 module.exports = mongoose.model('User', userSchema);

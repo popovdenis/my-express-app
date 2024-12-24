@@ -38,6 +38,11 @@ const Menu = () => {
                                     </Link>
                                 </li>
                                 <li className="px-4 py-2 hover:bg-gray-200">
+                                    <Link to="/admin" className="no-underline text-black">
+                                        Admin
+                                    </Link>
+                                </li>
+                                <li className="px-4 py-2 hover:bg-gray-200">
                                     <button
                                         onClick={handleLogout}
                                         className="w-full text-left bg-transparent border-none cursor-pointer"
