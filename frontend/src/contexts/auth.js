@@ -18,7 +18,6 @@ export const AuthProvider = ({ children }) => {
                 setUser(data.user);
             } else {
                 setUser(null);
-                console.error('Unexpected error is occured: ' + response.status);
             }
         } catch (error) {
             console.error('Error fetching user:', error);
@@ -48,7 +47,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, login, logout, loading }}>
+        <AuthContext.Provider value={{ user, setUser, login, logout, loading }}>
             {children}
         </AuthContext.Provider>
     );

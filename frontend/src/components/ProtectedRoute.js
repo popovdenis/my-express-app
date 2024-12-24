@@ -18,9 +18,10 @@ export const ProtectedAccountRoute = ({ children }) => {
                     setUser(data.user);
                 } else {
                     setUser(null);
+                    window.location.href = '/signin';
                 }
             } catch (error) {
-                console.error('Error fetching user:', error.message);
+                // console.error('Error fetching user:', error.message);
             } finally {
                 setCheckingAuth(false);
             }
