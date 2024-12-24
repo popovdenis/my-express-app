@@ -1,22 +1,33 @@
-import React, { useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/auth';
 
 const Menu = () => {
     const { user, logout } = useAuth();
     const [dropdownOpen, setDropdownOpen] = useState(false);
+    const dropdownRef = useRef(null);
 
     const toggleDropdown = () => {
         setDropdownOpen((prev) => !prev);
     };
-
     const handleLogout = () => {
         logout();
     };
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setDropdownOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
 
     return (
         <nav className="bg-gray-800 p-4">
-            <ul className="flex justify-between items-center list-none m-0 p-0">
+            <ul className="flex justify-between items-center list-none m-0 p-0" ref={dropdownRef}>
                 <li>
                     <Link to="/" className="text-white no-underline hover:underline">
                         Home
