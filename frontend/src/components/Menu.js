@@ -44,7 +44,7 @@ const Menu = () => {
                         {dropdownOpen && (
                             <ul className="absolute right-0 bg-white text-black mt-2 py-2 w-48 shadow-lg rounded">
                                 <li className="px-4 py-2 hover:bg-gray-200">
-                                    <Link to="/my-account" className="no-underline text-black">
+                                    <Link to="/customer/account" className="no-underline text-black">
                                         My Account
                                     </Link>
                                 </li>

@@ -11,16 +11,11 @@ import MyAccount from "../pages/MyAccount";
 const AppRoutes = () => {
     return (
         <Routes>
-            {/* General routes */}
             <Route path="/" element={<Home />} />
             <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
-
-            {/* Sign In for Admin */}
             <Route path="/admin/signin" element={<AdminSignIn />} />
-
-            {/* Protected routes */}
-            <Route path="/my-account" element={
+            <Route path="/customer/account" element={
                 <ProtectedAccountRoute>
                     <MyAccount />
                 </ProtectedAccountRoute>

@@ -14,13 +14,10 @@ export const AuthProvider = ({ children }) => {
             });
 
             if (response.ok) {
-                if (response.status === 205) {
-                    setUser(null);
-                } else {
-                    const data = await response.json();
-                    setUser(data.user);
-                }
+                const data = await response.json();
+                setUser(data.user);
             } else {
+                setUser(null);
                 console.error('Unexpected error is occured: ' + response.status);
             }
         } catch (error) {
@@ -35,9 +32,7 @@ export const AuthProvider = ({ children }) => {
         fetchUser();
     }, []);
 
-    const login = (userData) => {
-        setUser(userData);
-    };
+    const login = (userData) => setUser(userData);
 
     const logout = async () => {
         try {
