@@ -6,6 +6,7 @@ import Users from './pages/Users';
 import Courses from "./pages/Courses";
 import Settings from "./pages/Settings";
 import NewUser from './pages/NewUser';
+import EditUser from './pages/EditUser';
 
 const AdminApp = () => {
     return (
@@ -16,6 +17,7 @@ const AdminApp = () => {
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/users" element={<Users />} />
                     <Route path="/users/new" element={<NewUser />} />
+                    <Route path="/users/:id" element={<EditUser />} />
                     <Route path="/courses" element={<Courses />} />
                     <Route path="/settings" element={<Settings />} />
                 </Routes>

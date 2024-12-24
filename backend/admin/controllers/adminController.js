@@ -66,6 +66,41 @@ exports.addUser = async (req, res) => {
     }
 };
 
+exports.getUser = async (req, res) => {
+    try {
+        const user = await UserRepository.findByIdExclPassword(req.params.id);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.status(200).json({ user });
+    } catch (error) {
+        console.error('Error getting user:', error);
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+};
+
+exports.updateUser = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { firstname, lastname, email, role } = req.body;
+
+        const user = await UserRepository.findByIdExclPassword(id);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        user.firstname = firstname || user.firstname;
+        user.lastname = lastname || user.lastname;
+        user.email = email || user.email;
+        user.role = role || user.role;
+
+        const updatedUser = await UserRepository.updateUser(id, user);
+        res.status(200).json({ message: 'User updated successfully', user: updatedUser });
+    } catch (error) {
+        console.error('Error updating user:', error);
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+};
+
 exports.deleteUser = async (req, res) => {
     try {
         const { id } = req.params;

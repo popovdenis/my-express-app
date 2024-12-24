@@ -7,6 +7,8 @@ const router = express.Router();
 
 router.get('/users', authenticateToken, isAdmin, adminController.getAllUsers);
 router.post('/users', authenticateToken, isAdmin, adminController.addUser);
+router.get('/users/:id', authenticateToken, isAdmin, adminController.getUser);
+router.put('/users/:id', authenticateToken, isAdmin, adminController.updateUser);
 router.delete('/users/:id', authenticateToken, isAdmin, adminController.deleteUser);
 // router.get('/courses', authenticateToken, isAdmin, getAllCourses);
 // router.post('/courses', authenticateToken, isAdmin, AddCourse);

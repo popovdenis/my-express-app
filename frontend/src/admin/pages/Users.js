@@ -96,7 +96,7 @@ const Users = () => {
                         <td className="py-2 px-4 border-b text-center">{user.role}</td>
                         <td className="py-2 px-4 border-b text-center relative">
                             <DropdownActions
-                                onEdit={() => console.log('Edit user', user._id)}
+                                onEdit={() => navigate(`/admin/users/${user._id}`)}
                                 onDelete={() => {
                                     setSelectedUser(user);
                                     setShowConfirm(true);
