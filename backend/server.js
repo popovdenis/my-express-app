@@ -1,31 +1,24 @@
 require('dotenv').config();
 const express = require('express');
+const routes = require('./routes');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
-const authRoutes = require('./routes/authRoutes');
-const authenticateToken = require('./middlewares/authenticateToken');
-const routes = require('./routes');
 const connectDB = require('./config/db');
 const errorHandler = require('./middlewares/errorHandler');
 
-require('dotenv').config();
+const app = express();
 
 connectDB();
 
-const app = express();
-
+// Middleware
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
     origin: 'http://localhost:3000',
     credentials: true,
 }));
-app.use(errorHandler);
 app.use('/api', routes);
-app.use('/auth', authRoutes);
-app.use('/protected', authenticateToken, (req, res) => {
-    res.json({ message: `Hello ${req.user.id} ` })
-});
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {

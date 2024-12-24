@@ -1,8 +1,10 @@
 const express = require('express');
-const router = express.Router();
-const authenticateToken = require('../middlewares/authenticateToken');
+const authRoutes = require('./authRoutes');
+const customerRoutes = require('./customerRoutes');
 
-router.use('/auth', require('./authRoutes'));
-router.use('/my-account', authenticateToken, require('./myAccount'));
+const router = express.Router();
+
+router.use('/auth', authRoutes);
+router.use('/customer', customerRoutes);
 
 module.exports = router;

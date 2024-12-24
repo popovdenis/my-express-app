@@ -21,7 +21,7 @@ const MyAccount = () => {
         e.preventDefault();
 
         try {
-            const response = await fetch(process.env.REACT_APP_API_URL + '/api/my-account', {
+            const response = await fetch(process.env.REACT_APP_API_URL + '/customer/account', {
                 method: 'PUT',
                 headers: {'Content-Type': 'application/json'},
                 credentials: "include",

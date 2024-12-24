@@ -8,7 +8,7 @@ export const AuthProvider = ({ children }) => {
 
     const fetchUser = async () => {
         try {
-            const response = await fetch(process.env.REACT_APP_API_URL + '/auth/me', {
+            const response = await fetch(process.env.REACT_APP_API_URL + '/customer/account', {
                 method: 'GET',
                 credentials: 'include',
             });
