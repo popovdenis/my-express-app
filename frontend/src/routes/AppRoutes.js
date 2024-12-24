@@ -4,7 +4,7 @@ import Home from '../pages/Home';
 import SignIn from '../pages/SignIn';
 import SignUp from '../pages/SignUp';
 import AdminApp from '../admin/AdminApp';
-import ProtectedRoute from "../components/ProtectedRoute";
+import { ProtectedAccountRoute, ProtectedAdminRoute } from "../components/ProtectedRoute";
 import MyAccount from "../pages/MyAccount";
 
 const AppRoutes = () => {
@@ -14,14 +14,14 @@ const AppRoutes = () => {
             <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/my-account" element={
-                <ProtectedRoute>
+                <ProtectedAccountRoute>
                     <MyAccount />
-                </ProtectedRoute>
+                </ProtectedAccountRoute>
             } />
             <Route path="/admin/*" element={
-                <ProtectedRoute>
+                <ProtectedAdminRoute>
                     <AdminApp />
-                </ProtectedRoute>
+                </ProtectedAdminRoute>
             } />
         </Routes>
     );
