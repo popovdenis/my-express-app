@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
-const User = require('../models/User');
+const jwt = require('jsonwebtoken');
+const config = require('../config/jwt.config');
 const UserRepository = require('../models/UserRepository');
 const tokenService = require('../services/tokenService');
 
@@ -12,12 +13,7 @@ exports.signIn = async (req, res) => {
 
     try {
         const user = await UserRepository.findByEmail(email);
-        if (!user) {
-            return res.status(404).json({ message: 'Invalid email or password' });
-        }
-
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
+        if (!user || !(await user.matchPassword(password))) {
             return res.status(401).json({ message: 'Invalid email or password' });
         }
 
@@ -28,13 +24,13 @@ exports.signIn = async (req, res) => {
             httpOnly: true,
             secure: process.env.NODE_ENV !== 'production',
             sameSite: 'strict',
-            maxAge: 15 * 60 * 1000,
+            maxAge: config.accessCookieMaxAge,
         });
         res.cookie('refreshToken', refreshToken, {
             httpOnly: true,
             secure: process.env.NODE_ENV !== 'production',
             sameSite: 'strict',
-            maxAge: 7 * 24 * 60 * 60 * 1000,
+            maxAge: config.refreshCookieMaxAge,
         });
 
         res.status(200).json({
