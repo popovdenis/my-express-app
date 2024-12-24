@@ -13,10 +13,9 @@ const AppRoutes = () => {
             <Route path="/" element={<Home />} />
             <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
-            <Route path="/admin/*" element={<AdminApp />} />
-            <Route path="/my-account" element={
+            <Route path="/admin/*" element={
                 <ProtectedRoute>
-                    <MyAccount />
+                    <AdminApp />
                 </ProtectedRoute>
             } />
         </Routes>
