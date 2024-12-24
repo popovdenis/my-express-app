@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Users = () => {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -22,7 +24,7 @@ const Users = () => {
                     setError(errData.message || 'Failed to fetch users');
                 }
             } catch (err) {
-                setError('Error: Unable to connect to the server');
+                navigate('/signin');
             } finally {
                 setLoading(false);
             }
