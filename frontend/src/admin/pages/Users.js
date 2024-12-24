@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import {Link, useNavigate} from 'react-router-dom';
+import DropdownActions from '../components/DropdownActions';
+import ConfirmDelete from '../components/ConfirmDelete';
 
 const Users = () => {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const [showConfirm, setShowConfirm] = useState(false);
+    const [selectedUser, setSelectedUser] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -32,6 +36,27 @@ const Users = () => {
 
         fetchUsers();
     }, []);
+    const handleDelete = async () => {
+        if (!selectedUser) {
+            return;
+        }
+        try {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/users/${selectedUser._id}`, {
+                method: 'DELETE',
+                credentials: 'include'
+            });
+            if (response.ok) {
+                setUsers((prevUsers) => prevUsers.filter(user => user._id !== selectedUser._id));
+                setShowConfirm(false);
+                setSelectedUser(null);
+            } else {
+                const errData = await response.json();
+                setError(errData.message || 'Failed to delete user');
+            }
+        } catch (err) {
+            setError('Error: Unable to delete user.' + e.message);
+        }
+    };
 
     if (loading) {
         return <p>Loading users...</p>;
@@ -58,6 +83,7 @@ const Users = () => {
                     <th className="py-2 px-4 border-b">Last Name</th>
                     <th className="py-2 px-4 border-b">Email</th>
                     <th className="py-2 px-4 border-b">Role</th>
+                    <th className="py-2 px-4 border-b">Actions</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -68,10 +94,26 @@ const Users = () => {
                         <td className="py-2 px-4 border-b">{user.lastname}</td>
                         <td className="py-2 px-4 border-b">{user.email}</td>
                         <td className="py-2 px-4 border-b text-center">{user.role}</td>
+                        <td className="py-2 px-4 border-b text-center relative">
+                            <DropdownActions
+                                onEdit={() => console.log('Edit user', user._id)}
+                                onDelete={() => {
+                                    setSelectedUser(user);
+                                    setShowConfirm(true);
+                                }}
+                            />
+                        </td>
                     </tr>
                 ))}
                 </tbody>
             </table>
+            {showConfirm && (
+                <ConfirmDelete
+                    user={selectedUser}
+                    onClose={() => setShowConfirm(false)}
+                    onConfirm={handleDelete}
+                />
+            )}
         </div>
     );
 };
