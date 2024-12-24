@@ -7,6 +7,7 @@ import Courses from "./pages/Courses";
 import Settings from "./pages/Settings";
 import NewUser from './pages/NewUser';
 import EditUser from './pages/EditUser';
+import AdminSignIn from './pages/AdminSignIn';
 
 const AdminApp = () => {
     return (
@@ -14,6 +15,7 @@ const AdminApp = () => {
             <Sidebar />
             <div className="ml-64 p-4 w-full">
                 <Routes>
+                    <Route path="/signin" element={<AdminSignIn />} />
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/users" element={<Users />} />
                     <Route path="/users/new" element={<NewUser />} />
