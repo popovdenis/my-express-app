@@ -2,11 +2,11 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../contexts/auth';
 
-const ProtectedAccountRoute = ({ children }) => {
+export const ProtectedAccountRoute = ({ children }) => {
     const { user, loading } = useAuth();
 
     if (loading) {
-        return <div>Loading...</div>;
+        return <p>Loading...</p>;
     }
 
     if (!user) {
@@ -15,11 +15,12 @@ const ProtectedAccountRoute = ({ children }) => {
 
     return children;
 };
-const ProtectedAdminRoute = ({ children }) => {
+
+export const ProtectedAdminRoute = ({ children }) => {
     const { user, loading } = useAuth();
 
     if (loading) {
-        return <div>Loading...</div>;
+        return <p>Loading...</p>;
     }
 
     if (!user || user.role !== 'admin') {
@@ -27,9 +28,4 @@ const ProtectedAdminRoute = ({ children }) => {
     }
 
     return children;
-}
-
-export {
-    ProtectedAccountRoute,
-    ProtectedAdminRoute
 };
