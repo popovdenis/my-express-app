@@ -35,15 +35,13 @@ const Sidebar = () => {
                             </NavLink>
                         </li>
                     ))}
-                    <li key="/admin/logout">
-                        <li className="px-4 py-2 hover:bg-gray-700">
-                            <button
-                                onClick={handleLogout}
-                                className="w-full text-left bg-transparent border-none cursor-pointer"
-                            >
-                                Log Out
-                            </button>
-                        </li>
+                    <li className="px-4 py-2 hover:bg-gray-700">
+                        <button
+                            onClick={handleLogout}
+                            className="w-full text-left bg-transparent border-none cursor-pointer"
+                        >
+                            Log Out
+                        </button>
                     </li>
                 </ul>
             </nav>

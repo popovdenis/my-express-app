@@ -12,28 +12,6 @@ exports.getAllUsers = async (req, res) => {
     }
 };
 
-exports.addCourse = async (req, res) => {
-    try {
-        const { name, price, description } = req.body;
-
-        if (!name || !price) {
-            return res.status(400).json({ message: 'Name and price are required' });
-        }
-
-        // const product = new Product({
-        //     name,
-        //     price,
-        //     description,
-        // });
-        //
-        // await product.save();
-        // res.status(201).json({ message: 'Course added successfully', course });
-    } catch (error) {
-        console.error('Error adding product:', error);
-        res.status(500).json({ message: 'Failed to add product' });
-    }
-};
-
 exports.addUser = async (req, res) => {
     try {
         const { firstname, lastname, email, password, role } = req.body;

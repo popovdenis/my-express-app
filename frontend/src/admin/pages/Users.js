@@ -61,7 +61,6 @@ const Users = () => {
     if (loading) {
         return <p>Loading users...</p>;
     }
-
     if (error) {
         return <p className="text-red-500">{error}</p>;
     }
