@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import {Link, useNavigate} from 'react-router-dom';
-import { formatDate } from '../../../utils/dateUtils'
-import DropdownActions from '../../components/DropdownActions';
-import ConfirmDelete from '../../components/ConfirmDelete';
+import { formatDate } from '../../../../utils/dateUtils'
+import DropdownActions from '../../../components/DropdownActions';
+import ConfirmDelete from '../../../components/ConfirmDelete';
 
 const Attributes = () => {
     const [attributes, setAttributes] = useState([]);
@@ -80,10 +80,10 @@ const Attributes = () => {
                 <thead>
                 <tr>
                     <th className="py-2 px-4 border-b">#</th>
-                    <th className="py-2 px-4 border-b">Title</th>
-                    <th className="py-2 px-4 border-b">Duration</th>
-                    <th className="py-2 px-4 border-b">Level</th>
-                    <th className="py-2 px-4 border-b">Created At</th>
+                    <th className="py-2 px-4 border-b">Attribute Code</th>
+                    <th className="py-2 px-4 border-b">Attribute Label</th>
+                    <th className="py-2 px-4 border-b">Entity Type</th>
+                    <th className="py-2 px-4 border-b">Required</th>
                     <th className="py-2 px-4 border-b">Actions</th>
                 </tr>
                 </thead>
@@ -92,8 +92,9 @@ const Attributes = () => {
                     <tr key={attribute._id} className="hover:bg-gray-100">
                         <td className="py-2 px-4 border-b text-center">{index + 1}</td>
                         <td className="py-2 px-4 border-b text-center">{attribute.attribute_code}</td>
-                        <td className="py-2 px-4 border-b text-center">{attribute.frontend_label}</td>
-                        <td className="py-2 px-4 border-b text-center">{attribute.is_required}</td>
+                        <td className="py-2 px-4 border-b text-center">{attribute.label}</td>
+                        <td className="py-2 px-4 border-b text-center">{attribute.entity_type_id?.entity_type_code || 'N/A'}</td>
+                        <td className="py-2 px-4 border-b text-center">{attribute.is_required ? 'Yes' : 'No'}</td>
                         <td className="py-2 px-4 border-b text-center relative">
                             <DropdownActions
                                 onEdit={() => navigate(`/admin/attributes/${attribute._id}`)}

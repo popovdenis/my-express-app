@@ -2,7 +2,7 @@ const bcrypt = require("bcryptjs");
 const User = require('../../models/User');
 const UserRepository = require('../../models/UserRepository');
 
-exports.getAllUsers = async (req, res) => {
+exports.getList = async (req, res) => {
     try {
         const users = await User.find().select('-password');
         res.json({ users });
@@ -12,7 +12,7 @@ exports.getAllUsers = async (req, res) => {
     }
 };
 
-exports.addUser = async (req, res) => {
+exports.addEntity = async (req, res) => {
     try {
         const { firstname, lastname, email, password, role } = req.body;
 
@@ -43,7 +43,7 @@ exports.addUser = async (req, res) => {
     }
 };
 
-exports.getUser = async (req, res) => {
+exports.getEntity = async (req, res) => {
     try {
         const user = await UserRepository.findByIdExclPassword(req.params.id);
         if (!user) {
@@ -56,7 +56,7 @@ exports.getUser = async (req, res) => {
     }
 };
 
-exports.updateUser = async (req, res) => {
+exports.updateEntity = async (req, res) => {
     try {
         const { id } = req.params;
         const { firstname, lastname, email, role } = req.body;
@@ -78,7 +78,7 @@ exports.updateUser = async (req, res) => {
     }
 };
 
-exports.deleteUser = async (req, res) => {
+exports.deleteEntity = async (req, res) => {
     try {
         const { id } = req.params;
 

@@ -1,7 +1,7 @@
 const Course = require('../../models/Course');
 const CourseRepository = require('../../models/CourseRepository');
 
-exports.getAllCourses = async (req, res) => {
+exports.getList = async (req, res) => {
     try {
         const courses = await Course.find();
         res.json({ courses });
@@ -10,7 +10,7 @@ exports.getAllCourses = async (req, res) => {
         res.status(500).json({ message: 'Failed to fetch courses' });
     }
 };
-exports.addCourse = async (req, res) => {
+exports.addEntity = async (req, res) => {
     try {
         const { title, description, duration, level } = req.body;
 
@@ -36,7 +36,7 @@ exports.addCourse = async (req, res) => {
         res.status(500).json({ message: 'Server error', error: error.message });
     }
 };
-exports.getCourse = async (req, res) => {
+exports.getEntity = async (req, res) => {
     try {
         const course = await Course.findById(req.params.id);
         if (!course) {
@@ -48,7 +48,7 @@ exports.getCourse = async (req, res) => {
         res.status(500).json({ message: 'Server error', error: error.message });
     }
 };
-exports.updateCourse = async (req, res) => {
+exports.updateEntity = async (req, res) => {
     try {
         const { id } = req.params;
         const { title, description, duration, level } = req.body;
@@ -69,7 +69,7 @@ exports.updateCourse = async (req, res) => {
         res.status(500).json({ message: 'Server error', error: error.message });
     }
 };
-exports.deleteCourse = async (req, res) => {
+exports.deleteEntity = async (req, res) => {
     try {
         const { id } = req.params;
 
