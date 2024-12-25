@@ -28,11 +28,11 @@ const authenticateAdminToken = (req, res, next) => {
     const token = req.cookies.accessToken;
 
     if (!token) {
-        return res.status(205).json({ message: 'Unauthorized: No token provided' });
+        return res.status(401).json({ message: 'Unauthorized: No admin token provided' });
     }
 
     try {
-        req.user = jwt.verify(token, process.env.JWT_SECRET);
+        req.user = jwt.verify(token, config.accessTokenSecret);
         if (req.user.role !== 'admin') {
             return res.status(403).json({ message: 'Forbidden: Admins only', token: token, user: req.user });
         }

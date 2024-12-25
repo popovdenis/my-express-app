@@ -97,3 +97,51 @@ exports.meAction = async (req, res) => {
         res.status(500).json({ message: 'Server error', error: error.message });
     }
 }
+exports.adminSignIn = async (req, res) => {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+        return res.status(400).json({ message: 'Email and password are required' });
+    }
+
+    try {
+        const user = await UserRepository.findByEmail(email);
+        if (!user || !(await user.matchPassword(password))) {
+            return res.status(401).json({ message: 'Invalid email or password' });
+        }
+
+        if (user.role !== 'admin') {
+            return res.status(403).json({ message: 'Access denied: Admins only' });
+        }
+
+        const accessToken = tokenService.generateAccessToken(user);
+        const refreshToken = tokenService.generateRefreshToken(user);
+
+        res.cookie('accessAdminToken', accessToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV !== 'production',
+            sameSite: 'strict',
+            maxAge: config.accessCookieMaxAge,
+        });
+        res.cookie('refreshAdminToken', refreshToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV !== 'production',
+            sameSite: 'strict',
+            maxAge: config.refreshCookieMaxAge,
+        });
+
+        res.status(200).json({
+            message: 'Admin login successful',
+            user: {
+                id: user._id,
+                firstname: user.firstname,
+                lastname: user.lastname,
+                email: user.email,
+                role: user.role,
+            }
+        });
+    } catch (error) {
+        console.error('Error during admin login:', error.message);
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+}

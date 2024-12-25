@@ -11,10 +11,6 @@ const isAdmin = async (req, res, next) => {
             return res.status(404).send('User not found');
         }
 
-        console.log('Admin User');
-        console.log(user);
-        console.log('Decoded User');
-        console.log(req.user);
         if (user.role !== 'admin') {
             return res.status(401).send('Forbidden: Admin access only');
         }
