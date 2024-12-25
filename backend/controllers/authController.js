@@ -82,21 +82,6 @@ exports.logout = async (req, res) => {
     res.clearCookie('refreshToken');
     res.status(200).json({ message: 'Logged Out successfully' });
 };
-exports.meAction = async (req, res) => {
-    try {
-        if (!req.user || !req.user.id) {
-            return res.status(205).json({ message: 'Unauthorized: Invalid token' });
-        }
-        const user = await UserRepository.findByIdExclPassword(req.user.id);
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-        res.json({ user });
-    } catch (error) {
-        console.error('Error fetching user:', error);
-        res.status(500).json({ message: 'Server error', error: error.message });
-    }
-}
 exports.adminSignIn = async (req, res) => {
     const { email, password } = req.body;
 
@@ -114,10 +99,10 @@ exports.adminSignIn = async (req, res) => {
             return res.status(403).json({ message: 'Access denied: Admins only' });
         }
 
-        const accessToken = tokenService.generateAccessToken(user);
-        const refreshToken = tokenService.generateRefreshToken(user);
+        const accessToken = tokenService.generateAdminAccessToken(user);
+        const refreshToken = tokenService.generateAdminRefreshToken(user);
 
-        res.cookie('accessAdminToken', accessToken, {
+        res.cookie('adminAccessToken', accessToken, {
             httpOnly: true,
             secure: process.env.NODE_ENV !== 'production',
             sameSite: 'strict',
@@ -142,6 +127,27 @@ exports.adminSignIn = async (req, res) => {
         });
     } catch (error) {
         console.error('Error during admin login:', error.message);
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+}
+exports.checkAdminAction = async (req, res) => {
+    try {
+        if (!req.user) {
+            return res.status(401).json({ message: 'Unauthorized: Invalid token' });
+        }
+        if (!req.user.id) {
+            return res.status(401).json({ message: 'Unauthorized: Invalid User ID' });
+        }
+        const user = await UserRepository.findByIdExclPassword(req.user.id);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        if (user.role !== 'admin') {
+            return res.status(403).json({ message: 'Access denied: Admins only' });
+        }
+        res.json({ user });
+    } catch (error) {
+        console.error('Error fetching user:', error);
         res.status(500).json({ message: 'Server error', error: error.message });
     }
 }

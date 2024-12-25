@@ -8,7 +8,7 @@ import Settings from './pages/Settings';
 import NewUser from './pages/NewUser';
 import EditUser from './pages/EditUser';
 import AdminSignIn from './pages/AdminSignIn';
-import {ProtectedAdminRoute} from '../components/ProtectedRoute';
+import {ProtectedAdminRoute} from './components/ProtectedAdminRoute';
 
 const AdminApp = () => {
     return (

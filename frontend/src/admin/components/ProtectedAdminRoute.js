@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import { useAuth } from '../contexts/auth';
+import {useAdminAuth} from '../../contexts/adminAuth';
 
-export const ProtectedAccountRoute = ({ children }) => {
-    const { user, setUser, loading } = useAuth();
+export const ProtectedAdminRoute = ({ children }) => {
+    const { user, setUser, loading } = useAdminAuth();
     const [ checkingAuth, setCheckingAuth ] = useState(true);
 
     useEffect(() => {
         const verifyAuth = async () => {
             try {
-                const response = await fetch(`${process.env.REACT_APP_API_URL}/customer/account`, {
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/admin/me`, {
                     method: 'GET',
                     credentials: 'include',
                 });

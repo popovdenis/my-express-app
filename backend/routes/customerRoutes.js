@@ -1,10 +1,10 @@
 const express = require('express');
-const { authenticateToken } = require('../middlewares/authenticateToken');
+const authenticateCustomer = require('../middlewares/authenticateCustomer');
 const { getCurrentUser, updateCurrentUser } = require('../controllers/customerController');
 
 const router = express.Router();
 
-router.get('/account', authenticateToken, getCurrentUser);
-router.put('/account', authenticateToken, updateCurrentUser);
+router.get('/account', authenticateCustomer, getCurrentUser);
+router.put('/account', authenticateCustomer, updateCurrentUser);
 
 module.exports = router;

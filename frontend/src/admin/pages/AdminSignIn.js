@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import {useAdminAuth} from '../../contexts/adminAuth';
 
 const AdminSignIn = () => {
     const [formData, setFormData] = useState({ email: '', password: '' });
     const [error, setError] = useState('');
+    const navigate = useNavigate();
+    const { login } = useAdminAuth();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -15,15 +19,16 @@ const AdminSignIn = () => {
         try {
             const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/admin/signin`, {
                 method: 'POST',
+                credentials: 'include',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData),
-                credentials: 'include',
             });
 
+            const data = await response.json();
             if (response.ok) {
-                window.location.href = '/admin/dashboard';
+                login(data.user);
+                navigate('/admin');
             } else {
-                const data = await response.json();
                 setError(data.message || 'Failed to sign in');
             }
         } catch (error) {
