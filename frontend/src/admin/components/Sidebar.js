@@ -1,5 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import {useAdminAuth} from '../../contexts/adminAuth';
 
 const Sidebar = () => {
     const links = [
@@ -8,6 +9,10 @@ const Sidebar = () => {
         { path: '/admin/courses', label: 'Courses' },
         { path: '/admin/settings', label: 'Settings' },
     ];
+    const { logout } = useAdminAuth();
+    const handleLogout = () => {
+        logout();
+    };
 
     return (
         <div className="w-64 h-screen bg-gray-800 text-white fixed">
@@ -20,7 +25,7 @@ const Sidebar = () => {
                         <li key={link.path}>
                             <NavLink
                                 to={link.path}
-                                className={({ isActive }) =>
+                                className={({isActive}) =>
                                     `block px-4 py-2 rounded hover:bg-gray-700 ${
                                         isActive ? 'bg-gray-700' : ''
                                     }`
@@ -30,6 +35,16 @@ const Sidebar = () => {
                             </NavLink>
                         </li>
                     ))}
+                    <li key="/admin/logout">
+                        <li className="px-4 py-2 hover:bg-gray-700">
+                            <button
+                                onClick={handleLogout}
+                                className="w-full text-left bg-transparent border-none cursor-pointer"
+                            >
+                                Log Out
+                            </button>
+                        </li>
+                    </li>
                 </ul>
             </nav>
         </div>

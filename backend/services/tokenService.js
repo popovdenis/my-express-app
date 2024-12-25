@@ -12,12 +12,12 @@ exports.generateRefreshToken = (user) => {
     })
 }
 exports.generateAdminAccessToken = (user) => {
-    return jwt.sign({ id: user._id, role: user.role }, config.accessTokenSecret, {
+    return jwt.sign({ id: user._id, role: user.role }, config.adminAccessTokenSecret, {
         expiresIn: config.accessTokenExpiresIn
     })
 }
 exports.generateAdminRefreshToken = (user) => {
-    return jwt.sign({ id: user._id, role: user.role }, config.refreshTokenSecret, {
+    return jwt.sign({ id: user._id, role: user.role }, config.adminRefreshTokenSecret, {
         expiresIn: config.refreshTokenExpiresIn
     })
 }

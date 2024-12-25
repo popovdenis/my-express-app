@@ -40,7 +40,7 @@ export const AuthProvider = ({ children }) => {
                 credentials: 'include',
             });
             setUser(null);
-            // window.location.href = '/signin';
+            window.location.href = '/signin';
         } catch (error) {
             console.error('Logout error:', error);
         }

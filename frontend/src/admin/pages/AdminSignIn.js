@@ -27,7 +27,7 @@ const AdminSignIn = () => {
             const data = await response.json();
             if (response.ok) {
                 login(data.user);
-                navigate('/admin');
+                navigate('/admin/dashboard');
             } else {
                 setError(data.message || 'Failed to sign in');
             }

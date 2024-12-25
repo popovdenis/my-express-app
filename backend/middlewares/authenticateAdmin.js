@@ -11,7 +11,7 @@ const authenticateAdminToken = (req, res, next) => {
 
     try {
         console.log('Token is found.');
-        req.user = jwt.verify(token, config.accessTokenSecret);
+        req.user = jwt.verify(token, config.adminAccessTokenSecret);
         console.log('User role is ' + req.user.role);
         if (req.user.role !== 'admin') {
             return res.status(403).json({ message: 'Forbidden: Admins only' });

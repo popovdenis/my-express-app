@@ -1,6 +1,8 @@
 module.exports = {
-    accessTokenSecret: process.env.JWT_ACCESS_TOKEN_SECRET,
-    refreshTokenSecret: process.env.JWT_REFRESH_TOKEN_SECRET,
+    accessTokenSecret: process.env.CUSTOMER_ACCESS_TOKEN_SECRET,
+    refreshTokenSecret: process.env.CUSTOMER_REFRESH_TOKEN_SECRET,
+    adminAccessTokenSecret: process.env.ADMIN_ACCESS_TOKEN_SECRET,
+    adminRefreshTokenSecret: process.env.ADMIN_REFRESH_TOKEN_SECRET,
     accessTokenExpiresIn: '15m',
     refreshTokenExpiresIn: '7d',
     accessCookieMaxAge: 60 * 60 * 1000,

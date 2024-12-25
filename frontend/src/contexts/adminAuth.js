@@ -31,9 +31,7 @@ export const AdminAuthProvider = ({ children }) => {
         fetchAdmin();
     }, []);
 
-    const login = () => {
-        fetchAdmin();
-    };
+    const login = (userData) => setAdmin(userData);
 
     const logout = async () => {
         try {
@@ -49,7 +47,7 @@ export const AdminAuthProvider = ({ children }) => {
     };
 
     return (
-        <AdminAuthContext.Provider value={{ admin, login, logout, loading }}>
+        <AdminAuthContext.Provider value={{ admin, setAdmin, login, logout, loading }}>
             {children}
         </AdminAuthContext.Provider>
     );
