@@ -133,7 +133,7 @@ exports.adminSignIn = async (req, res) => {
 exports.checkAdminAction = async (req, res) => {
     try {
         if (!req.user) {
-            return res.status(401).json({ message: 'Unauthorized: Invalid token' });
+            return res.status(401).json({ message: 'Unauthorized: Invalid admin token' });
         }
         if (!req.user.id) {
             return res.status(401).json({ message: 'Unauthorized: Invalid User ID' });

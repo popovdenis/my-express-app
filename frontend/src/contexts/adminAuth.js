@@ -8,7 +8,7 @@ export const AdminAuthProvider = ({ children }) => {
 
     const fetchAdmin = async () => {
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/admin/me`, {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/me`, {
                 method: 'GET',
                 credentials: 'include',
             });
@@ -37,7 +37,7 @@ export const AdminAuthProvider = ({ children }) => {
 
     const logout = async () => {
         try {
-            await fetch(`${process.env.REACT_APP_API_URL}/auth/admin/logout`, {
+            await fetch(`${process.env.REACT_APP_API_URL}/admin/logout`, {
                 method: 'POST',
                 credentials: 'include',
             });

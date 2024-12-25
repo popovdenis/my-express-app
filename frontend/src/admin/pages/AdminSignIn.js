@@ -17,7 +17,7 @@ const AdminSignIn = () => {
         e.preventDefault();
 
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/admin/signin`, {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/signin`, {
                 method: 'POST',
                 credentials: 'include',
                 headers: { 'Content-Type': 'application/json' },
