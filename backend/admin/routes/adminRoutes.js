@@ -31,6 +31,7 @@ router.get('/attribute_entity', authenticateAdminToken, isAdmin, entityTypeContr
 router.get('/attributes', authenticateAdminToken, isAdmin, attributeController.getList);
 router.post('/attributes', authenticateAdminToken, isAdmin, attributeController.addEntity);
 router.get('/attributes/:id', authenticateAdminToken, isAdmin, attributeController.getEntity);
+router.get('/attributes/code/:attributeCode', authenticateAdminToken, isAdmin, attributeController.getAttributeByCode);
 router.put('/attributes/:id', authenticateAdminToken, isAdmin, attributeController.updateEntity);
 router.delete('/attributes/:id', authenticateAdminToken, isAdmin, attributeController.deleteEntity);
 

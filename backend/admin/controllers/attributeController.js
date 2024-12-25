@@ -4,8 +4,7 @@ const AttributeRepository = require('../../models/AttributeRepository');
 exports.getList = async (req, res) => {
     try {
         const attributes = await Attribute.find()
-            .populate('entity_type', 'entity_type_code')
-            .exec();
+            .populate('entity_type', 'entity_type_code');
         res.json({ attributes });
     } catch (error) {
         console.error('Error fetching attributes:', error);
@@ -36,6 +35,23 @@ exports.addEntity = async (req, res) => {
         res.status(201).json({ message: 'Attribute created successfully', attribute: newEntity });
     } catch (error) {
         console.error('Error creating attribute:', error);
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+};
+exports.getAttributeByCode = async (req, res) => {
+    const { attributeCode } = req.params;
+
+    try {
+        const attribute = await Attribute.findOne({ attribute_code: attributeCode })
+            .populate('entity_type', 'entity_type_code');
+
+        if (!attribute) {
+            return res.status(404).json({ message: 'Attribute not found' });
+        }
+
+        res.status(200).json({ attribute });
+    } catch (error) {
+        console.error('Error fetching attribute:', error.message);
         res.status(500).json({ message: 'Server error', error: error.message });
     }
 };

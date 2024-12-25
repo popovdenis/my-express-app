@@ -6,7 +6,6 @@ import ConfirmDelete from '../../../components/ConfirmDelete';
 
 const Attributes = () => {
     const [attributes, setAttributes] = useState([]);
-    const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [showConfirm, setShowConfirm] = useState(false);
     const [selectedAttribute, setSelectedAttribute] = useState(null);
@@ -30,8 +29,6 @@ const Attributes = () => {
                 }
             } catch (err) {
                 console.log(err);
-            } finally {
-                setLoading(false);
             }
         };
 
@@ -59,10 +56,6 @@ const Attributes = () => {
             setError('Error: Unable to delete attribute.' + e.message);
         }
     };
-
-    if (loading) {
-        return <p>Loading attributes...</p>;
-    }
 
     if (error) {
         return <p className="text-red-500">{error}</p>;
