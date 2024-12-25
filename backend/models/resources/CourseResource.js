@@ -11,7 +11,7 @@ class CourseResource {
         return await Course.findByIdAndUpdate(courseId, updates, { new: true, runValidators: true });
     }
     async delete(courseId) {
-        return await Course.findOneAndDelete(courseId);
+        return await Course.findByIdAndDelete(courseId);
     }
 }
 

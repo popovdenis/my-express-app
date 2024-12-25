@@ -12,8 +12,25 @@ const EditCourse = () => {
     });
     const [error, setError] = useState('');
     const [loading, setLoading] = useState('');
+    const [durationOptions, setDurationOptions] = useState([]);
 
     useEffect(() => {
+        const fetchCourseAttributes = async () => {
+            try {
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/attributes/code/duration`, {
+                    method: 'GET',
+                    credentials: 'include'
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    setDurationOptions(data.attribute.options);
+                } else {
+                    setError(data.message || 'Failed to fetch course data');
+                }
+            } catch (error) {
+                setError(error);
+            }
+        };
         const fetchCourse = async () => {
             try {
                 const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/courses/${id}`, {
@@ -38,6 +55,7 @@ const EditCourse = () => {
                 setLoading(false);
             }
         };
+        fetchCourseAttributes();
         fetchCourse();
     }, [id]);
 
@@ -107,10 +125,9 @@ const EditCourse = () => {
                         onChange={handleChange}
                         className="w-full border border-gray-300 rounded p-2"
                     >
-                        <option value="hours_1">1 hour</option>
-                        <option value="hours_2">2 hours</option>
-                        <option value="hours_5">5 hours</option>
-                        <option value="hours_8">8 hours</option>
+                        {durationOptions.map((option, index) => (
+                            <option key={index} value={option}>{option}</option>
+                        ))}
                     </select>
                 </div>
                 <div>
@@ -132,7 +149,7 @@ const EditCourse = () => {
                     type="submit"
                     className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
                 >
-                    Add Course
+                    Update Course
                 </button>
             </form>
         </div>
