@@ -1,6 +1,7 @@
 const UserRepository = require('../models/UserRepository');
 const jwt = require("jsonwebtoken");
 const config = require("../config/jwt.config");
+const tokenService = require("../services/tokenService");
 
 exports.getCurrentUser = async (req, res) => {
     try {
@@ -35,8 +36,7 @@ exports.updateCurrentUser = async (req, res) => {
         }
 
         const updatedUser = await UserRepository.updateUser(userId, updates);
-        const payload = { id: updatedUser._id, email: updatedUser.email, role: updatedUser.role };
-        const token = jwt.sign(payload, config.refreshTokenSecret, { expiresIn: config.accessTokenExpiresIn });
+        const token = tokenService.generateRefreshToken(updatedUser);
 
         res.status(200).json({
             message: 'User profile updated successfully',
