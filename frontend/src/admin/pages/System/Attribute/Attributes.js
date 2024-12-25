@@ -93,7 +93,7 @@ const Attributes = () => {
                         <td className="py-2 px-4 border-b text-center">{index + 1}</td>
                         <td className="py-2 px-4 border-b text-center">{attribute.attribute_code}</td>
                         <td className="py-2 px-4 border-b text-center">{attribute.label}</td>
-                        <td className="py-2 px-4 border-b text-center">{attribute.entity_type_id?.entity_type_code || 'N/A'}</td>
+                        <td className="py-2 px-4 border-b text-center">{attribute.entity_type?.entity_type_code || 'N/A'}</td>
                         <td className="py-2 px-4 border-b text-center">{attribute.is_required ? 'Yes' : 'No'}</td>
                         <td className="py-2 px-4 border-b text-center relative">
                             <DropdownActions
