@@ -16,6 +16,9 @@ class UserResource {
     async updatePassword(userId, newPassword) {
         return await User.findByIdAndUpdate(userId, { password: newPassword }, { new: true });
     }
+    async delete(userId) {
+        return await User.findByIdAndDelete(userId);
+    }
 }
 
 module.exports = new UserResource();

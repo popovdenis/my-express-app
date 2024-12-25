@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {Link, useNavigate} from 'react-router-dom';
-import DropdownActions from '../components/DropdownActions';
-import ConfirmDelete from '../components/ConfirmDelete';
+import DropdownActions from '../../components/DropdownActions';
+import ConfirmDelete from '../../components/ConfirmDelete';
 
 const Users = () => {
     const [users, setUsers] = useState([]);
@@ -108,7 +108,7 @@ const Users = () => {
             </table>
             {showConfirm && (
                 <ConfirmDelete
-                    user={selectedUser}
+                    entityId={selectedUser._id}
                     onClose={() => setShowConfirm(false)}
                     onConfirm={handleDelete}
                 />

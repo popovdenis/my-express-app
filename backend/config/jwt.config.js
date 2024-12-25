@@ -3,8 +3,8 @@ module.exports = {
     refreshTokenSecret: process.env.CUSTOMER_REFRESH_TOKEN_SECRET,
     adminAccessTokenSecret: process.env.ADMIN_ACCESS_TOKEN_SECRET,
     adminRefreshTokenSecret: process.env.ADMIN_REFRESH_TOKEN_SECRET,
-    accessTokenExpiresIn: '15m',
+    accessTokenExpiresIn: '1400m',
     refreshTokenExpiresIn: '7d',
-    accessCookieMaxAge: 60 * 60 * 1000,
+    accessCookieMaxAge: 60 * 60 * 10000,
     refreshCookieMaxAge: 7 * 24 * 60 * 60 * 1000,
 }

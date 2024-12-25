@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import {Link, useNavigate} from 'react-router-dom';
-import { formatDate } from '../../utils/dateUtils'
-import DropdownActions from '../components/DropdownActions';
-import ConfirmDelete from '../components/ConfirmDelete';
+import { formatDate } from '../../../utils/dateUtils'
+import DropdownActions from '../../components/DropdownActions';
+import ConfirmDelete from '../../components/ConfirmDelete';
 
 const Courses = () => {
     const [courses, setCourses] = useState([]);
@@ -111,7 +111,7 @@ const Courses = () => {
             </table>
             {showConfirm && (
                 <ConfirmDelete
-                    course={selectedCourse}
+                    entityId={selectedCourse._id}
                     onClose={() => setShowConfirm(false)}
                     onConfirm={handleDelete}
                 />

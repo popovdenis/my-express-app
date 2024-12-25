@@ -19,9 +19,11 @@ router.put('/users/:id', authenticateAdminToken, isAdmin, userController.updateU
 router.delete('/users/:id', authenticateAdminToken, isAdmin, userController.deleteUser);
 
 router.get('/courses', authenticateAdminToken, isAdmin, courseController.getAllCourses);
+router.post('/courses', authenticateAdminToken, isAdmin, courseController.addCourse);
+router.get('/courses/:id', authenticateAdminToken, isAdmin, courseController.getCourse);
+router.put('/courses/:id', authenticateAdminToken, isAdmin, courseController.updateCourse);
+router.delete('/courses/:id', authenticateAdminToken, isAdmin, courseController.deleteCourse);
 
 // router.get('/settings', authenticateAdminToken, isAdmin, adminController);
-
-// router.post('/courses', authenticateToken, isAdmin, AddCourse);
 
 module.exports = router;
