@@ -14,6 +14,8 @@ import EditUser from './pages/User/EditUser';
 import Courses from './pages/Course/Courses';
 import NewCourse from './pages/Course/NewCourse';
 import EditCourse from './pages/Course/EditCourse';
+// System
+import Attributes from './pages/System/Attributes';
 
 const AdminApp = () => {
     return (
@@ -22,14 +24,51 @@ const AdminApp = () => {
             <div className="ml-64 p-4 w-full">
                 <Routes>
                     <Route path="/signin" element={<AdminSignIn />} />
-                    <Route path="/dashboard" element={<ProtectedAdminRoute><Dashboard /></ProtectedAdminRoute>} />
-                    <Route path="/users" element={<ProtectedAdminRoute><Users /></ProtectedAdminRoute>} />
-                    <Route path="/users/new" element={<ProtectedAdminRoute><NewUser /></ProtectedAdminRoute>} />
-                    <Route path="/users/:id" element={<ProtectedAdminRoute><EditUser /></ProtectedAdminRoute>} />
-                    <Route path="/courses" element={<ProtectedAdminRoute><Courses /></ProtectedAdminRoute>} />
-                    <Route path="/courses/new" element={<ProtectedAdminRoute><NewCourse /></ProtectedAdminRoute>} />
-                    <Route path="/courses/:id" element={<ProtectedAdminRoute><EditCourse /></ProtectedAdminRoute>} />
-                    <Route path="/settings" element={<ProtectedAdminRoute><Settings /></ProtectedAdminRoute>} />
+                    <Route path="/dashboard" element={
+                        <ProtectedAdminRoute>
+                            <Dashboard />
+                        </ProtectedAdminRoute>
+                    } />
+                    <Route path="/users" element={
+                        <ProtectedAdminRoute>
+                            <Users />
+                        </ProtectedAdminRoute>
+                    } />
+                    <Route path="/users/new" element={
+                        <ProtectedAdminRoute>
+                            <NewUser />
+                        </ProtectedAdminRoute>
+                    } />
+                    <Route path="/users/:id" element={
+                        <ProtectedAdminRoute>
+                            <EditUser />
+                        </ProtectedAdminRoute>
+                    } />
+                    <Route path="/courses" element={
+                        <ProtectedAdminRoute>
+                            <Courses />
+                        </ProtectedAdminRoute>
+                    } />
+                    <Route path="/courses/new" element={
+                        <ProtectedAdminRoute>
+                            <NewCourse />
+                        </ProtectedAdminRoute>
+                    } />
+                    <Route path="/courses/:id" element={
+                        <ProtectedAdminRoute>
+                            <EditCourse />
+                        </ProtectedAdminRoute>
+                    } />
+                    <Route path="/settings" element={
+                        <ProtectedAdminRoute>
+                            <Settings />
+                        </ProtectedAdminRoute>
+                    } />
+                    <Route path="/attributes" element={
+                        <ProtectedAdminRoute>
+                            <Attributes />
+                        </ProtectedAdminRoute>
+                    } />
                 </Routes>
             </div>
         </div>

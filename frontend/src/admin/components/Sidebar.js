@@ -20,9 +20,7 @@ const Sidebar = () => {
             <ul className="space-y-2">
                 {/* Dashboard */}
                 <li>
-                    <button className="w-full text-left px-4 py-2 hover:bg-gray-700"
-                        onClick={() => toggleSection('dashboard')}
-                    >
+                    <button className="w-full text-left px-4 py-2 hover:bg-gray-700" onClick={() => toggleSection('dashboard')}>
                         Dashboard
                     </button>
                     {openSection === 'dashboard' && (
@@ -43,9 +41,7 @@ const Sidebar = () => {
 
                 {/* Users */}
                 <li>
-                    <button className="w-full text-left px-4 py-2 hover:bg-gray-700"
-                        onClick={() => toggleSection('users')}
-                    >
+                    <button className="w-full text-left px-4 py-2 hover:bg-gray-700" onClick={() => toggleSection('users')}>
                         Users
                     </button>
                     {openSection === 'users' && (
@@ -66,9 +62,7 @@ const Sidebar = () => {
 
                 {/* Courses */}
                 <li>
-                    <button className="w-full text-left px-4 py-2 hover:bg-gray-700"
-                        onClick={() => toggleSection('courses')}
-                    >
+                    <button className="w-full text-left px-4 py-2 hover:bg-gray-700" onClick={() => toggleSection('courses')}>
                         Courses
                     </button>
                     {openSection === 'courses' && (
@@ -89,18 +83,11 @@ const Sidebar = () => {
 
                 {/* Settings */}
                 <li>
-                    <button className="w-full text-left px-4 py-2 hover:bg-gray-700"
-                        onClick={() => toggleSection('settings')}
-                    >
+                    <button className="w-full text-left px-4 py-2 hover:bg-gray-700" onClick={() => toggleSection('settings')}>
                         Settings
                     </button>
                     {openSection === 'settings' && (
                         <ul className="pl-6 bg-gray-700">
-                            <li>
-                                <Link to="/admin/settings/general" className="block px-4 py-2 hover:bg-gray-600">
-                                    General
-                                </Link>
-                            </li>
                             <li>
                                 <Link to="/admin/settings/advanced" className="block px-4 py-2 hover:bg-gray-600">
                                     Advanced
@@ -109,10 +96,26 @@ const Sidebar = () => {
                         </ul>
                     )}
                 </li>
+
+                {/* System */}
+                <li>
+                    <button className="w-full text-left px-4 py-2 hover:bg-gray-700" onClick={() => toggleSection('system')}>
+                        System
+                    </button>
+                    {openSection === 'system' && (
+                        <ul className="pl-6 bg-gray-700">
+                            <li>
+                                <Link to="/admin/attributes" className="block px-4 py-2 hover:bg-gray-600">
+                                    Customer Attributes
+                                </Link>
+                            </li>
+                        </ul>
+                    )}
+                </li>
+
                 <li className="px-4 py-2 hover:bg-gray-700">
                     <button className="w-full text-left bg-transparent border-none cursor-pointer"
-                        onClick={handleLogout}
-                    >
+                        onClick={handleLogout}>
                         Log Out
                     </button>
                 </li>
