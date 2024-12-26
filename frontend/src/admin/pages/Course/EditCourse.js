@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {useNavigate, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 
 const EditCourse = () => {
     const { id } = useParams();
@@ -11,43 +11,29 @@ const EditCourse = () => {
         level:  ''
     });
     const [error, setError] = useState('');
-    const [loading, setLoading] = useState('');
-    const [durationOptions, setDurationOptions] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [attributes, setAttributes] = useState([]);
 
     useEffect(() => {
-        const fetchCourseAttributes = async () => {
-            try {
-                const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/attributes/code/duration`, {
-                    method: 'GET',
-                    credentials: 'include'
-                });
-                const data = await response.json();
-                if (response.ok) {
-                    setDurationOptions(data.attribute.options);
-                } else {
-                    setError(data.message || 'Failed to fetch course data');
-                }
-            } catch (error) {
-                setError(error);
-            }
-        };
         const fetchCourse = async () => {
             try {
                 const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/courses/${id}`, {
                     method: 'GET',
                     credentials: 'include'
                 });
+                const data = await response.json();
                 if (response.ok) {
-                    const data = await response.json();
                     setFormData({
                         title: data.course.title,
                         description: data.course.description,
                         duration: data.course.duration,
                         level: data.course.level
                     });
+                    if (data.attributes && data.attributes.length) {
+                        setAttributes(data.attributes);
+                    }
                 } else {
-                    const errData = await response.json();
-                    setError(errData.message || 'Failed to fetch course data');
+                    setError(data.message || 'Failed to fetch course data');
                 }
             } catch (error) {
                 setError(error);
@@ -55,7 +41,6 @@ const EditCourse = () => {
                 setLoading(false);
             }
         };
-        fetchCourseAttributes();
         fetchCourse();
     }, [id]);
 
@@ -84,9 +69,6 @@ const EditCourse = () => {
         }
     };
 
-    if (loading) {
-        return <p>Loading...</p>;
-    }
     if (error) {
         return <p className="text-red-500">{error.toString()}</p>;
     }
@@ -125,9 +107,15 @@ const EditCourse = () => {
                         onChange={handleChange}
                         className="w-full border border-gray-300 rounded p-2"
                     >
-                        {durationOptions.map((option, index) => (
-                            <option key={index} value={option}>{option}</option>
-                        ))}
+                        {!loading &&
+                            attributes.map((attribute) => {
+                                if (attribute.attribute_code === 'duration') {
+                                    return attribute.options.map((option, index) => (
+                                        <option key={index} value={option}>{option}</option>
+                                    ))
+                                }
+                            })
+                        }
                     </select>
                 </div>
                 <div>
@@ -139,10 +127,15 @@ const EditCourse = () => {
                         onChange={handleChange}
                         className="w-full border border-gray-300 rounded p-2"
                     >
-                        <option value="beginner">Beginner</option>
-                        <option value="middle">Middle</option>
-                        <option value="proficient">Proficient</option>
-                        <option value="expert">Expert</option>
+                        {!loading &&
+                            attributes.map((attribute) => {
+                                if (attribute.attribute_code === 'level') {
+                                    return attribute.options.map((option, index) => (
+                                        <option key={index} value={option}>{option.charAt(0).toUpperCase() + option.slice(1)}</option>
+                                    ))
+                                }
+                            })
+                        }
                     </select>
                 </div>
                 <button
@@ -151,6 +144,8 @@ const EditCourse = () => {
                 >
                     Update Course
                 </button>
+                <Link to="/admin/courses"
+                      className="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600 ml-3.5">Back</Link>
             </form>
         </div>
     );

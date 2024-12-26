@@ -25,13 +25,18 @@ router.get('/courses/:id', authenticateAdminToken, isAdmin, courseController.get
 router.post('/courses', authenticateAdminToken, isAdmin, courseController.addEntity);
 router.put('/courses/:id', authenticateAdminToken, isAdmin, courseController.updateEntity);
 router.delete('/courses/:id', authenticateAdminToken, isAdmin, courseController.deleteEntity);
-// attributes
+// entity
 router.get('/attribute_entity', authenticateAdminToken, isAdmin, entityTypeController.getList);
+
+// attributes
 router.get('/attributes', authenticateAdminToken, isAdmin, attributeController.getList);
 router.get('/attributes/code/:attributeCode', authenticateAdminToken, isAdmin, attributeController.getAttributeByCode);
 router.get('/attributes/:id', authenticateAdminToken, isAdmin, attributeController.getEntity);
 router.post('/attributes', authenticateAdminToken, isAdmin, attributeController.addEntity);
 router.put('/attributes/:id', authenticateAdminToken, isAdmin, attributeController.updateEntity);
 router.delete('/attributes/:id', authenticateAdminToken, isAdmin, attributeController.deleteEntity);
+
+// attributes by entity
+router.get('/attribute_entity/:entityTypeCode', authenticateAdminToken, isAdmin, attributeController.getAttributesByEntityType);
 
 module.exports = router;

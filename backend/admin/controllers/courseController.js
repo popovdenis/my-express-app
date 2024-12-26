@@ -1,5 +1,31 @@
 const Course = require('../../models/Course');
+const Attribute = require('../../models/Attribute');
 const CourseRepository = require('../../models/CourseRepository');
+
+const getCourseAttributes = async () => {
+    return Attribute.aggregate([
+        {
+            $lookup: {
+                from: 'eav_entity_type',
+                localField: 'entity_type',
+                foreignField: '_id',
+                as: 'entity_type',
+            },
+        },
+        {$unwind: '$entity_type'},
+        {$match: {'entity_type.entity_type_code': 'course'}},
+        {
+            $project: {
+                _id: 1,
+                attribute_code: 1,
+                label: 1,
+                options: 1,
+                is_required: 1,
+                'entity_type.entity_type_code': 1,
+            },
+        },
+    ]);
+};
 
 exports.getList = async (req, res) => {
     try {
@@ -69,7 +95,9 @@ exports.getEntity = async (req, res) => {
         if (!course) {
             return res.status(404).json({ message: 'Course not found' });
         }
-        res.status(200).json({ course });
+        const attributes = await getCourseAttributes();
+
+        res.status(200).json({ course, attributes });
     } catch (error) {
         console.error('Error getting course:', error);
         res.status(500).json({ message: 'Server error', error: error.message });

@@ -55,6 +55,39 @@ exports.getAttributeByCode = async (req, res) => {
         res.status(500).json({ message: 'Server error', error: error.message });
     }
 };
+exports.getAttributesByEntityType = async (req, res) => {
+    const { entityTypeCode } = req.params;
+
+    try {
+        const attributes = await Attribute.aggregate([
+            {
+                $lookup: {
+                    from: 'eav_entity_type',
+                    localField: 'entity_type',
+                    foreignField: '_id',
+                    as: 'entity_type',
+                },
+            },
+            {$unwind: '$entity_type'},
+            {$match: {'entity_type.entity_type_code': entityTypeCode}},
+            {
+                $project: {
+                    _id: 1,
+                    attribute_code: 1,
+                    label: 1,
+                    options: 1,
+                    is_required: 1,
+                    'entity_type.entity_type_code': 1,
+                },
+            },
+        ]);
+
+        res.status(200).json({ attributes });
+    } catch (error) {
+        console.error('Error fetching attribute:', error.message);
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+};
 exports.getEntity = async (req, res) => {
     try {
         const attribute = await Attribute.findById(req.params.id);
