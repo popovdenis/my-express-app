@@ -1,7 +1,7 @@
 {
-  "watch": ["server.js", "routes", "controllers", "middleware"],
+  "watch": ["server.js", "admin", "controllers", "middleware", "routes", "services"],
   "ext": "js,json",
-  "ignore": ["node_modules", "frontend"],
+  "ignore": ["node_modules"],
   "exec": "node server.js",
   "legacyWatch": true,
   "polling": true

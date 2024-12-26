@@ -3,11 +3,38 @@ const CourseRepository = require('../../models/CourseRepository');
 
 exports.getList = async (req, res) => {
     try {
-        const courses = await Course.find();
-        res.json({ courses });
+        const { filter, sort, page = 1, limit = 10 } = req.query;
+
+        const query = {};
+        if (filter) {
+            if (filter.title) query.title = { $regex: filter.title, $options: 'i' };
+            if (filter.level) query.level = filter.level;
+        }
+
+        const sortQuery = {};
+        if (sort) {
+            const [field, direction] = sort.split('_');
+            sortQuery[field] = direction === 'asc' ? 1 : -1;
+        }
+
+        const skip = (page - 1) * limit;
+
+        const courses = await Course.find(query)
+            .sort(sortQuery)
+            .skip(skip)
+            .limit(Number(limit));
+
+        const total  = await Course.countDocuments(query);
+
+        res.json({
+            courses,
+            total,
+            page: Number(page),
+            pages: Math.ceil(total / Number(limit)),
+        });
     } catch (error) {
         console.error('Error fetching courses:', error);
-        res.status(500).json({ message: 'Failed to fetch courses' });
+        res.status(500).json({ message: 'Failed to fetch courses', error: error.message });
     }
 };
 exports.addEntity = async (req, res) => {
