@@ -5,7 +5,7 @@ const NotificationContext = createContext();
 export const NotificationProvider = ({ children }) => {
     const [notifications, setNotifications] = useState([]);
 
-    const addNotification = (message, type = 'success', timeout = 2000) => {
+    const addNotification = (message, type = 'success', timeout = 3000) => {
         const id = Date.now();
         const expiration = Date.now() + timeout;
 
@@ -20,7 +20,7 @@ export const NotificationProvider = ({ children }) => {
             const now = Date.now();
             setNotifications((prev) =>
                 prev.map((notification) =>
-                    notification.expiration - 500 <= now
+                    notification.expiration - 1000 <= now
                         ? { ...notification, isVisible: false }
                         : notification
                 ).filter((notification) => notification.expiration > now)
