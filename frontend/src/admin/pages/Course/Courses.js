@@ -103,49 +103,53 @@ const Courses = () => {
         <div>
             <div className="flex justify-between items-center mb-4">
                 <h1 className="text-2xl font-bold mb-4">Courses</h1>
+            </div>
+            <div className="flex justify-end items-center mb-4">
                 <Link to="/admin/courses/new"
-                      className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
+                      className="bg-red-500 text-white py-2 px-4 rounded font-bold hover:bg-red-700">
                     New Course
                 </Link>
             </div>
-            {/* Filters */}
-            <div className="flex gap-4 mb-4">
-                <input
-                    type="text"
-                    name="title"
-                    ref={titleInputRef}
-                    placeholder="Search by title"
-                    value={filters.title}
-                    onChange={handleFilterChange}
-                    className="border border-gray-300 rounded p-2"
-                />
-            </div>
-            {/* Sorting */}
-            <div className="flex gap-4 mb-4">
-                <select
-                    name="level"
-                    value={filters.level}
-                    onChange={handleSortChange}
-                    className="border border-gray-300 rounded p-2">
-                    <option value="">All Levels</option>
-                    <option value="beginner">Beginner</option>
-                    <option value="middle">Middle</option>
-                    <option value="proficient">Proficient</option>
-                    <option value="expert">Expert</option>
-                </select>
-                <select
-                    name="sort"
-                    value={sort}
-                    onChange={handleSortChange}
-                    className="border border-gray-300 rounded p-2">
-                    <option value="">Sort By</option>
-                    <option value="title_asc">Title (A-Z)</option>
-                    <option value="title_desc">Title (Z-A)</option>
-                    <option value="level_asc">Level (A-Z)</option>
-                    <option value="level_desc">Level (Z-A)</option>
-                    <option value="duration_asc">Duration (A-Z)</option>
-                    <option value="duration_desc">Duration (Z-A)</option>
-                </select>
+            <div className="flex justify-between items-center mb-4">
+                {/* Filters */}
+                <div className="flex gap-4 items-center">
+                    <input
+                        type="text"
+                        name="title"
+                        ref={titleInputRef}
+                        placeholder="Search by title"
+                        value={filters.title}
+                        onChange={handleFilterChange}
+                        className="border border-gray-300 rounded p-2"
+                    />
+                </div>
+                <div className="flex gap-4">
+                    {/* Sorting */}
+                    <select
+                        name="level"
+                        value={filters.level}
+                        onChange={handleSortChange}
+                        className="border border-gray-300 rounded p-2">
+                        <option value="">All Levels</option>
+                        <option value="beginner">Beginner</option>
+                        <option value="middle">Middle</option>
+                        <option value="proficient">Proficient</option>
+                        <option value="expert">Expert</option>
+                    </select>
+                    <select
+                        name="sort"
+                        value={sort}
+                        onChange={handleSortChange}
+                        className="border border-gray-300 rounded p-2">
+                        <option value="">Sort By</option>
+                        <option value="title_asc">Title (A-Z)</option>
+                        <option value="title_desc">Title (Z-A)</option>
+                        <option value="level_asc">Level (A-Z)</option>
+                        <option value="level_desc">Level (Z-A)</option>
+                        <option value="duration_asc">Duration (A-Z)</option>
+                        <option value="duration_desc">Duration (Z-A)</option>
+                    </select>
+                </div>
             </div>
 
             {/* Loading */}
@@ -207,7 +211,7 @@ const Courses = () => {
                     <button
                         key={i}
                         onClick={() => handlePageChange(i + 1)}
-                        className={`px-4 py-2 border ${pagination.page === i + 1 ? 'bg-blue-500 text-white' : 'ml-0.5'}`}>{i + 1}</button>
+                        className={`px-4 py-2 border ${pagination.page === i + 1 ? 'bg-gray-300 text-black' : 'ml-0.5'}`}>{i + 1}</button>
                 ))}
             </div>
         </div>
