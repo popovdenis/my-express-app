@@ -147,6 +147,8 @@ const Courses = () => {
                     <option value="title_desc">Title (Z-A)</option>
                     <option value="level_asc">Level (A-Z)</option>
                     <option value="level_desc">Level (Z-A)</option>
+                    <option value="duration_asc">Duration (A-Z)</option>
+                    <option value="duration_desc">Duration (Z-A)</option>
                 </select>
             </div>
 
