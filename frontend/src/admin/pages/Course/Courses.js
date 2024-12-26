@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import {Link, useNavigate} from 'react-router-dom';
-import { formatDate } from '../../../utils/dateUtils'
+import React, { useEffect, useState, useRef } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { formatDate } from '../../../utils/dateUtils';
 import DropdownActions from '../../components/DropdownActions';
 import ConfirmDelete from '../../components/ConfirmDelete';
 
@@ -8,12 +8,13 @@ const Courses = () => {
     const [courses, setCourses] = useState([]);
     const [filters, setFilters] = useState({ title: '', level: ''});
     const [sort, setSort] = useState('');
-    const [pagination, setPagination] = useState({ page: 1, limit: 10, total: 0 })
+    const [pagination, setPagination] = useState({ page: 1, limit: 10, total: 0 });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [showConfirm, setShowConfirm] = useState(false);
     const [selectedCourse, setSelectedCourse] = useState(null);
     const navigate = useNavigate();
+    const titleInputRef = useRef(null);
 
     useEffect(() => {
         const fetchCourses = async () => {
@@ -31,11 +32,11 @@ const Courses = () => {
 
                 const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/courses?${query.toString()}`, {
                     method: 'GET',
-                    credentials: 'include'
+                    credentials: 'include',
                 });
 
                 const data = await response.json();
-                if (response.ok) {
+                if (response.ok && Array.isArray(data.courses)) {
                     setCourses(data.courses);
                     setPagination((prev) => ({
                         ...prev,
@@ -54,6 +55,12 @@ const Courses = () => {
         };
         fetchCourses();
     }, [filters, sort, pagination.page]);
+
+    useEffect(() => {
+        if (titleInputRef.current) {
+            titleInputRef.current.focus();
+        }
+    }, [filters]);
 
     const handleFilterChange = (e) => {
         const { name, value } = e.target;
@@ -92,10 +99,6 @@ const Courses = () => {
         }
     };
 
-    if (loading) {
-        return <p>Loading courses...</p>;
-    }
-
     if (error) {
         return <p className="text-red-500">{error}</p>;
     }
@@ -114,10 +117,12 @@ const Courses = () => {
                 <input
                     type="text"
                     name="title"
+                    ref={titleInputRef}
                     placeholder="Search by title"
                     value={filters.title}
                     onChange={handleFilterChange}
-                    className="border border-gray-300 rounded p-2"/>
+                    className="border border-gray-300 rounded p-2"
+                />
             </div>
             {/* Sorting */}
             <div className="flex gap-4 mb-4">
@@ -145,12 +150,11 @@ const Courses = () => {
                 </select>
             </div>
 
+            {/* Loading */}
+            {loading && <p className="text-blue-500">Loading courses...</p>}
+
             {/* Courses */}
-            {loading ? (
-                <p className="text-red-500">Loading...</p>
-            ) : error ? (
-                <p className="text-red-500">{error}</p>
-            ) : (
+            {!loading && courses.length > 0 && (
                 <>
                     <div className="flex gap-4 mb-4">
                         <table className="min-w-full bg-white border border-gray-300">
@@ -186,15 +190,6 @@ const Courses = () => {
                             </tbody>
                         </table>
                     </div>
-                    {/* Pagination */}
-                    <div className="flex justify-center mt-4">
-                        {Array.from({length: pagination.pages}, (_, i) => (
-                            <button
-                                key={i}
-                                onClick={() => handlePageChange(i + 1)}
-                                className={`px-4 py-2 border ${pagination.page === i + 1 ? 'bg-blue-500 text-white' : 'ml-0.5'}`}>{i + 1}</button>
-                        ))}
-                    </div>
                     {showConfirm && (
                         <ConfirmDelete
                             entityId={selectedCourse._id}
@@ -204,6 +199,21 @@ const Courses = () => {
                     )}
                 </>
             )}
+            {/* Error Handling */}
+            {error && <p className="text-red-500">{error}</p>}
+
+            {/* Empty State */}
+            {!loading && courses.length === 0 && <p className="text-gray-500">No courses found</p>}
+
+            {/* Pagination */}
+            <div className="flex justify-center mt-4">
+                {Array.from({length: pagination.pages}, (_, i) => (
+                    <button
+                        key={i}
+                        onClick={() => handlePageChange(i + 1)}
+                        className={`px-4 py-2 border ${pagination.page === i + 1 ? 'bg-blue-500 text-white' : 'ml-0.5'}`}>{i + 1}</button>
+                ))}
+            </div>
         </div>
     );
 };
