@@ -17,7 +17,7 @@ import EditCourse from './pages/Course/EditCourse';
 // System
 import Attributes from './pages/System/Attribute/Attributes';
 import NewAttribute from './pages/System/Attribute/NewAttribute';
-// import EditAttribute from './pages/System/Attribute/EditAttribute';
+import EditAttribute from './pages/System/Attribute/EditAttribute';
 
 const AdminApp = () => {
     return (
@@ -74,6 +74,11 @@ const AdminApp = () => {
                     <Route path="/attributes/new" element={
                         <ProtectedAdminRoute>
                             <NewAttribute />
+                        </ProtectedAdminRoute>
+                    } />
+                    <Route path="/attributes/:id" element={
+                        <ProtectedAdminRoute>
+                            <EditAttribute />
                         </ProtectedAdminRoute>
                     } />
                 </Routes>

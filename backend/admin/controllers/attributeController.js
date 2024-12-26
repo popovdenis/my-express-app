@@ -70,7 +70,7 @@ exports.getEntity = async (req, res) => {
 exports.updateEntity = async (req, res) => {
     try {
         const { id } = req.params;
-        const { attribute_code, label, entity_type, is_required } = req.body;
+        const { attribute_code, label, options, entity_type, is_required } = req.body;
 
         const attribute = await Attribute.findById(id);
         if (!attribute) {

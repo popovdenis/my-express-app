@@ -1,26 +1,27 @@
-import React, {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import {Link, useNavigate, useParams} from "react-router-dom";
 
-const NewAttribute = () => {
+const EditAttribute = () => {
+    const { id } = useParams();
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         attribute_code: '',
         label: '',
         options: '',
         entity_type: '',
-        is_required: ''
+        is_required: false,
     });
     const [error, setError] = useState('');
     const [message, setMessage] = useState('');
     const [loading, setLoading] = useState(true);
-    const [entityTypes, setEntityTypes] = useState('');
+    const [entityTypes, setEntityTypes] = useState([]);
 
     useEffect(() => {
         const fetchEntityTypes = async () => {
             try {
                 const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/attribute_entity/`, {
                     method: 'GET',
-                    credentials: 'include'
+                    credentials: 'include',
                 });
                 if (response.ok) {
                     const data = await response.json();
@@ -30,13 +31,38 @@ const NewAttribute = () => {
                     setError(errData.message || 'Failed to fetch entity types');
                 }
             } catch (error) {
-                setError(error);
+                setError(error.message || 'Error fetching entity types');
+            }
+        };
+
+        const fetchAttribute = async () => {
+            try {
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/attributes/${id}`, {
+                    method: 'GET',
+                    credentials: 'include',
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    setFormData({
+                        attribute_code: data.attribute.attribute_code,
+                        label: data.attribute.label,
+                        options: data.attribute.options.join(', '), // Преобразуем массив в строку
+                        entity_type: data.attribute.entity_type,
+                        is_required: data.attribute.is_required,
+                    });
+                } else {
+                    setError(data.message || 'Failed to fetch attribute data');
+                }
+            } catch (error) {
+                setError(error.message || 'Error fetching attribute data');
             } finally {
                 setLoading(false);
             }
         };
+
         fetchEntityTypes();
-    }, []);
+        fetchAttribute();
+    }, [id]);
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -48,24 +74,27 @@ const NewAttribute = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const updatedFormData = {
+            ...formData,
+            options: formData.options.split(',').map(option => option.trim()), // Преобразуем строку в массив
+        };
+
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/attributes`, {
-                method: 'POST',
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/attributes/${id}`, {
+                method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData),
-                credentials: "include"
+                body: JSON.stringify(updatedFormData),
+                credentials: "include",
             });
             const data = await response.json();
             if (response.ok) {
-                setMessage('Attribute created successfully');
-                setError(null);
-                setTimeout(() => navigate('/admin/attributes'), 2000);
+                navigate('/admin/attributes');
             } else {
-                setError(data.message || 'Failed to create attribute');
+                setError(data.message || 'Failed to update the attribute');
                 setMessage(null);
             }
         } catch (e) {
-            setError('Error: Unable to create attribute.' + e.message);
+            setError('Error: Unable to update the attribute.' + e.message);
             setMessage(null);
         }
     };
@@ -76,7 +105,7 @@ const NewAttribute = () => {
 
     return (
         <div className="p6">
-            <h1 className="text-2xl font-bold mb-4">Add New Attribute</h1>
+            <h1 className="text-2xl font-bold mb-4">Edit Attribute</h1>
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                     <label htmlFor="attribute_code" className="block text-gray-700">Attribute Code:</label>
@@ -131,7 +160,7 @@ const NewAttribute = () => {
                     >
                         <option value="">Select</option>
                         {entityTypes.map((entityType, index) => (
-                            <option value={entityType._id}>{entityType.entity_type_code}</option>
+                            <option key={index} value={entityType._id}>{entityType.entity_type_code}</option>
                         ))}
                     </select>
                 </div>
@@ -139,8 +168,10 @@ const NewAttribute = () => {
                     type="submit"
                     className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
                 >
-                    Add Attribute
+                    Update Attribute
                 </button>
+                <Link to="/admin/attributes"
+                      className="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600 ml-3.5">Back</Link>
             </form>
             {message && <p className="mt-4 text-green-500">{message}</p>}
             {error && <p className="mt-4 text-red-500">{error}</p>}
@@ -148,4 +179,4 @@ const NewAttribute = () => {
     );
 };
 
-export default NewAttribute;
+export default EditAttribute;
