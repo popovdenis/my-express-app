@@ -8,7 +8,7 @@ const NewAttribute = () => {
         label: '',
         options: '',
         entity_type: '',
-        is_required: ''
+        is_required: false
     });
     const [error, setError] = useState('');
     const [message, setMessage] = useState('');
