@@ -19,7 +19,7 @@ const EditCourse = () => {
     useEffect(() => {
         const fetchCourse = async () => {
             try {
-                const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/courses/${id}`, {
+                const response = await fetch(`${process.env.REACT_APP_API_ADMIN_URL}/courses/${id}`, {
                     method: 'GET',
                     credentials: 'include'
                 });
@@ -55,7 +55,7 @@ const EditCourse = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/courses/${id}`, {
+            const response = await fetch(`${process.env.REACT_APP_API_ADMIN_URL}/courses/${id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 credentials: "include",

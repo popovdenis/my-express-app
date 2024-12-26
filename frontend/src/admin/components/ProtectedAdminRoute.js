@@ -9,7 +9,7 @@ export const ProtectedAdminRoute = ({ children }) => {
     useEffect(() => {
         const verifyAuth = async () => {
             try {
-                const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/me`, {
+                const response = await fetch(`${process.env.REACT_APP_API_ADMIN_URL}/me`, {
                     method: 'GET',
                     credentials: 'include',
                 });

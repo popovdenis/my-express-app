@@ -1,5 +1,4 @@
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 const config = require('../config/jwt.config');
 const UserRepository = require('../models/UserRepository');
 const tokenService = require('../services/tokenService');

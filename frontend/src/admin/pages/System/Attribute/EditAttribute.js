@@ -19,7 +19,7 @@ const EditAttribute = () => {
     useEffect(() => {
         const fetchEntityTypes = async () => {
             try {
-                const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/attribute_entity/`, {
+                const response = await fetch(`${process.env.REACT_APP_API_ADMIN_URL}/attribute_entity/`, {
                     method: 'GET',
                     credentials: 'include',
                 });
@@ -36,7 +36,7 @@ const EditAttribute = () => {
 
         const fetchAttribute = async () => {
             try {
-                const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/attributes/${id}`, {
+                const response = await fetch(`${process.env.REACT_APP_API_ADMIN_URL}/attributes/${id}`, {
                     method: 'GET',
                     credentials: 'include',
                 });
@@ -79,7 +79,7 @@ const EditAttribute = () => {
         };
 
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/attributes/${id}`, {
+            const response = await fetch(`${process.env.REACT_APP_API_ADMIN_URL}/attributes/${id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(updatedFormData),

@@ -15,7 +15,7 @@ const Users = () => {
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/users`, {
+                const response = await fetch(`${process.env.REACT_APP_API_ADMIN_URL}/users`, {
                     method: 'GET',
                     credentials: 'include'
                 });
@@ -39,7 +39,7 @@ const Users = () => {
             return;
         }
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/users/${selectedUser._id}`, {
+            const response = await fetch(`${process.env.REACT_APP_API_ADMIN_URL}/users/${selectedUser._id}`, {
                 method: 'DELETE',
                 credentials: 'include'
             });

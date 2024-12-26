@@ -18,7 +18,7 @@ const NewAttribute = () => {
     useEffect(() => {
         const fetchEntityTypes = async () => {
             try {
-                const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/attribute_entity/`, {
+                const response = await fetch(`${process.env.REACT_APP_API_ADMIN_URL}/attribute_entity/`, {
                     method: 'GET',
                     credentials: 'include'
                 });
@@ -48,7 +48,7 @@ const NewAttribute = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/attributes`, {
+            const response = await fetch(`${process.env.REACT_APP_API_ADMIN_URL}/attributes`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData),

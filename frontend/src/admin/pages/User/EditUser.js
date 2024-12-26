@@ -18,7 +18,7 @@ const EditUser = () => {
         const fetchUser = async () => {
             try {
                 console.log(`Fetching user ${id}`);
-                const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/users/${id}`, {
+                const response = await fetch(`${process.env.REACT_APP_API_ADMIN_URL}/users/${id}`, {
                     method: 'GET',
                     credentials: 'include'
                 });
@@ -50,7 +50,7 @@ const EditUser = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/users/${id}`, {
+            const response = await fetch(`${process.env.REACT_APP_API_ADMIN_URL}/users/${id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 credentials: "include",

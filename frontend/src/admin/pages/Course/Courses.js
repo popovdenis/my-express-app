@@ -30,7 +30,7 @@ const Courses = () => {
                 query.append('page', pagination.page);
                 query.append('limit', pagination.limit);
 
-                const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/courses?${query.toString()}`, {
+                const response = await fetch(`${process.env.REACT_APP_API_ADMIN_URL}/courses?${query.toString()}`, {
                     method: 'GET',
                     credentials: 'include',
                 });
@@ -82,7 +82,7 @@ const Courses = () => {
             return;
         }
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/courses/${selectedCourse._id}`, {
+            const response = await fetch(`${process.env.REACT_APP_API_ADMIN_URL}/courses/${selectedCourse._id}`, {
                 method: 'DELETE',
                 credentials: 'include'
             });

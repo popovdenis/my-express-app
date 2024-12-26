@@ -18,7 +18,7 @@ const NewCourse = () => {
     useEffect(() => {
         const fetchCourseAttributes = async () => {
             try {
-                const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/attribute_entity/course`, {
+                const response = await fetch(`${process.env.REACT_APP_API_ADMIN_URL}/attribute_entity/course`, {
                     method: 'GET',
                     credentials: 'include'
                 });
@@ -62,7 +62,7 @@ const NewCourse = () => {
         }
 
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/courses`, {
+            const response = await fetch(`${process.env.REACT_APP_API_ADMIN_URL}/courses`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData),

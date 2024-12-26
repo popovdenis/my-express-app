@@ -1,6 +1,4 @@
 const UserRepository = require('../models/UserRepository');
-const jwt = require("jsonwebtoken");
-const config = require("../config/jwt.config");
 const tokenService = require("../services/tokenService");
 
 exports.getCurrentUser = async (req, res) => {

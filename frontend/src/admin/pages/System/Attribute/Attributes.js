@@ -14,7 +14,7 @@ const Attributes = () => {
     useEffect(() => {
         const fetchAttributes = async () => {
             try {
-                const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/attributes`, {
+                const response = await fetch(`${process.env.REACT_APP_API_ADMIN_URL}/attributes`, {
                     method: 'GET',
                     credentials: 'include'
                 });
@@ -38,7 +38,7 @@ const Attributes = () => {
             return;
         }
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/attributes/${selectedAttribute._id}`, {
+            const response = await fetch(`${process.env.REACT_APP_API_ADMIN_URL}/attributes/${selectedAttribute._id}`, {
                 method: 'DELETE',
                 credentials: 'include'
             });
