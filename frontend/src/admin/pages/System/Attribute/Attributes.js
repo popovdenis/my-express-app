@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import {Link, useNavigate} from 'react-router-dom';
-import { formatDate } from '../../../../utils/dateUtils'
 import DropdownActions from '../../../components/DropdownActions';
 import ConfirmDelete from '../../../components/ConfirmDelete';
 
@@ -73,8 +72,8 @@ const Attributes = () => {
                 <thead>
                 <tr>
                     <th className="py-2 px-4 border-b">#</th>
-                    <th className="py-2 px-4 border-b">Attribute Code</th>
                     <th className="py-2 px-4 border-b">Attribute Label</th>
+                    <th className="py-2 px-4 border-b">Attribute Code</th>
                     <th className="py-2 px-4 border-b">Entity Type</th>
                     <th className="py-2 px-4 border-b">Required</th>
                     <th className="py-2 px-4 border-b">Actions</th>
@@ -84,8 +83,8 @@ const Attributes = () => {
                 {attributes.map((attribute, index) => (
                     <tr key={attribute._id} className="hover:bg-gray-100">
                         <td className="py-2 px-4 border-b text-center">{index + 1}</td>
-                        <td className="py-2 px-4 border-b text-center">{attribute.attribute_code}</td>
                         <td className="py-2 px-4 border-b text-center">{attribute.label}</td>
+                        <td className="py-2 px-4 border-b text-center">{attribute.attribute_code}</td>
                         <td className="py-2 px-4 border-b text-center">{attribute.entity_type?.entity_type_code || 'N/A'}</td>
                         <td className="py-2 px-4 border-b text-center">{attribute.is_required ? 'Yes' : 'No'}</td>
                         <td className="py-2 px-4 border-b text-center relative">

@@ -106,7 +106,7 @@ const Sidebar = () => {
                         <ul className="pl-6 bg-gray-700">
                             <li>
                                 <Link to="/admin/attributes" className="block px-4 py-2 hover:bg-gray-600">
-                                    Customer Attributes
+                                    Attributes
                                 </Link>
                             </li>
                         </ul>
