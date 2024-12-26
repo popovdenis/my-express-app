@@ -34,31 +34,43 @@ const Menu = () => {
                     </Link>
                 </li>
                 {user ? (
-                    <li className="relative">
-                        <button
-                            onClick={toggleDropdown}
-                            className="text-white no-underline hover:underline bg-transparent border-none cursor-pointer"
-                        >
-                            {`Welcome, ${user.firstname} ${user.lastname}`}
-                        </button>
-                        {dropdownOpen && (
-                            <ul className="absolute right-0 bg-white text-black mt-2 py-2 w-48 shadow-lg rounded">
-                                <li className="px-4 py-2 hover:bg-gray-200">
-                                    <Link to="/customer/account" className="no-underline text-black">
-                                        My Account
-                                    </Link>
-                                </li>
-                                <li className="px-4 py-2 hover:bg-gray-200">
-                                    <button
-                                        onClick={handleLogout}
-                                        className="w-full text-left bg-transparent border-none cursor-pointer"
-                                    >
-                                        Log Out
-                                    </button>
-                                </li>
-                            </ul>
-                        )}
-                    </li>
+                    <>
+                        <li>
+                            <Link to="/courses" className="text-white no-underline hover:underline">
+                                Courses
+                            </Link>
+                        </li>
+                        <li className="relative">
+                            <button
+                                onClick={toggleDropdown}
+                                className="text-white no-underline hover:underline bg-transparent border-none cursor-pointer"
+                            >
+                                {`Welcome, ${user.firstname} ${user.lastname}`}
+                            </button>
+                            {dropdownOpen && (
+                                <ul className="absolute right-0 bg-white text-black mt-2 py-2 w-48 shadow-lg rounded">
+                                    <li className="px-4 py-2 hover:bg-gray-200">
+                                        <Link to="/customer/account" className="no-underline text-black">
+                                            My Account
+                                        </Link>
+                                    </li>
+                                    <li className="px-4 py-2 hover:bg-gray-200">
+                                        <Link to="/customer/courses" className="no-underline text-black">
+                                            My Courses
+                                        </Link>
+                                    </li>
+                                    <li className="px-4 py-2 hover:bg-gray-200">
+                                        <button
+                                            onClick={handleLogout}
+                                            className="w-full text-left bg-transparent border-none cursor-pointer"
+                                        >
+                                            Log Out
+                                        </button>
+                                    </li>
+                                </ul>
+                            )}
+                        </li>
+                    </>
                 ) : (
                     <>
                         <li className="relative">

@@ -1,11 +1,9 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import {ProtectedAdminRoute} from './components/ProtectedAdminRoute';
 // General
 import Sidebar from './components/Sidebar';
 import Dashboard from './pages/Dashboard';
 import Settings from './pages/Settings';
-import AdminSignIn from './pages/AdminSignIn';
 // Users
 import Users from './pages/User/Users';
 import NewUser from './pages/User/NewUser';
@@ -25,62 +23,17 @@ const AdminApp = () => {
             <Sidebar />
             <div className="ml-64 p-4 w-full">
                 <Routes>
-                    <Route path="/signin" element={<AdminSignIn />} />
-                    <Route path="/dashboard" element={
-                        <ProtectedAdminRoute>
-                            <Dashboard />
-                        </ProtectedAdminRoute>
-                    } />
-                    <Route path="/users" element={
-                        <ProtectedAdminRoute>
-                            <Users />
-                        </ProtectedAdminRoute>
-                    } />
-                    <Route path="/users/new" element={
-                        <ProtectedAdminRoute>
-                            <NewUser />
-                        </ProtectedAdminRoute>
-                    } />
-                    <Route path="/users/:id" element={
-                        <ProtectedAdminRoute>
-                            <EditUser />
-                        </ProtectedAdminRoute>
-                    } />
-                    <Route path="/courses" element={
-                        <ProtectedAdminRoute>
-                            <Courses />
-                        </ProtectedAdminRoute>
-                    } />
-                    <Route path="/courses/new" element={
-                        <ProtectedAdminRoute>
-                            <NewCourse />
-                        </ProtectedAdminRoute>
-                    } />
-                    <Route path="/courses/:id" element={
-                        <ProtectedAdminRoute>
-                            <EditCourse />
-                        </ProtectedAdminRoute>
-                    } />
-                    <Route path="/settings" element={
-                        <ProtectedAdminRoute>
-                            <Settings />
-                        </ProtectedAdminRoute>
-                    } />
-                    <Route path="/attributes" element={
-                        <ProtectedAdminRoute>
-                            <Attributes />
-                        </ProtectedAdminRoute>
-                    } />
-                    <Route path="/attributes/new" element={
-                        <ProtectedAdminRoute>
-                            <NewAttribute />
-                        </ProtectedAdminRoute>
-                    } />
-                    <Route path="/attributes/:id" element={
-                        <ProtectedAdminRoute>
-                            <EditAttribute />
-                        </ProtectedAdminRoute>
-                    } />
+                    <Route path="/dashboard" element={ <Dashboard /> } />
+                    <Route path="/users" element={ <Users /> } />
+                    <Route path="/users/new" element={ <NewUser /> } />
+                    <Route path="/users/:id" element={ <EditUser /> } />
+                    <Route path="/courses" element={ <Courses /> } />
+                    <Route path="/courses/new" element={ <NewCourse /> } />
+                    <Route path="/courses/:id" element={ <EditCourse /> } />
+                    <Route path="/settings" element={ <Settings /> } />
+                    <Route path="/attributes" element={ <Attributes /> } />
+                    <Route path="/attributes/new" element={ <NewAttribute /> } />
+                    <Route path="/attributes/:id" element={ <EditAttribute /> } />
                 </Routes>
             </div>
         </div>
