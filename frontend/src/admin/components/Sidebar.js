@@ -113,7 +113,7 @@ const Sidebar = () => {
                     )}
                 </li>
 
-                <li className="px-4 py-2 hover:bg-gray-700">
+                <li className="px-4 py-2 text-red-500 font-bold hover:bg-gray-700">
                     <button className="w-full text-left bg-transparent border-none cursor-pointer"
                         onClick={handleLogout}>
                         Log Out
