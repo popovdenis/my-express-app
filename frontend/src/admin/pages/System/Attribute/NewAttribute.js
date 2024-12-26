@@ -1,8 +1,10 @@
 import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
+import { useNotification } from '../../../../contexts/NotificationContext';
 
 const NewAttribute = () => {
     const navigate = useNavigate();
+    const { addNotification } = useNotification();
     const [formData, setFormData] = useState({
         attribute_code: '',
         label: '',
@@ -10,8 +12,6 @@ const NewAttribute = () => {
         entity_type: '',
         is_required: false
     });
-    const [error, setError] = useState('');
-    const [message, setMessage] = useState('');
     const [loading, setLoading] = useState(true);
     const [entityTypes, setEntityTypes] = useState('');
 
@@ -22,15 +22,14 @@ const NewAttribute = () => {
                     method: 'GET',
                     credentials: 'include'
                 });
+                const data = await response.json();
                 if (response.ok) {
-                    const data = await response.json();
                     setEntityTypes(data.entityTypes);
                 } else {
-                    const errData = await response.json();
-                    setError(errData.message || 'Failed to fetch entity types');
+                    addNotification(data.message || 'Failed to fetch entity types', 'error');
                 }
             } catch (error) {
-                setError(error);
+                addNotification(error.message || 'Failed to fetch entity types', 'error');
             } finally {
                 setLoading(false);
             }
@@ -57,16 +56,13 @@ const NewAttribute = () => {
             });
             const data = await response.json();
             if (response.ok) {
-                setMessage('Attribute created successfully');
-                setError(null);
-                setTimeout(() => navigate('/admin/attributes'), 2000);
+                addNotification('Attribute created successfully', 'success');
+                navigate('/admin/attributes');
             } else {
-                setError(data.message || 'Failed to create attribute');
-                setMessage(null);
+                addNotification(data.message || 'Failed to create attribute', 'error');
             }
         } catch (e) {
-            setError('Error: Unable to create attribute.' + e.message);
-            setMessage(null);
+            addNotification(`Error: Unable to create attribute: ${e.message}`, 'error');
         }
     };
 
@@ -142,8 +138,6 @@ const NewAttribute = () => {
                     Add Attribute
                 </button>
             </form>
-            {message && <p className="mt-4 text-green-500">{message}</p>}
-            {error && <p className="mt-4 text-red-500">{error}</p>}
         </div>
     );
 };

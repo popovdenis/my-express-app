@@ -3,14 +3,15 @@ import { Link, useNavigate } from 'react-router-dom';
 import { formatDate } from '../../../utils/dateUtils';
 import DropdownActions from '../../components/DropdownActions';
 import ConfirmDelete from '../../components/ConfirmDelete';
+import { useNotification } from '../../../contexts/NotificationContext';
 
 const Courses = () => {
+    const { addNotification } = useNotification();
     const [courses, setCourses] = useState([]);
     const [filters, setFilters] = useState({ title: '', level: ''});
     const [sort, setSort] = useState('');
     const [pagination, setPagination] = useState({ page: 1, limit: 10, total: 0 });
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState('');
     const [showConfirm, setShowConfirm] = useState(false);
     const [selectedCourse, setSelectedCourse] = useState(null);
     const navigate = useNavigate();
@@ -19,7 +20,6 @@ const Courses = () => {
     useEffect(() => {
         const fetchCourses = async () => {
             setLoading(true);
-            setError(null);
             try {
                 const query = new URLSearchParams();
 
@@ -44,11 +44,11 @@ const Courses = () => {
                         pages: data.pages,
                     }));
                 } else {
-                    setError(data.message || 'Failed to fetch courses');
+                    addNotification(data.message || 'Failed to fetch courses', 'error');
                 }
             } catch (err) {
                 console.log(err);
-                setError('Failed to fetch courses');
+                addNotification('Failed to fetch courses', 'error');
             } finally {
                 setLoading(false);
             }
@@ -92,16 +92,12 @@ const Courses = () => {
                 setSelectedCourse(null);
             } else {
                 const errData = await response.json();
-                setError(errData.message || 'Failed to delete course');
+                addNotification(errData.message || 'Failed to delete course', 'error');
             }
         } catch (err) {
-            setError('Error: Unable to delete course.' + e.message);
+            addNotification('Error: Unable to delete course.' + e.message, 'error');
         }
     };
-
-    if (error) {
-        return <p className="text-red-500">{error}</p>;
-    }
 
     return (
         <div>
@@ -201,8 +197,6 @@ const Courses = () => {
                     )}
                 </>
             )}
-            {/* Error Handling */}
-            {error && <p className="text-red-500">{error}</p>}
 
             {/* Empty State */}
             {!loading && courses.length === 0 && <p className="text-gray-500">No courses found</p>}

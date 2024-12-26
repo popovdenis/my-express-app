@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {useAdminAuth} from '../../contexts/adminAuth';
+import {useAdminAuth} from '../../contexts/AdminAuth';
+import { useNotification } from '../../contexts/NotificationContext';
 
 const AdminSignIn = () => {
     const [formData, setFormData] = useState({ email: '', password: '' });
-    const [error, setError] = useState('');
     const navigate = useNavigate();
+    const { addNotification } = useNotification();
     const { login } = useAdminAuth();
 
     const handleChange = (e) => {
@@ -27,12 +28,13 @@ const AdminSignIn = () => {
             const data = await response.json();
             if (response.ok) {
                 login(data.user);
+                addNotification('You have successfully signed in');
                 navigate('/admin/dashboard');
             } else {
-                setError(data.message || 'Failed to sign in');
+                addNotification(data.message || 'Failed to sign in', 'error');
             }
         } catch (error) {
-            setError('Error: Unable to connect to the server.');
+            addNotification('Error: Unable to connect to the server.', 'error');
         }
     };
 
@@ -40,7 +42,6 @@ const AdminSignIn = () => {
         <div className="flex justify-center items-center min-h-screen bg-gray-100">
             <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow-md w-96 space-y-4">
                 <h1 className="text-2xl font-bold text-center">Admin Sign In</h1>
-                {error && <p className="text-red-500 text-center">{error}</p>}
                 <div>
                     <label htmlFor="email" className="block text-gray-700">Email:</label>
                     <input

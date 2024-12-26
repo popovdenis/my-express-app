@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Link, useNavigate, useParams} from "react-router-dom";
-import { useNotification } from "../../../contexts/NotificationContext";
+import { useNotification } from '../../../contexts/NotificationContext';
 
 const EditCourse = () => {
     const { id } = useParams();
@@ -13,7 +13,6 @@ const EditCourse = () => {
         duration: '',
         level:  ''
     });
-    const [error, setError] = useState('');
     const [loading, setLoading] = useState(true);
     const [attributes, setAttributes] = useState([]);
 
@@ -35,6 +34,7 @@ const EditCourse = () => {
                     if (data.attributes && data.attributes.length) {
                         setAttributes(data.attributes);
                     }
+                    addNotification(`The course ${data.course.title} has been updated successfully`, 'success');
                 } else {
                     addNotification(data.message || 'Failed to fetch course data', 'error');
                 }
@@ -72,10 +72,6 @@ const EditCourse = () => {
             addNotification('Error: Unable to update the course.' + e.message, 'error');
         }
     };
-
-    if (error) {
-        return <p className="text-red-500">{error.toString()}</p>;
-    }
 
     return (
         <div className="p6">

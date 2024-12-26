@@ -1,16 +1,17 @@
 import React, {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
+import { useNotification } from '../../../contexts/NotificationContext';
 
 const EditUser = () => {
     const { id } = useParams();
     const navigate = useNavigate();
+    const { addNotification } = useNotification();
     const [formData, setFormData] = useState({
         firstname: '',
         lastname: '',
         email: '',
         role:  'user'
     });
-    const [error, setError] = useState('');
     const [loading, setLoading] = useState('');
 
     useEffect(() => {
@@ -21,8 +22,8 @@ const EditUser = () => {
                     method: 'GET',
                     credentials: 'include'
                 });
+                const data = await response.json();
                 if (response.ok) {
-                    const data = await response.json();
                     setFormData({
                         firstname: data.user.firstname,
                         lastname: data.user.lastname,
@@ -30,11 +31,10 @@ const EditUser = () => {
                         role: data.user.role
                     });
                 } else {
-                    const errData = await response.json();
-                    setError(errData.message || 'Failed to fetch user data');
+                    addNotification(data.message || 'Failed to fetch user data', 'error');
                 }
             } catch (error) {
-                setError(error);
+                addNotification(error.message || 'Failed to fetch user data', 'error');
             } finally {
                 setLoading(false);
             }
@@ -57,21 +57,19 @@ const EditUser = () => {
                 body: JSON.stringify(formData),
             });
             if (response.ok) {
+                addNotification(`The user has been updated successfully`, 'success');
                 navigate('/admin/users');
             } else {
                 const errData = await response.json();
-                setError(errData.message || 'Failed to fetch user data');
+                addNotification(errData.message || 'Failed to fetch user data', 'error');
             }
         } catch (e) {
-            setError('Error: Unable to create user.' + e.message);
+            addNotification(`Error: Unable to create user: ${e.message}`, 'error');
         }
     };
 
     if (loading) {
         return <p>Loading...</p>;
-    }
-    if (error) {
-        return <p className="text-red-500">{error.toString()}</p>;
     }
 
     return (

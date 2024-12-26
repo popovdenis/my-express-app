@@ -2,14 +2,15 @@ import React, { useEffect, useState } from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import DropdownActions from '../../components/DropdownActions';
 import ConfirmDelete from '../../components/ConfirmDelete';
+import { useNotification } from '../../../contexts/NotificationContext';
 
 const Users = () => {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState('');
     const [showConfirm, setShowConfirm] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
     const navigate = useNavigate();
+    const { addNotification } = useNotification();
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -19,13 +20,11 @@ const Users = () => {
                     credentials: 'include'
                 });
 
+                const data = await response.json();
                 if (response.ok) {
-                    const data = await response.json();
                     setUsers(data.users);
-                    setError('');
                 } else {
-                    const errData = await response.json();
-                    setError(errData.message || 'Failed to fetch users');
+                    addNotification(errData.message || 'Failed to fetch users', 'error');
                 }
             } catch (err) {
                 navigate('/signin');
@@ -33,7 +32,6 @@ const Users = () => {
                 setLoading(false);
             }
         };
-
         fetchUsers();
     }, []);
     const handleDelete = async () => {
@@ -49,20 +47,17 @@ const Users = () => {
                 setUsers((prevUsers) => prevUsers.filter(user => user._id !== selectedUser._id));
                 setShowConfirm(false);
                 setSelectedUser(null);
+                addNotification('The user has been deleted successfully');
             } else {
-                const errData = await response.json();
-                setError(errData.message || 'Failed to delete user');
+                addNotification(errData.message || 'Failed to delete user', 'error');
             }
         } catch (err) {
-            setError('Error: Unable to delete user.' + e.message);
+            addNotification('Error: Unable to delete user.' + e.message, 'error');
         }
     };
 
     if (loading) {
         return <p>Loading users...</p>;
-    }
-    if (error) {
-        return <p className="text-red-500">{error}</p>;
     }
 
     return (

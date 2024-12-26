@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import {useNavigate, userNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
+import { useNotification } from '../../../contexts/NotificationContext';
 
 const NewUser = () => {
     const navigate = useNavigate();
+    const { addNotification } = useNotification();
     const [formData, setFormData] = useState({
         firstname: '',
         lastname: '',
@@ -10,9 +12,6 @@ const NewUser = () => {
         password: '',
         role: 'user'
     });
-    const [error, setError] = useState('');
-    const [message, setMessage] = useState('');
-
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
@@ -20,7 +19,6 @@ const NewUser = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         try {
             const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/users`, {
                 method: 'POST',
@@ -30,16 +28,13 @@ const NewUser = () => {
             });
             const data = await response.json();
             if (response.ok) {
-                setMessage('User created successfully');
-                setError(null);
-                setTimeout(() => navigate('/admin/users'), 2000);
+                addNotification('A new user has been created successfully');
+                navigate('/admin/users');
             } else {
-                setError(data.message || 'Failed to create user');
-                setMessage(null);
+                addNotification(data.message || 'Failed to create user', 'error');
             }
         } catch (e) {
-            setError('Error: Unable to create user.' + e.message);
-            setMessage(null);
+            addNotification('Error: Unable to create user.' + e.message, 'error');
         }
     };
     return (
@@ -110,8 +105,6 @@ const NewUser = () => {
                     Add User
                 </button>
             </form>
-            {message && <p className="mt-4 text-green-500">{message}</p>}
-            {error && <p className="mt-4 text-red-500">{error}</p>}
         </div>
     );
 };

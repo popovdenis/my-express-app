@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import { useAdminAuth } from '../../contexts/adminAuth';
+import { useAdminAuth } from '../../contexts/AdminAuth';
 
 export const ProtectedAdminRoute = ({ children }) => {
     const { admin, setAdmin, loading } = useAdminAuth();

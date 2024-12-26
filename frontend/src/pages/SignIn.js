@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/auth';
+import { useAuth } from '../contexts/Auth';
 
 const SignIn = () => {
     const [formData, setFormData] = useState({ email: '', password: '' });

@@ -1,17 +1,17 @@
 import React, {useEffect, useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
+import { useNotification } from '../../../contexts/NotificationContext';
 
 const NewCourse = () => {
     const navigate = useNavigate();
+    const { addNotification } = useNotification();
     const [formData, setFormData] = useState({
         title: '',
         description: '',
         duration: '',
         level: ''
     });
-    const [error, setError] = useState('');
     const [errors, setErrors] = useState({});
-    const [message, setMessage] = useState('');
     const [loading, setLoading] = useState(true);
     const [attributes, setAttributes] = useState([]);
 
@@ -26,10 +26,10 @@ const NewCourse = () => {
                 if (response.ok) {
                     setAttributes(data.attributes);
                 } else {
-                    setError(data.message || 'Failed to fetch course data');
+                    addNotification(data.message || 'Failed to fetch course data', 'error');
                 }
             } catch (error) {
-                setError(error);
+                addNotification(error.message || 'Failed to fetch course data', 'error');
             } finally {
                 setLoading(false);
             }
@@ -70,24 +70,19 @@ const NewCourse = () => {
             });
             const data = await response.json();
             if (response.ok) {
-                setMessage('Course created successfully');
-                setError(null);
-                setTimeout(() => navigate('/admin/courses'), 2000);
+                addNotification('Course created successfully', 'success');
+                navigate('/admin/courses');
             } else {
-                setError(data.message || 'Failed to create course');
-                setMessage(null);
+                addNotification(data.message || 'Failed to create course', 'error');
             }
         } catch (e) {
-            setError('Error: Unable to create course.' + e.message);
-            setMessage(null);
+            addNotification('Error: Unable to create course.' + e.message, 'error');
         }
     };
 
     return (
         <div>
             <h1 className="text-2xl font-bold mb-4">Add New Course</h1>
-            {message && <p className="mt-4 text-green-500">{message}</p>}
-            {error && <p className="mt-4 text-red-500">{error}</p>}
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                     <label htmlFor="title" className="block text-gray-700">Title:</label>

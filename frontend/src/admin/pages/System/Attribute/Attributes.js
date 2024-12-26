@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import DropdownActions from '../../../components/DropdownActions';
 import ConfirmDelete from '../../../components/ConfirmDelete';
+import { useNotification } from '../../../../contexts/NotificationContext';
 
 const Attributes = () => {
     const [attributes, setAttributes] = useState([]);
-    const [error, setError] = useState('');
     const [showConfirm, setShowConfirm] = useState(false);
     const [selectedAttribute, setSelectedAttribute] = useState(null);
     const navigate = useNavigate();
+    const { addNotification } = useNotification();
 
     useEffect(() => {
         const fetchAttributes = async () => {
@@ -18,19 +19,17 @@ const Attributes = () => {
                     credentials: 'include'
                 });
 
+                const data = await response.json();
                 if (response.ok) {
-                    const data = await response.json();
                     setAttributes(data.attributes);
-                    setError('');
                 } else {
-                    const errData = await response.json();
-                    setError(errData.message || 'Failed to fetch attributes');
+                    addNotification(data.message || 'Failed to fetch attributes', 'error');
                 }
             } catch (err) {
                 console.log(err);
+                addNotification(err.message || 'Failed to fetch attributes', 'error');
             }
         };
-
         fetchAttributes();
     }, []);
 
@@ -49,16 +48,12 @@ const Attributes = () => {
                 setSelectedAttribute(null);
             } else {
                 const errData = await response.json();
-                setError(errData.message || 'Failed to delete attribute');
+                addNotification(errData.message || 'Failed to delete attribute', 'error');
             }
         } catch (err) {
-            setError('Error: Unable to delete attribute.' + e.message);
+            addNotification('Error: Unable to delete attribute.' + e.message, 'error');
         }
     };
-
-    if (error) {
-        return <p className="text-red-500">{error}</p>;
-    }
 
     return (
         <div>

@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import {Link, useNavigate, useParams} from "react-router-dom";
+import { useNotification } from '../../../../contexts/NotificationContext';
 
 const EditAttribute = () => {
     const { id } = useParams();
     const navigate = useNavigate();
+    const { addNotification } = useNotification();
     const [formData, setFormData] = useState({
         attribute_code: '',
         label: '',
@@ -11,8 +13,6 @@ const EditAttribute = () => {
         entity_type: '',
         is_required: false,
     });
-    const [error, setError] = useState('');
-    const [message, setMessage] = useState('');
     const [loading, setLoading] = useState(true);
     const [entityTypes, setEntityTypes] = useState([]);
 
@@ -23,15 +23,14 @@ const EditAttribute = () => {
                     method: 'GET',
                     credentials: 'include',
                 });
+                const data = await response.json();
                 if (response.ok) {
-                    const data = await response.json();
                     setEntityTypes(data.entityTypes);
                 } else {
-                    const errData = await response.json();
-                    setError(errData.message || 'Failed to fetch entity types');
+                    addNotification(data.message || 'Failed to fetch entity types', 'error');
                 }
             } catch (error) {
-                setError(error.message || 'Error fetching entity types');
+                addNotification(error.message || 'Error fetching entity types', 'error');
             }
         };
 
@@ -51,10 +50,10 @@ const EditAttribute = () => {
                         is_required: data.attribute.is_required,
                     });
                 } else {
-                    setError(data.message || 'Failed to fetch attribute data');
+                    addNotification(data.message || 'Failed to fetch attribute data', 'error');
                 }
             } catch (error) {
-                setError(error.message || 'Error fetching attribute data');
+                addNotification(error.message || 'Error fetching attribute data', 'error');
             } finally {
                 setLoading(false);
             }
@@ -76,7 +75,7 @@ const EditAttribute = () => {
         e.preventDefault();
         const updatedFormData = {
             ...formData,
-            options: formData.options.split(',').map(option => option.trim()), // Преобразуем строку в массив
+            options: formData.options.split(',').map(option => option.trim()),
         };
 
         try {
@@ -88,14 +87,13 @@ const EditAttribute = () => {
             });
             const data = await response.json();
             if (response.ok) {
+                addNotification(`The attribute ${formData.label} has been saved successfully`, 'success');
                 navigate('/admin/attributes');
             } else {
-                setError(data.message || 'Failed to update the attribute');
-                setMessage(null);
+                addNotification(data.message || 'Failed to update the attribute', 'error');
             }
         } catch (e) {
-            setError('Error: Unable to update the attribute.' + e.message);
-            setMessage(null);
+            addNotification('Error: Unable to update the attribute.' + e.message, 'error');
         }
     };
 
@@ -173,8 +171,6 @@ const EditAttribute = () => {
                 <Link to="/admin/attributes"
                       className="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600 ml-3.5">Back</Link>
             </form>
-            {message && <p className="mt-4 text-green-500">{message}</p>}
-            {error && <p className="mt-4 text-red-500">{error}</p>}
         </div>
     );
 };

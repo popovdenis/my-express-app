@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../contexts/auth';
+import { useAuth } from '../contexts/Auth';
 
 const Menu = () => {
     const { user, logout } = useAuth();
