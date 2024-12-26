@@ -65,7 +65,7 @@ const Users = () => {
             <div className="flex justify-between items-center mb-4">
                 <h1 className="text-2xl font-bold mb-4">Users</h1>
                 <Link to="/admin/users/new"
-                      className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
+                      className="bg-red-500 text-white py-2 px-4 rounded font-bold hover:bg-red-700">
                     New User
                 </Link>
             </div>
