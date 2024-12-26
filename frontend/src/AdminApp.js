@@ -1,12 +1,17 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import AdminAppRoutes from "./admin/routes/AdminAppRoutes";
+import { NotificationProvider } from './contexts/NotificationContext';
+import Notification from './components/Notification';
 
 const AdminApp = () => {
     return (
-        <BrowserRouter>
-            <AdminAppRoutes />
-        </BrowserRouter>
+        <NotificationProvider>
+            <BrowserRouter>
+                <Notification />
+                <AdminAppRoutes />
+            </BrowserRouter>
+        </NotificationProvider>
     );
 };
 

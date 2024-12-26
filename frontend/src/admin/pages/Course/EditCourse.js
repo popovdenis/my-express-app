@@ -1,9 +1,12 @@
 import React, {useEffect, useState} from "react";
 import {Link, useNavigate, useParams} from "react-router-dom";
+import { useNotification } from "../../../contexts/NotificationContext";
 
 const EditCourse = () => {
     const { id } = useParams();
     const navigate = useNavigate();
+    const { addNotification } = useNotification();
+
     const [formData, setFormData] = useState({
         title: '',
         description: '',
@@ -33,10 +36,10 @@ const EditCourse = () => {
                         setAttributes(data.attributes);
                     }
                 } else {
-                    setError(data.message || 'Failed to fetch course data');
+                    addNotification(data.message || 'Failed to fetch course data', 'error');
                 }
             } catch (error) {
-                setError(error);
+                addNotification('Error: Unabled to update the course', 'error');
             } finally {
                 setLoading(false);
             }
@@ -58,14 +61,15 @@ const EditCourse = () => {
                 credentials: "include",
                 body: JSON.stringify(formData),
             });
+            const data = await response.json();
             if (response.ok) {
+                addNotification(`The course ${data.course.title} has been updated successfully`, 'success');
                 navigate('/admin/courses');
             } else {
-                const errData = await response.json();
-                setError(errData.message || 'Failed to fetch course data');
+                addNotification(data.message || 'Failed to update the course', 'error');
             }
         } catch (e) {
-            setError('Error: Unable to create course.' + e.message);
+            addNotification('Error: Unable to update the course.' + e.message, 'error');
         }
     };
 
