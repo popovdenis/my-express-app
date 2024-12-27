@@ -49,6 +49,12 @@ const AdminGrid = ({ columns, fetchData, onEdit, onDelete }) => {
         }
     };
 
+    const getSortClass = (field) => {
+        if (sort === field) return 'sort-asc';
+        if (sort === `-${field}`) return 'sort-desc';
+        return '';
+    };
+
     return (
         <div>
             {error && <p className="text-red-500">{error}</p>}
@@ -59,7 +65,7 @@ const AdminGrid = ({ columns, fetchData, onEdit, onDelete }) => {
                     .filter((col) => col.filterable)
                     .map((col) => (
                         <div key={col.field}>
-                            {col.options ? ( // If predefined options are available
+                            {col.options ? (
                                 <select
                                     value={filters[col.field] || ''}
                                     onChange={(e) => handleFilterChange(col.field, e.target.value)}
@@ -88,12 +94,12 @@ const AdminGrid = ({ columns, fetchData, onEdit, onDelete }) => {
             {/* Table */}
             <table className="min-w-full bg-white border border-gray-300">
                 <thead>
-                <tr>
+                <tr className="bg-gray-900 text-white text-center">
                     {columns.map((col) => (
                         <th
                             key={col.field}
                             onClick={() => col.sortable && handleSortChange(col.field)}
-                            className={`py-2 px-4 border-b ${col.sortable ? 'cursor-pointer' : ''}`}
+                            className={`py-2 px-4 border-b ${ col.sortable ? `sortable ${getSortClass(col.field)}` : 'not-sortable' }`}
                         >
                             {col.label}
                         </th>
@@ -110,13 +116,13 @@ const AdminGrid = ({ columns, fetchData, onEdit, onDelete }) => {
                     </tr>
                 ) : data.length > 0 ? (
                     data.map((item, index) => (
-                        <tr key={item._id} className="hover:bg-gray-100">
+                        <tr key={item._id} className="hover:bg-gray-100 text-center">
                             {columns.map((col) => (
-                                <td key={col.field} className="py-2 px-4 border-b text-center">
+                                <td key={col.field} className="py-3 px-4 border-b">
                                     {col.render ? col.render(item[col.field], item) : item[col.field]}
                                 </td>
                             ))}
-                            <td className="py-2 px-4 border-b text-center">
+                            <td className="py-3 px-4 border-b">
                                 <button
                                     className="text-blue-500 hover:underline"
                                     onClick={() => onEdit(item)}
