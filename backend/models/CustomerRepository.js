@@ -12,9 +12,7 @@ class CustomerRepository {
         return await CustomerResource.delete(userId);
     }
     async getList(query, sortQuery, skip, limit) {
-        console.log(sortQuery)
-
-        const customers = await Customer
+        const items = await CustomerResource
             .find(query)
             .sort(sortQuery)
             .skip(skip)
@@ -22,7 +20,7 @@ class CustomerRepository {
 
         const total = await CustomerResource.countDocuments(query);
 
-        return { customers, total };
+        return { items, total };
     }
 }
 

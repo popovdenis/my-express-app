@@ -4,7 +4,7 @@ class CustomerResource {
     async countDocuments(query) {
         return await Customer.countDocuments(query);
     }
-    findByQuery(query) {
+    find(query) {
         return Customer.find(query);
     }
     async findAllExclPassword() {

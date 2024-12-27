@@ -1,6 +1,12 @@
 const Course = require('../Course');
 
 class CourseResource {
+    async countDocuments(query) {
+        return await Course.countDocuments(query);
+    }
+    find(query) {
+        return Course.find(query);
+    }
     async findByTitle(title) {
         return await Course.findOne({ title });
     }

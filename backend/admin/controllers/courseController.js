@@ -45,15 +45,10 @@ exports.getList = async (req, res) => {
 
         const skip = (page - 1) * limit;
 
-        const courses = await Course.find(query)
-            .sort(sortQuery)
-            .skip(skip)
-            .limit(Number(limit));
-
-        const total  = await Course.countDocuments(query);
+        const { items, total } = await CourseRepository.getList(query, sortQuery, skip, Number(limit));
 
         res.json({
-            courses,
+            courses: items,
             total,
             page: Number(page),
             pages: Math.ceil(total / Number(limit)),

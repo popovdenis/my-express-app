@@ -21,10 +21,10 @@ exports.getList = async (req, res) => {
 
         const skip = (page - 1) * limit;
 
-        const {customers, total} = await CustomerRepository.getList(query, sortQuery, skip, Number(limit));
+        const {items, total} = await CustomerRepository.getList(query, sortQuery, skip, Number(limit));
 
         res.json({
-            customers,
+            customers: items,
             total,
             page: Number(page),
             pages: Math.ceil(total / Number(limit)),
