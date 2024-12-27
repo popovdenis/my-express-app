@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import DropdownActions from '../../components/DropdownActions';
-import ConfirmDelete from '../../components/ConfirmDelete';
+import ConfirmDelete from '../../../components/ConfirmDelete';
 import { useNotification } from '../../../contexts/NotificationContext';
 import { adminApiClient } from '../../../api/AdminApiClient';
 
