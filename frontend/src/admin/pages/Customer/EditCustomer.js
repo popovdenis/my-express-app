@@ -3,7 +3,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import { useNotification } from '../../../contexts/NotificationContext';
 import { adminApiClient } from '../../../api/AdminApiClient';
 
-const EditUser = () => {
+const EditCustomer = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const { addNotification } = useNotification();
@@ -18,7 +18,7 @@ const EditUser = () => {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const data = await adminApiClient.get(`/users/${id}`);
+                const data = await adminApiClient.get(`/customers/${id}`);
                 setFormData({
                     firstname: data.user.firstname,
                     lastname: data.user.lastname,
@@ -42,9 +42,9 @@ const EditUser = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await adminApiClient.put(`/users/${id}`, { body: formData });
+            await adminApiClient.put(`/customers/${id}`, { body: formData });
             addNotification(`The user has been updated successfully`, 'success');
-            navigate('/admin/users');
+            navigate('/admin/customers');
         } catch (e) {
             addNotification(`Error: Unable to create user: ${e.message}`, 'error');
         }
@@ -56,7 +56,7 @@ const EditUser = () => {
 
     return (
         <div className="p6">
-            <h1 className="text-2xl font-bold mb-4">Edit User</h1>
+            <h1 className="text-2xl font-bold mb-4">Edit Customer</h1>
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                     <label htmlFor="firstname" className="block text-gray-700">First Name:</label>
@@ -107,7 +107,7 @@ const EditUser = () => {
                 <div className="mt-4 flex justify-end space-x-4">
                     <button
                         type="button"
-                        onClick={() => navigate('/admin/users')}
+                        onClick={() => navigate('/admin/customers')}
                         className="bg-gray-300 text-gray-800 py-2 px-4 rounded hover:bg-gray-400"
                     >
                         Cancel
@@ -124,4 +124,4 @@ const EditUser = () => {
     );
 };
 
-export default EditUser;
+export default EditCustomer;

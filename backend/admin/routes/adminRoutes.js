@@ -3,7 +3,7 @@ const authenticateAdminToken = require('../../middlewares/authenticateAdmin');
 const isAdmin = require('../middlewares/isAdmin');
 
 const adminAuthController = require('../controllers/authController');
-const userController = require('../controllers/userController');
+const CustomerController = require('../controllers/CustomerController');
 const courseController = require('../controllers/courseController');
 const attributeController = require('../controllers/attributeController');
 const entityTypeController = require('../controllers/entityTypeController');
@@ -13,12 +13,12 @@ const router = express.Router();
 router.post('/signin', adminAuthController.adminSignIn);
 router.post('/logout', adminAuthController.adminLogout);
 router.get('/me', authenticateAdminToken, adminAuthController.checkAdminAction);
-// users
-router.get('/users', authenticateAdminToken, isAdmin, userController.getList);
-router.get('/users/:id', authenticateAdminToken, isAdmin, userController.getEntity);
-router.post('/users', authenticateAdminToken, isAdmin, userController.addEntity);
-router.put('/users/:id', authenticateAdminToken, isAdmin, userController.updateEntity);
-router.delete('/users/:id', authenticateAdminToken, isAdmin, userController.deleteEntity);
+// customers
+router.get('/customers', authenticateAdminToken, isAdmin, CustomerController.getList);
+router.get('/customers/:id', authenticateAdminToken, isAdmin, CustomerController.getEntity);
+router.post('/customers', authenticateAdminToken, isAdmin, CustomerController.addEntity);
+router.put('/customers/:id', authenticateAdminToken, isAdmin, CustomerController.updateEntity);
+router.delete('/customers/:id', authenticateAdminToken, isAdmin, CustomerController.deleteEntity);
 // courses
 router.get('/courses', authenticateAdminToken, isAdmin, courseController.getList);
 router.get('/courses/:id', authenticateAdminToken, isAdmin, courseController.getEntity);

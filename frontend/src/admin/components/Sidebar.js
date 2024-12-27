@@ -39,20 +39,20 @@ const Sidebar = () => {
                     )}
                 </li>
 
-                {/* Users */}
+                {/* Customers */}
                 <li>
-                    <button className="w-full text-left px-4 py-2 hover:bg-gray-700" onClick={() => toggleSection('users')}>
-                        Users
+                    <button className="w-full text-left px-4 py-2 hover:bg-gray-700" onClick={() => toggleSection('customers')}>
+                        Customers
                     </button>
-                    {openSection === 'users' && (
+                    {openSection === 'customers' && (
                         <ul className="pl-6 bg-gray-700">
                             <li>
-                                <Link to="/admin/users" className="block px-4 py-2 hover:bg-gray-600">
-                                    Manage Users
+                                <Link to="/admin/customers" className="block px-4 py-2 hover:bg-gray-600">
+                                    All Customers
                                 </Link>
                             </li>
                             <li>
-                                <Link to="/admin/users/new" className="block px-4 py-2 hover:bg-gray-600">
+                                <Link to="/admin/customers/new" className="block px-4 py-2 hover:bg-gray-600">
                                     Add New User
                                 </Link>
                             </li>

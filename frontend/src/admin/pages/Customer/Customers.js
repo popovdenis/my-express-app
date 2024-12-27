@@ -5,53 +5,53 @@ import ConfirmDelete from '../../../components/ConfirmDelete';
 import { useNotification } from '../../../contexts/NotificationContext';
 import { adminApiClient } from '../../../api/AdminApiClient';
 
-const Users = () => {
-    const [users, setUsers] = useState([]);
+const Customers = () => {
+    const [customers, setCustomer] = useState([]);
     const [loading, setLoading] = useState(true);
     const [showConfirm, setShowConfirm] = useState(false);
-    const [selectedUser, setSelectedUser] = useState(null);
+    const [selectedCustomer, setSelectedCustomer] = useState(null);
     const navigate = useNavigate();
     const { addNotification } = useNotification();
 
     useEffect(() => {
-        const fetchUsers = async () => {
+        const fetchCustomer = async () => {
             try {
-                const data = await adminApiClient.get(`/users`);
-                setUsers(data.users);
+                const data = await adminApiClient.get(`/customers`);
+                setCustomer(data.customers);
             } catch (err) {
                 navigate('/signin');
             } finally {
                 setLoading(false);
             }
         };
-        fetchUsers();
+        fetchCustomer();
     }, []);
     const handleDelete = async () => {
-        if (!selectedUser) {
+        if (!selectedCustomer) {
             return;
         }
         try {
-            await adminApiClient.delete(`/users/${selectedUser._id}`);
-            setUsers((prevUsers) => prevUsers.filter(user => user._id !== selectedUser._id));
+            await adminApiClient.delete(`/customers/${selectedCustomer._id}`);
+            setCustomer((prevCustomer) => prevCustomer.filter(customer => customer._id !== selectedCustomer._id));
             setShowConfirm(false);
-            setSelectedUser(null);
-            addNotification('The user has been deleted successfully');
+            setSelectedCustomer(null);
+            addNotification('The customer has been deleted successfully');
         } catch (err) {
-            addNotification('Error: Unable to delete user.' + e.message, 'error');
+            addNotification('Error: Unable to delete customer.' + e.message, 'error');
         }
     };
 
     if (loading) {
-        return <p>Loading users...</p>;
+        return <p>Loading customers...</p>;
     }
 
     return (
         <div>
             <div className="flex justify-between items-center mb-4">
-                <h1 className="text-2xl font-bold mb-4">Users</h1>
-                <Link to="/admin/users/new"
+                <h1 className="text-2xl font-bold mb-4">Customers</h1>
+                <Link to="/admin/customers/new"
                       className="bg-red-500 text-white py-2 px-4 rounded font-bold hover:bg-red-700">
-                    New User
+                    Add New Customer
                 </Link>
             </div>
             <table className="min-w-full bg-white border border-gray-300">
@@ -66,18 +66,18 @@ const Users = () => {
                 </tr>
                 </thead>
                 <tbody>
-                {users.map((user, index) => (
-                    <tr key={user._id} className="hover:bg-gray-100">
+                {customers.map((customer, index) => (
+                    <tr key={customer._id} className="hover:bg-gray-100">
                         <td className="py-2 px-4 border-b text-center">{index + 1}</td>
-                        <td className="py-2 px-4 border-b">{user.firstname}</td>
-                        <td className="py-2 px-4 border-b">{user.lastname}</td>
-                        <td className="py-2 px-4 border-b">{user.email}</td>
-                        <td className="py-2 px-4 border-b text-center">{user.role}</td>
+                        <td className="py-2 px-4 border-b">{customer.firstname}</td>
+                        <td className="py-2 px-4 border-b">{customer.lastname}</td>
+                        <td className="py-2 px-4 border-b">{customer.email}</td>
+                        <td className="py-2 px-4 border-b text-center">{customer.role}</td>
                         <td className="py-2 px-4 border-b text-center relative">
                             <DropdownActions
-                                onEdit={() => navigate(`/admin/users/${user._id}`)}
+                                onEdit={() => navigate(`/admin/customers/${customer._id}`)}
                                 onDelete={() => {
-                                    setSelectedUser(user);
+                                    setSelectedCustomer(customer);
                                     setShowConfirm(true);
                                 }}
                             />
@@ -88,7 +88,7 @@ const Users = () => {
             </table>
             {showConfirm && (
                 <ConfirmDelete
-                    entityId={selectedUser._id}
+                    entityId={selectedCustomer._id}
                     onClose={() => setShowConfirm(false)}
                     onConfirm={handleDelete}
                 />
@@ -97,4 +97,4 @@ const Users = () => {
     );
 };
 
-export default Users;
+export default Customers;

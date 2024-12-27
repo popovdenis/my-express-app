@@ -4,10 +4,10 @@ import { Routes, Route } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import Dashboard from '../pages/Dashboard';
 import Settings from '../pages/Settings';
-// Users
-import Users from '../pages/User/Users';
-import NewUser from '../pages/User/NewUser';
-import EditUser from '../pages/User/EditUser';
+// Customers
+import Customers from '../pages/Customer/Customers';
+import NewUser from '../pages/Customer/NewUser';
+import EditCustomer from '../pages/Customer/EditCustomer';
 // Courses
 import Courses from '../pages/Course/Courses';
 import NewCourse from '../pages/Course/NewCourse';
@@ -24,9 +24,9 @@ const BaseAdminRoutes = () => {
             <div className="ml-64 p-4 w-full">
                 <Routes>
                     <Route path="/dashboard" element={ <Dashboard /> } />
-                    <Route path="/users" element={ <Users /> } />
-                    <Route path="/users/new" element={ <NewUser /> } />
-                    <Route path="/users/:id" element={ <EditUser /> } />
+                    <Route path="/customers" element={ <Customers /> } />
+                    <Route path="/customers/new" element={ <NewUser /> } />
+                    <Route path="/customers/:id" element={ <EditCustomer /> } />
                     <Route path="/courses" element={ <Courses /> } />
                     <Route path="/courses/new" element={ <NewCourse /> } />
                     <Route path="/courses/:id" element={ <EditCourse /> } />

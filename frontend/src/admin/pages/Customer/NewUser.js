@@ -21,9 +21,9 @@ const NewUser = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await adminApiClient.post(`/users`, { body: formData });
+            await adminApiClient.post(`/customers`, { body: formData });
             addNotification('A new user has been created successfully');
-            navigate('/admin/users');
+            navigate('/admin/customers');
         } catch (e) {
             addNotification('Error: Unable to create user.' + e.message, 'error');
         }

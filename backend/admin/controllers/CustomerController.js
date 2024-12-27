@@ -4,11 +4,11 @@ const CustomerResource = require('../../models//resources/CustomerResource');
 
 exports.getList = async (req, res) => {
     try {
-        const users = await CustomerResource.findAllExclPassword();
-        res.json({ users });
+        const customers = await CustomerResource.findAllExclPassword();
+        res.json({ customers });
     } catch (error) {
-        console.error('Error fetching users:', error);
-        res.status(500).json({ message: 'Failed to fetch users' });
+        console.error('Error fetching customers:', error);
+        res.status(500).json({ message: 'Failed to fetch customers' });
     }
 };
 
