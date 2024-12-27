@@ -30,7 +30,6 @@ const EditCourse = () => {
                 if (data.attributes && data.attributes.length) {
                     setAttributes(data.attributes);
                 }
-                addNotification(`The course ${data.course.title} has been updated successfully`, 'success');
             } catch (error) {
                 addNotification('Error: Unabled to update the course', 'error');
             } finally {

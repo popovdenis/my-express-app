@@ -43,9 +43,11 @@ const AdminGrid = ({ columns, fetchData, onEdit, onDelete }) => {
 
     const handleDelete = async () => {
         if (onDelete && selectedItem) {
-            await onDelete(selectedItem);
-            setShowConfirm(false);
-            setSelectedItem(null);
+            if (await onDelete(selectedItem)) {
+                setShowConfirm(false);
+                setSelectedItem(null);
+                setData((prevData) => prevData.filter((item) => item._id !== selectedItem._id));
+            }
         }
     };
 
