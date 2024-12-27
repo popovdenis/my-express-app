@@ -1,5 +1,4 @@
 const CustomerResource = require('./resources/CustomerResource');
-const Customer = require('./Customer');
 
 class CustomerRepository {
     async createUser(data) {

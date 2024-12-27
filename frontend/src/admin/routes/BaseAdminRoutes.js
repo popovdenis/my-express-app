@@ -16,6 +16,8 @@ import EditAdminUser from '../pages/AdminUser/EditAdminUser';
 import Courses from '../pages/Course/Courses';
 import NewCourse from '../pages/Course/NewCourse';
 import EditCourse from '../pages/Course/EditCourse';
+// Enrollments
+import Enrollments from '../pages/Enrollments/Enrollments';
 // System
 import Attributes from '../pages/System/Attribute/Attributes';
 import NewAttribute from '../pages/System/Attribute/NewAttribute';
@@ -47,6 +49,8 @@ const BaseAdminRoutes = () => {
                     <Route path="/attributes" element={ <Attributes /> } />
                     <Route path="/attributes/new" element={ <NewAttribute /> } />
                     <Route path="/attributes/:id" element={ <EditAttribute /> } />
+                    {/* Enrollments */}
+                    <Route path="/enrollments" element={ <Enrollments /> } />
                 </Routes>
             </div>
         </div>

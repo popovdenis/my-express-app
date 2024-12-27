@@ -77,14 +77,20 @@ const Sidebar = () => {
                                     Add New Course
                                 </Link>
                             </li>
+                            <li>
+                                <Link to="/admin/enrollments" className="block px-4 py-2 hover:bg-gray-600">
+                                    Enrollments
+                                </Link>
+                            </li>
                         </ul>
                     )}
                 </li>
 
                 {/* Settings */}
                 <li>
-                    <button className="w-full text-left px-4 py-2 hover:bg-gray-700" onClick={() => toggleSection('settings')}>
-                        Settings
+                    <button className="w-full text-left px-4 py-2 hover:bg-gray-700"
+                            onClick={() => toggleSection('settings')}>
+                    Settings
                     </button>
                     {openSection === 'settings' && (
                         <ul className="pl-6 bg-gray-700">
