@@ -2,18 +2,18 @@ const express = require('express');
 const authenticateAdminToken = require('../../middlewares/authenticateAdmin');
 const isAdmin = require('../middlewares/isAdmin');
 
-const adminAuthController = require('../controllers/authController');
+const AdminAuthController = require('../controllers/AdminAuthController');
 const CustomerController = require('../controllers/CustomerController');
 const AdminUserController = require('../controllers/AdminUserController');
 const CourseController = require('../controllers/CourseController');
 const AttributeController = require('../controllers/AttributeController');
-const entityTypeController = require('../controllers/entityTypeController');
+const EntityTypeController = require('../controllers/EntityTypeController');
 
 const router = express.Router();
 // authentication
-router.post('/signin', adminAuthController.adminSignIn);
-router.post('/logout', adminAuthController.adminLogout);
-router.get('/me', authenticateAdminToken, adminAuthController.checkAdminAction);
+router.post('/signin', AdminAuthController.adminSignIn);
+router.post('/logout', AdminAuthController.adminLogout);
+router.get('/me', authenticateAdminToken, AdminAuthController.checkAdminAction);
 // customers
 router.get('/customers', authenticateAdminToken, isAdmin, CustomerController.getList);
 router.get('/customers/:id', authenticateAdminToken, isAdmin, CustomerController.getEntity);
@@ -27,7 +27,7 @@ router.post('/courses', authenticateAdminToken, isAdmin, CourseController.addEnt
 router.put('/courses/:id', authenticateAdminToken, isAdmin, CourseController.updateEntity);
 router.delete('/courses/:id', authenticateAdminToken, isAdmin, CourseController.deleteEntity);
 // entity
-router.get('/attribute_entity', authenticateAdminToken, isAdmin, entityTypeController.getList);
+router.get('/attribute_entity', authenticateAdminToken, isAdmin, EntityTypeController.getList);
 // users
 router.get('/users', authenticateAdminToken, isAdmin, AdminUserController.getList);
 router.get('/users/:id', authenticateAdminToken, isAdmin, AdminUserController.getEntity);
