@@ -3,7 +3,7 @@ import CourseCard from './CourseCard';
 import Filters from './Filters';
 import Pagination from '../../components/Pagination';
 import { useNotification } from '../../../contexts/NotificationContext';
-import AdminCourseApiClient from '../../../api/AdminCourseApiClient';
+import ClientCourseApiClient from '../../../api/ClientCourseApiClient';
 import LoadingSpinner from '../../components/LoadingSpinner';
 
 const CoursesList = () => {
@@ -24,7 +24,7 @@ const CoursesList = () => {
                 query.append('page', pagination.page);
                 query.append('limit', pagination.limit);
 
-                const data = await AdminCourseApiClient.fetchItems(query);
+                const data = await ClientCourseApiClient.fetchItems(query);
                 setCourses(data.courses || []);
                 setPagination((prev) => ({ ...prev, total: data.total || 0 }));
             } catch (err) {
