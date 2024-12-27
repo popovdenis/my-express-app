@@ -12,9 +12,11 @@ const CourseCard = ({ course }) => {
             <div className="flex-1">
                 <h2 className="text-xl font-bold">{course.title}</h2>
                 <p className="text-gray-600 mt-2">{course.description}</p>
-                <p className="text-sm text-gray-500 mt-2">
-                    By <span className="font-medium">{course.instructor?.firstname} {course.instructor?.lastname}</span>
-                </p>
+                {course.instructor && (
+                    <p className="text-sm text-gray-500 mt-2">
+                        By <span className="font-medium">{course.instructor?.firstname} {course.instructor?.lastname}</span>
+                    </p>
+                )}
                 <div className="flex items-center justify-between mt-4">
                     <Rating value={course.averageRating} />
                     <span className="font-bold text-lg">${course.price}</span>

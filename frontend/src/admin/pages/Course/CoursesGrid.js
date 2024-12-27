@@ -1,6 +1,6 @@
 import React from 'react';
 import AdminGrid from '../../../components/grids/AdminGrid';
-import CourseApiClient from '../../../api/CourseApiClient';
+import ClientCourseApiClient from '../../../api/ClientCourseApiClient';
 import { adminApiClient } from '../../../api/AdminApiClient';
 import { useNavigate } from 'react-router-dom';
 import { useNotification } from '../../../contexts/NotificationContext';
@@ -33,7 +33,7 @@ const CoursesGrid = () => {
     return (
         <AdminGrid
             columns={columns}
-            dataProvider={CourseApiClient.fetchCourses}
+            dataProvider={ClientCourseApiClient.fetchCourses}
             onEdit={handleEdit}
             onDelete={handleDelete}
         />
