@@ -1,4 +1,5 @@
 const AttributeResource = require('./resources/AttributeResource');
+const AdminUserResource = require("./resources/AdminUserResource");
 
 class AttributeRepository {
     async createEntity(data) {
@@ -12,6 +13,19 @@ class AttributeRepository {
     }
     async deleteEntity(courseId) {
         return await AttributeResource.delete(courseId);
+    }
+    async getList(query, sortQuery, skip, limit) {
+        console.log(sortQuery)
+        const items = await AttributeResource
+            .find(query)
+            .populate('entity_type', 'entity_type_code')
+            .sort(sortQuery)
+            .skip(skip)
+            .limit(limit);
+
+        const total = await AttributeResource.countDocuments(query);
+
+        return { items, total };
     }
 }
 

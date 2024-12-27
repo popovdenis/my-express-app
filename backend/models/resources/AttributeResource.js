@@ -1,6 +1,12 @@
 const Attribute = require('../Attribute');
 
 class AttributeResource {
+    async countDocuments(query) {
+        return await Attribute.countDocuments(query);
+    }
+    find(query) {
+        return Attribute.find(query);
+    }
     async findByCode(code) {
         return await Attribute.findOne({ attribute_code: code });
     }

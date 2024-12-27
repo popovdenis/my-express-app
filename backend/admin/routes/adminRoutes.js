@@ -6,7 +6,7 @@ const adminAuthController = require('../controllers/authController');
 const CustomerController = require('../controllers/CustomerController');
 const AdminUserController = require('../controllers/AdminUserController');
 const courseController = require('../controllers/courseController');
-const attributeController = require('../controllers/attributeController');
+const AttributeController = require('../controllers/AttributeController');
 const entityTypeController = require('../controllers/entityTypeController');
 
 const router = express.Router();
@@ -35,14 +35,14 @@ router.post('/users', authenticateAdminToken, isAdmin, AdminUserController.addEn
 router.put('/users/:id', authenticateAdminToken, isAdmin, AdminUserController.updateEntity);
 router.delete('/users/:id', authenticateAdminToken, isAdmin, AdminUserController.deleteEntity);
 // attributes
-router.get('/attributes', authenticateAdminToken, isAdmin, attributeController.getList);
-router.get('/attributes/code/:attributeCode', authenticateAdminToken, isAdmin, attributeController.getAttributeByCode);
-router.get('/attributes/:id', authenticateAdminToken, isAdmin, attributeController.getEntity);
-router.post('/attributes', authenticateAdminToken, isAdmin, attributeController.addEntity);
-router.put('/attributes/:id', authenticateAdminToken, isAdmin, attributeController.updateEntity);
-router.delete('/attributes/:id', authenticateAdminToken, isAdmin, attributeController.deleteEntity);
+router.get('/attributes', authenticateAdminToken, isAdmin, AttributeController.getList);
+router.get('/attributes/code/:attributeCode', authenticateAdminToken, isAdmin, AttributeController.getAttributeByCode);
+router.get('/attributes/:id', authenticateAdminToken, isAdmin, AttributeController.getEntity);
+router.post('/attributes', authenticateAdminToken, isAdmin, AttributeController.addEntity);
+router.put('/attributes/:id', authenticateAdminToken, isAdmin, AttributeController.updateEntity);
+router.delete('/attributes/:id', authenticateAdminToken, isAdmin, AttributeController.deleteEntity);
 
 // attributes by entity
-router.get('/attribute_entity/:entityTypeCode', authenticateAdminToken, isAdmin, attributeController.getAttributesByEntityType);
+router.get('/attribute_entity/:entityTypeCode', authenticateAdminToken, isAdmin, AttributeController.getAttributesByEntityType);
 
 module.exports = router;

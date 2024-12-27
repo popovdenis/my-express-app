@@ -3,12 +3,35 @@ const AttributeRepository = require('../../models/AttributeRepository');
 
 exports.getList = async (req, res) => {
     try {
-        const attributes = await Attribute.find()
-            .populate('entity_type', 'entity_type_code');
-        res.json({ attributes });
+        const { filter, sort, page = 1, limit = 10 } = req.query;
+
+        const query = {};
+        if (filter) {
+            if (filter.attribute_code) query.attribute_code = { $regex: filter.attribute_code, $options: 'i' };
+        }
+
+        const sortQuery = {};
+        if (sort) {
+            const match = sort.match(/^(.*)_(asc|desc)$/);
+            if (match) {
+                const [_, field, direction] = match;
+                sortQuery[field] = direction === 'asc' ? 1 : -1;
+            }
+        }
+
+        const skip = (page - 1) * limit;
+
+        const {items, total} = await AttributeRepository.getList(query, sortQuery, skip, Number(limit));
+
+        res.json({
+            attributes: items,
+            total,
+            page: Number(page),
+            pages: Math.ceil(total / Number(limit)),
+        });
     } catch (error) {
         console.error('Error fetching attributes:', error);
-        res.status(500).json({ message: 'Failed to fetch attributes' });
+        res.status(500).json({ message: 'Failed to fetch attributes: ' + error.message });
     }
 };
 exports.addEntity = async (req, res) => {
@@ -114,7 +137,7 @@ exports.updateEntity = async (req, res) => {
         attribute.label = label || attribute.label;
         attribute.options = options || attribute.options;
         attribute.entity_type = entity_type || attribute.entity_type;
-        attribute.is_required = is_required || attribute.is_required;
+        attribute.is_required = is_required;
 
         const updatedEntity = await AttributeRepository.updateEntity(id, attribute);
         res.status(200).json({ message: 'Attribute updated successfully', attribute: updatedEntity });
