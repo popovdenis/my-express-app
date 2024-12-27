@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import {useAdminAuth} from '../../contexts/AdminAuth';
+import {useAdminAuth} from '../contexts/AdminAuth';
 
 const Sidebar = () => {
     const [openSection, setOpenSection] = useState(null);

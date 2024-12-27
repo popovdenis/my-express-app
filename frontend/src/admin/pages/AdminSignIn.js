@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {useAdminAuth} from '../../contexts/AdminAuth';
+import {useAdminAuth} from '../contexts/AdminAuth';
 import { useNotification } from '../../contexts/NotificationContext';
 
 const AdminSignIn = () => {

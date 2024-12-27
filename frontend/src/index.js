@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
-import AdminApp from './AdminApp';
+import AdminApp from './admin/AdminApp';
+import ClientApp from './client/ClientApp';
 import './styles/index.css'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -11,6 +11,6 @@ if (window.location.pathname.startsWith('/admin')) {
     );
 } else {
     root.render(
-        <App />
+        <ClientApp />
     );
 }

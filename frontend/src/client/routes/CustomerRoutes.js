@@ -1,7 +1,7 @@
-import { Routes, Route } from 'react-router-dom';
 import React from "react";
-import MyAccount from "../pages/Customer/MyAccount";
-import MyCourses from "../pages/Customer/MyCourses";
+import { Routes, Route } from 'react-router-dom';
+import MyAccount from "../pages/customer/MyAccount";
+import MyCourses from "../pages/customer/MyCourses";
 
 
 const AdminApp = () => {
