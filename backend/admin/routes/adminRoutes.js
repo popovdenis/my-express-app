@@ -57,8 +57,6 @@ router.use('/uploads', uploadRoutes);
 
 // course enrollments
 router.get('/enrollments', authenticateAdminToken, isAdmin, EnrollmentController.getList);
-router.post('/enrollments/:courseId/enroll', authenticateAdminToken, EnrollmentController.enrollInCourse);
-router.put('/enrollments/:enrollmentId/status', authenticateAdminToken, EnrollmentController.updateEnrollmentStatus);
 
 module.exports = router;
 

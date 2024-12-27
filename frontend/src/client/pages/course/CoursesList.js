@@ -30,11 +30,15 @@ const CoursesList = () => {
                 setCourses(data.courses || []);
                 setPagination((prev) => ({ ...prev, total: data.total || 0 }));
 
-                const enrolledData = await customerApiClient.get('/enrollments');
-                const enrolledIds = enrolledData.courses.started.map((course) => course._id);
-                setEnrolledCourses(enrolledIds);
+                const enrolledData = await customerApiClient.get('/enrollments/customer');
+                if (enrolledData && enrolledData.enrollments) {
+                    const enrolledIds = (enrolledData.enrollments || []).map((enrollment) => enrollment.course._id);
+                    setEnrolledCourses(enrolledIds);
+                } else {
+                    setEnrolledCourses([]);
+                }
             } catch (err) {
-                addNotification('Failed to fetch courses', 'error');
+                addNotification('Failed to fetch enrollments', 'error');
                 console.error(err);
             } finally {
                 setLoading(false);
