@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import {Link} from "react-router-dom";
+import { customerApiClient } from '../../api/CustomerApiClient';
+import { useNotification } from '../../contexts/NotificationContext';
 
 const SignUp = () => {
     const [formData, setFormData] = useState({
@@ -9,8 +11,7 @@ const SignUp = () => {
         password: '',
         passwordConfirmation: ''
     });
-    const [message, setMessage] = useState('');
-    const [error, setError] = useState('');
+    const { addNotification } = useNotification();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -20,48 +21,34 @@ const SignUp = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        setError();
-        setMessage();
-
         if (formData.password !== formData.passwordConfirmation) {
-            setError('Passwords do not match');
+            addNotification('Passwords do not match', 'error');
             return;
         }
 
         try {
-            const response = await fetch(`${process.env.REACT_APP_AUTH_URL}/signup`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    firstname: formData.firstname,
-                    lastname: formData.lastname,
-                    email: formData.email,
-                    password: formData.password
-                }),
+            const body = {
+                firstname: formData.firstname,
+                lastname: formData.lastname,
+                email: formData.email,
+                password: formData.password
+            };
+            await customerApiClient.post('/auth/signup', { body: body });
+            setFormData({
+                firstname: '',
+                lastname: '',
+                email: '',
+                password: '',
+                passwordConfirmation: ''
             });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                setFormData({
-                    firstname: '',
-                    lastname: '',
-                    email: '',
-                    password: '',
-                    passwordConfirmation: ''
-                });
-                setMessage(
-                    <>
-                        You are registered successfully! Now you can{' '}
-                        <Link to="/signin" className="text-blue-500 underline">Sign In</Link>.
-                    </>
-                );
-            } else {
-                setError(data.message || 'Registration Failed');
-            }
+            addNotification(
+                <>
+                    You are registered successfully! Now you can{' '}
+                    <Link to="/signin" className="text-blue-500 underline">Sign In</Link>.
+                </>
+            );
         } catch (error) {
-            setError('Error: Unable to connect to the server.');
-            console.error('Error:', error);
+            addNotification(error.message || 'Registration Failed', 'error');
         }
     };
 
@@ -136,8 +123,6 @@ const SignUp = () => {
                     Sign Up
                 </button>
             </form>
-            {message && <p className="mt-4 text-green-500">{message}</p>}
-            {error && <p className="mt-4 text-red-500">{error}</p>}
         </div>
     );
 };

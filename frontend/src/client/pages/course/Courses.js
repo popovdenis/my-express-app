@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react';
-// import { useNotification } from '../contexts/NotificationContext';
 import {Link} from "react-router-dom";
+import { useNotification } from '../../../contexts/NotificationContext';
+import { customerApiClient } from '../../../api/CustomerApiClient';
 
 const AllCourses = () => {
     const [loading, setLoading] = useState(true);
-    // const { addNotification } = useNotification();
+    const { addNotification } = useNotification();
     const [courses, setCourses] = useState([]);
     const [pagination, setPagination] = useState({ page: 1, limit: 10, total: 0 });
 
@@ -18,13 +19,8 @@ const AllCourses = () => {
                 query.append('page', pagination.page);
                 query.append('limit', pagination.limit);
 
-                const response = await fetch(`${process.env.REACT_APP_API_URL}/courses?${query.toString()}`, {
-                    method: 'GET',
-                    credentials: 'include',
-                });
-
-                const data = await response.json();
-                if (response.ok && Array.isArray(data.courses)) {
+                const data = await customerApiClient.get(`/courses?${query.toString()}`);
+                if (Array.isArray(data.courses)) {
                     setCourses(data.courses);
                     setPagination((prev) => ({
                         ...prev,
@@ -32,11 +28,11 @@ const AllCourses = () => {
                         pages: data.pages,
                     }));
                 } else {
-                    // addNotification(data.message || 'Failed to fetch courses', 'error');
+                    addNotification(data.message || 'Failed to fetch courses', 'error');
                 }
             } catch (err) {
                 console.log(err);
-                // addNotification('Failed to fetch courses', 'error');
+                addNotification('Failed to fetch courses', 'error');
             } finally {
                 setLoading(false);
             }
@@ -53,7 +49,7 @@ const AllCourses = () => {
                     {!loading && courses.length > 0 && (
                         <div className="flex gap-4 mb-4">
                             {courses.map((course, index) => (
-                                <div className="course-card-main">
+                                <div className="course-card-main" key={index}>
                                     <div className="course-card-title">
                                         <h3>
                                             <Link to={`/courses/${course._id}`}

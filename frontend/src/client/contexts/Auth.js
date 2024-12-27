@@ -1,4 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
+import { customerApiClient } from '../../api/CustomerApiClient';
 
 const AuthContext = createContext();
 
@@ -8,20 +9,10 @@ export const AuthProvider = ({ children }) => {
 
     const fetchUser = async () => {
         try {
-            const response = await fetch(process.env.REACT_APP_API_URL + '/customer/account', {
-                method: 'GET',
-                credentials: 'include',
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                setUser(data.user);
-            } else {
-                setUser(null);
-            }
+            const data = await customerApiClient.get('/customer/account');
+            setUser(data.user);
         } catch (error) {
             console.error('Error fetching user:', error);
-            setUser(null);
         } finally {
             setLoading(false);
         }
@@ -35,10 +26,7 @@ export const AuthProvider = ({ children }) => {
 
     const logout = async () => {
         try {
-            await fetch(`${process.env.REACT_APP_AUTH_URL}/logout`, {
-                method: 'POST',
-                credentials: 'include',
-            });
+            await customerApiClient.post('/auth/logout');
             setUser(null);
             window.location.href = '/signin';
         } catch (error) {
