@@ -20,9 +20,9 @@ class AttributeRepository extends AbstractRepository {
     processFilters(filters) {
         const query = {};
         if (filters) {
-            if (filters.attribute_code) query.attribute_code = { $regex: filters.attribute_code, $options: 'i' };
+            if (filters.attributeCode) query.attributeCode = { $regex: filters.attributeCode, $options: 'i' };
             if (filters.label) query.label = { $regex: filters.label, $options: 'i' };
-            if (filters.entity_type) query.entity_type = filters.entity_type;
+            if (filters.entityType) query.entityType = filters.entityType;
         }
         return query;
     }
@@ -32,7 +32,7 @@ class AttributeRepository extends AbstractRepository {
             sort,
             skip,
             limit,
-            { path: 'entity_type', select: 'entity_type_code' }
+            { path: 'entityType', select: 'entityTypeCode' }
         );
     }
 }

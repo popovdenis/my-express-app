@@ -44,13 +44,13 @@ const Attributes = () => {
     const columns = [
         { label: 'ID', field: '_id' },
         { label: 'Attribute Label', field: 'label', sortable: true },
-        { label: 'Attribute Code', field: 'attribute_code', filterable: true, sortable: true },
+        { label: 'Attribute Code', field: 'attributeCode', filterable: true, sortable: true },
         {
             label: 'Entity Type',
-            field: 'entity_type',
-            render: (value) => value?.entity_type_code || 'Unknown',
+            field: 'entityType',
+            render: (value) => value?.entityTypeCode || 'Unknown',
         },
-        { label: 'Required', field: 'is_required', render: (value) => (value ? 'Yes' : 'No') },
+        { label: 'Required', field: 'isRequired', render: (value) => (value ? 'Yes' : 'No') },
         {
             label: 'Created At',
             field: 'createdAt',

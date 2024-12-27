@@ -6,29 +6,51 @@ const courseSchema = new mongoose.Schema(
             type: String,
             required: [true, 'Title is required'],
             minlength: [3, 'Title must me at least 3 characters'],
-            maxlength: [100, 'Firstname cannot exceed 50 characters']
+            maxlength: [100, 'Title cannot exceed 100 characters'],
         },
         description: {
             type: String,
-            required: false
+            required: false,
         },
         duration: {
             type: String,
-            required: false
+            required: false,
         },
         level: {
             type: String,
-            required: false
+            required: false,
         },
-        createdAt: {
-            type: Date,
-            default: Date.now,
+        category: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Category',
+                required: true,
+            }
+        ],
+        instructor: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Customer',
+            required: true,
         },
-        updatedAt: {
-            type: Date,
-            default: Date.now,
+        price: {
+            type: Number,
+            required: true,
+            default: 0,
         },
-    }, { timestamps: true, collection: 'courses' }
+        thumbnail: {
+            type: String,
+            required: false,
+        },
+        enrolledStudents: {
+            type: Number,
+            default: 0,
+        },
+        isActive: {
+            type: Boolean,
+            default: true,
+        },
+    },
+    { timestamps: true, collection: 'courses' }
 );
 
 module.exports = mongoose.model('Course', courseSchema);

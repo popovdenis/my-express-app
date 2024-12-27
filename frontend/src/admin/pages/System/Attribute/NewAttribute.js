@@ -7,11 +7,11 @@ const NewAttribute = () => {
     const navigate = useNavigate();
     const { addNotification } = useNotification();
     const [formData, setFormData] = useState({
-        attribute_code: '',
+        attributeCode: '',
         label: '',
         options: '',
-        entity_type: '',
-        is_required: false
+        entityType: '',
+        isRequired: false
     });
     const [loading, setLoading] = useState(true);
     const [entityTypes, setEntityTypes] = useState('');
@@ -58,12 +58,12 @@ const NewAttribute = () => {
             <h1 className="text-2xl font-bold mb-4">Add New Attribute</h1>
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                    <label htmlFor="attribute_code" className="block text-gray-700">Attribute Code:</label>
+                    <label htmlFor="attributeCode" className="block text-gray-700">Attribute Code:</label>
                     <input
                         type="text"
-                        id="attribute_code"
-                        name="attribute_code"
-                        value={formData.attribute_code}
+                        id="attributeCode"
+                        name="attributeCode"
+                        value={formData.attributeCode}
                         onChange={handleChange}
                         className="w-full border border-gray-300 rounded p-2"
                     />
@@ -81,13 +81,13 @@ const NewAttribute = () => {
                 <div className="flex items-center space-x-2">
                     <input
                         type="checkbox"
-                        id="is_required"
-                        name="is_required"
-                        checked={formData.is_required}
+                        id="isRequired"
+                        name="isRequired"
+                        checked={formData.isRequired}
                         onChange={handleChange}
                         className="border-gray-300 rounded transform scale-125"
                     />
-                    <label htmlFor="is_required" className="text-gray-700">Required</label>
+                    <label htmlFor="isRequired" className="text-gray-700">Required</label>
                 </div>
                 <div>
                     <label htmlFor="options" className="block text-gray-700">Attribute Options (comma-separated):</label>
@@ -100,17 +100,17 @@ const NewAttribute = () => {
                     />
                 </div>
                 <div>
-                    <label htmlFor="entity_type" className="block text-gray-700">Entity Type:</label>
+                    <label htmlFor="entityType" className="block text-gray-700">Entity Type:</label>
                     <select
-                        id="entity_type"
-                        name="entity_type"
-                        value={formData.entity_type}
+                        id="entityType"
+                        name="entityType"
+                        value={formData.entityType}
                         onChange={handleChange}
                         className="w-full border border-gray-300 rounded p-2"
                     >
                         <option value="">Select</option>
                         {entityTypes.map((entityType, index) => (
-                            <option value={entityType._id}>{entityType.entity_type_code}</option>
+                            <option value={entityType._id}>{entityType.entityTypeCode}</option>
                         ))}
                     </select>
                 </div>

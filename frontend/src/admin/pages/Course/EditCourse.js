@@ -91,7 +91,7 @@ const EditCourse = () => {
                     >
                         {!loading &&
                             attributes.map((attribute) => {
-                                if (attribute.attribute_code === 'duration') {
+                                if (attribute.attributeCode === 'duration') {
                                     return attribute.options.map((option, index) => (
                                         <option key={index} value={option}>{option}</option>
                                     ))
@@ -111,7 +111,7 @@ const EditCourse = () => {
                     >
                         {!loading &&
                             attributes.map((attribute) => {
-                                if (attribute.attribute_code === 'level') {
+                                if (attribute.attributeCode === 'level') {
                                     return attribute.options.map((option, index) => (
                                         <option key={index} value={option}>{option.charAt(0).toUpperCase() + option.slice(1)}</option>
                                     ))

@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const attributeSchema = new mongoose.Schema({
-    attribute_code: {
+    attributeCode: {
         type: String,
         required: true,
         unique: true,
@@ -15,12 +15,12 @@ const attributeSchema = new mongoose.Schema({
         required: true,
         default: []
     },
-    entity_type: {
+    entityType: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'EntityType',
         required: true,
     },
-    is_required: {
+    isRequired: {
         type: Boolean,
         default: false,
     }
@@ -34,6 +34,6 @@ attributeSchema.pre('save', async function (next) {
     next();
 })
 
-attributeSchema.index({ entity_type: 1, attribute_code: 1 }, { unique: true });
+attributeSchema.index({ entityType: 1, attributeCode: 1 }, { unique: true });
 
 module.exports = mongoose.model('Attribute', attributeSchema);

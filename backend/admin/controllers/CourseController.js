@@ -7,21 +7,21 @@ const getCourseAttributes = async () => {
         {
             $lookup: {
                 from: 'eav_entity_type',
-                localField: 'entity_type',
+                localField: 'entityType',
                 foreignField: '_id',
-                as: 'entity_type',
+                as: 'entityType',
             },
         },
-        {$unwind: '$entity_type'},
-        {$match: {'entity_type.entity_type_code': 'course'}},
+        {$unwind: '$entityType'},
+        {$match: {'entityType.entityTypeCode': 'course'}},
         {
             $project: {
                 _id: 1,
-                attribute_code: 1,
+                attributeCode: 1,
                 label: 1,
                 options: 1,
-                is_required: 1,
-                'entity_type.entity_type_code': 1,
+                isRequired: 1,
+                'entityType.entityTypeCode': 1,
             },
         },
     ]);

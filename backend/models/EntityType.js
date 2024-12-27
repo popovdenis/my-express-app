@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const entityTypeSchema = new mongoose.Schema({
-    entity_type_code: {
+    entityTypeCode: {
         type: String,
         required: true,
         unique: true,

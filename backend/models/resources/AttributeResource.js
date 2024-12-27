@@ -8,7 +8,7 @@ class AttributeResource {
         return Attribute.find(query);
     }
     async findByCode(code) {
-        return await Attribute.findOne({ attribute_code: code });
+        return await Attribute.findOne({ attributeCode: code });
     }
     async create(entityData) {
         return await Attribute.create(entityData);

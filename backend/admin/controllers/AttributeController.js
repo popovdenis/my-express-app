@@ -23,23 +23,23 @@ exports.getList = async (req, res) => {
 };
 exports.addEntity = async (req, res) => {
     try {
-        const { attribute_code, label, options, entity_type, is_required } = req.body;
+        const { attributeCode, label, options, entityType, isRequired } = req.body;
 
-        if (!attribute_code) {
+        if (!attributeCode) {
             return res.status(400).json({ message: 'Please fill the required fields' });
         }
 
-        const existingAttribute = await AttributeRepository.findByCode(attribute_code);
+        const existingAttribute = await AttributeRepository.findByCode(attributeCode);
         if (existingAttribute) {
             return res.status(400).json({ message: 'The attribute with the sam attribute  already exists' });
         }
 
         const newEntity = await AttributeRepository.createEntity({
-            attribute_code,
+            attributeCode,
             label,
             options,
-            entity_type,
-            is_required
+            entityType,
+            isRequired
         });
 
         res.status(201).json({ message: 'Attribute created successfully', attribute: newEntity });
@@ -52,8 +52,8 @@ exports.getAttributeByCode = async (req, res) => {
     const { attributeCode } = req.params;
 
     try {
-        const attribute = await Attribute.findOne({ attribute_code: attributeCode })
-            .populate('entity_type', 'entity_type_code');
+        const attribute = await Attribute.findOne({ attributeCode: attributeCode })
+            .populate('entityType', 'entityTypeCode');
 
         if (!attribute) {
             return res.status(404).json({ message: 'Attribute not found' });
@@ -73,21 +73,21 @@ exports.getAttributesByEntityType = async (req, res) => {
             {
                 $lookup: {
                     from: 'eav_entity_type',
-                    localField: 'entity_type',
+                    localField: 'entityType',
                     foreignField: '_id',
-                    as: 'entity_type',
+                    as: 'entityType',
                 },
             },
-            {$unwind: '$entity_type'},
-            {$match: {'entity_type.entity_type_code': entityTypeCode}},
+            {$unwind: '$entityType'},
+            {$match: {'entityType.entityTypeCode': entityTypeCode}},
             {
                 $project: {
                     _id: 1,
-                    attribute_code: 1,
+                    attributeCode: 1,
                     label: 1,
                     options: 1,
-                    is_required: 1,
-                    'entity_type.entity_type_code': 1,
+                    isRequired: 1,
+                    'entityType.entityTypeCode': 1,
                 },
             },
         ]);
@@ -113,18 +113,18 @@ exports.getEntity = async (req, res) => {
 exports.updateEntity = async (req, res) => {
     try {
         const { id } = req.params;
-        const { attribute_code, label, options, entity_type, is_required } = req.body;
+        const { attributeCode, label, options, entityType, isRequired } = req.body;
 
         const attribute = await Attribute.findById(id);
         if (!attribute) {
             return res.status(404).json({ message: 'Attribute not found' });
         }
 
-        attribute.attribute_code = attribute_code || attribute.attribute_code;
+        attribute.attributeCode = attributeCode || attribute.attributeCode;
         attribute.label = label || attribute.label;
         attribute.options = options || attribute.options;
-        attribute.entity_type = entity_type || attribute.entity_type;
-        attribute.is_required = is_required;
+        attribute.entityType = entityType || attribute.entityType;
+        attribute.isRequired = isRequired;
 
         const updatedEntity = await AttributeRepository.updateEntity(id, attribute);
         res.status(200).json({ message: 'Attribute updated successfully', attribute: updatedEntity });
