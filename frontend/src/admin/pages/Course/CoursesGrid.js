@@ -1,16 +1,20 @@
 import React from 'react';
 import AdminGrid from '../../../components/grids/AdminGrid';
 import CourseApiClient from '../../../api/CourseApiClient';
+import { adminApiClient } from '../../../api/AdminApiClient';
 import { useNavigate } from 'react-router-dom';
+import { useNotification } from '../../../contexts/NotificationContext';
 
 const CoursesGrid = () => {
     const navigate = useNavigate();
+    const { addNotification } = useNotification();
 
     const columns = [
         { label: 'ID', field: '_id' },
-        { label: 'Title', field: 'title', sortable: true, filterable: true },
-        { label: 'Duration', field: 'duration' },
+        { label: 'Title', field: 'title', filterable: true, sortable: true },
+        { label: 'Duration', field: 'duration', filterable: true, options: ['1h', '2h', '3h'] },
         { label: 'Level', field: 'level', sortable: true },
+        { label: 'Created At', field: 'createdAt', render: (value) => new Date(value).toLocaleString() },
     ];
 
     const handleEdit = (course) => {
@@ -18,7 +22,12 @@ const CoursesGrid = () => {
     };
 
     const handleDelete = async (course) => {
-        await CourseApiClient.deleteCourse(course._id);
+        try {
+            await adminApiClient.delete(`/courses/${course._id}`);
+            addNotification('Course deleted successfully', 'success');
+        } catch (err) {
+            addNotification('Failed to delete course', 'error');
+        }
     };
 
     return (

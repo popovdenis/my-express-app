@@ -1,23 +1,36 @@
-import React from 'react';
+import React, { useState } from 'react';
 import AdminGrid from '../../../components/grids/AdminGrid';
 import { adminApiClient } from '../../../api/AdminApiClient';
 import { Link, useNavigate } from 'react-router-dom';
 import { useNotification } from '../../../contexts/NotificationContext';
+import CourseApiClient from "../../../api/CourseApiClient";
 
 const Courses = () => {
     const navigate = useNavigate();
     const { addNotification } = useNotification();
 
-    const fetchCourses = async ({ filters, sort, pagination }) => {
+    const prepareFetchCourses = (filters, sort, pagination) => {
         const query = new URLSearchParams();
 
-        if (filters.title) query.append('filter[title]', filters.title);
-        if (filters.level) query.append('filter[level]', filters.level);
-        if (sort) query.append('sort', sort);
-        query.append('page', pagination.page);
-        query.append('limit', pagination.limit);
+        Object.entries(filters).forEach(([key, value]) => {
+            if (value) query.append(`filter[${key}]`, value);
+        });
 
-        const data = await adminApiClient.get(`/courses?${query.toString()}`);
+        if (sort) query.append('sort', sort);
+
+        const params = {
+            page: pagination.page,
+            limit: pagination.limit,
+        };
+
+        return { query, params };
+    };
+
+    const fetchCourses = async ({ filters, sort, pagination }) => {
+        const { query, params } = prepareFetchCourses(filters, sort, pagination);
+
+        const data = await CourseApiClient.fetchCourses(query, params);
+
         return { items: data.courses, total: data.total };
     };
 
