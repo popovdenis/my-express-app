@@ -3,6 +3,7 @@ import {Link, useNavigate} from 'react-router-dom';
 import DropdownActions from '../../../components/DropdownActions';
 import ConfirmDelete from '../../../components/ConfirmDelete';
 import { useNotification } from '../../../../contexts/NotificationContext';
+import { adminApiClient } from '../../../../api/AdminApiClient';
 
 const Attributes = () => {
     const [attributes, setAttributes] = useState([]);
@@ -14,17 +15,8 @@ const Attributes = () => {
     useEffect(() => {
         const fetchAttributes = async () => {
             try {
-                const response = await fetch(`${process.env.REACT_APP_API_ADMIN_URL}/attributes`, {
-                    method: 'GET',
-                    credentials: 'include'
-                });
-
-                const data = await response.json();
-                if (response.ok) {
-                    setAttributes(data.attributes);
-                } else {
-                    addNotification(data.message || 'Failed to fetch attributes', 'error');
-                }
+                const data = await adminApiClient.get(`/attributes`);
+                setAttributes(data.attributes);
             } catch (err) {
                 console.log(err);
                 addNotification(err.message || 'Failed to fetch attributes', 'error');
@@ -38,18 +30,10 @@ const Attributes = () => {
             return;
         }
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_ADMIN_URL}/attributes/${selectedAttribute._id}`, {
-                method: 'DELETE',
-                credentials: 'include'
-            });
-            if (response.ok) {
-                setAttributes((prevAttributes) => prevAttributes.filter(attribute => attribute._id !== selectedAttribute._id));
-                setShowConfirm(false);
-                setSelectedAttribute(null);
-            } else {
-                const errData = await response.json();
-                addNotification(errData.message || 'Failed to delete attribute', 'error');
-            }
+            await adminApiClient.delete(`attributes/${selectedAttribute._id}`);
+            setAttributes((prevAttributes) => prevAttributes.filter(attribute => attribute._id !== selectedAttribute._id));
+            setShowConfirm(false);
+            setSelectedAttribute(null);
         } catch (err) {
             addNotification('Error: Unable to delete attribute.' + e.message, 'error');
         }

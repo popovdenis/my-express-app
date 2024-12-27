@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import { useNotification } from '../../../contexts/NotificationContext';
+import { adminApiClient } from '../../../api/AdminApiClient';
 
 const EditUser = () => {
     const { id } = useParams();
@@ -17,22 +18,13 @@ const EditUser = () => {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                console.log(`Fetching user ${id}`);
-                const response = await fetch(`${process.env.REACT_APP_API_ADMIN_URL}/users/${id}`, {
-                    method: 'GET',
-                    credentials: 'include'
+                const data = await adminApiClient.get(`/users/${id}`);
+                setFormData({
+                    firstname: data.user.firstname,
+                    lastname: data.user.lastname,
+                    email: data.user.email,
+                    role: data.user.role
                 });
-                const data = await response.json();
-                if (response.ok) {
-                    setFormData({
-                        firstname: data.user.firstname,
-                        lastname: data.user.lastname,
-                        email: data.user.email,
-                        role: data.user.role
-                    });
-                } else {
-                    addNotification(data.message || 'Failed to fetch user data', 'error');
-                }
             } catch (error) {
                 addNotification(error.message || 'Failed to fetch user data', 'error');
             } finally {
@@ -50,19 +42,9 @@ const EditUser = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_ADMIN_URL}/users/${id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                credentials: "include",
-                body: JSON.stringify(formData),
-            });
-            if (response.ok) {
-                addNotification(`The user has been updated successfully`, 'success');
-                navigate('/admin/users');
-            } else {
-                const errData = await response.json();
-                addNotification(errData.message || 'Failed to fetch user data', 'error');
-            }
+            await adminApiClient.put(`/users/${id}`, { body: formData });
+            addNotification(`The user has been updated successfully`, 'success');
+            navigate('/admin/users');
         } catch (e) {
             addNotification(`Error: Unable to create user: ${e.message}`, 'error');
         }

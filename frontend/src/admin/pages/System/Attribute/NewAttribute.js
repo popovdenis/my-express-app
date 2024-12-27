@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import { useNotification } from '../../../../contexts/NotificationContext';
+import { adminApiClient } from '../../../../api/AdminApiClient';
 
 const NewAttribute = () => {
     const navigate = useNavigate();
@@ -18,16 +19,8 @@ const NewAttribute = () => {
     useEffect(() => {
         const fetchEntityTypes = async () => {
             try {
-                const response = await fetch(`${process.env.REACT_APP_API_ADMIN_URL}/attribute_entity/`, {
-                    method: 'GET',
-                    credentials: 'include'
-                });
-                const data = await response.json();
-                if (response.ok) {
-                    setEntityTypes(data.entityTypes);
-                } else {
-                    addNotification(data.message || 'Failed to fetch entity types', 'error');
-                }
+                const data = await adminApiClient.get(`/attribute_entity/`);
+                setEntityTypes(data.entityTypes);
             } catch (error) {
                 addNotification(error.message || 'Failed to fetch entity types', 'error');
             } finally {
@@ -48,19 +41,9 @@ const NewAttribute = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_ADMIN_URL}/attributes`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData),
-                credentials: "include"
-            });
-            const data = await response.json();
-            if (response.ok) {
-                addNotification('Attribute created successfully', 'success');
-                navigate('/admin/attributes');
-            } else {
-                addNotification(data.message || 'Failed to create attribute', 'error');
-            }
+            await adminApiClient.post(`/attributes/`, { body: formData });
+            addNotification('Attribute created successfully', 'success');
+            navigate('/admin/attributes');
         } catch (e) {
             addNotification(`Error: Unable to create attribute: ${e.message}`, 'error');
         }

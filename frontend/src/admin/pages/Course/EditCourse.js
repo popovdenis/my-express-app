@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Link, useNavigate, useParams} from "react-router-dom";
 import { useNotification } from '../../../contexts/NotificationContext';
+import { adminApiClient } from '../../../api/AdminApiClient';
 
 const EditCourse = () => {
     const { id } = useParams();
@@ -19,25 +20,17 @@ const EditCourse = () => {
     useEffect(() => {
         const fetchCourse = async () => {
             try {
-                const response = await fetch(`${process.env.REACT_APP_API_ADMIN_URL}/courses/${id}`, {
-                    method: 'GET',
-                    credentials: 'include'
+                const data = await adminApiClient.get(`/courses/${id}`);
+                setFormData({
+                    title: data.course.title,
+                    description: data.course.description,
+                    duration: data.course.duration,
+                    level: data.course.level
                 });
-                const data = await response.json();
-                if (response.ok) {
-                    setFormData({
-                        title: data.course.title,
-                        description: data.course.description,
-                        duration: data.course.duration,
-                        level: data.course.level
-                    });
-                    if (data.attributes && data.attributes.length) {
-                        setAttributes(data.attributes);
-                    }
-                    addNotification(`The course ${data.course.title} has been updated successfully`, 'success');
-                } else {
-                    addNotification(data.message || 'Failed to fetch course data', 'error');
+                if (data.attributes && data.attributes.length) {
+                    setAttributes(data.attributes);
                 }
+                addNotification(`The course ${data.course.title} has been updated successfully`, 'success');
             } catch (error) {
                 addNotification('Error: Unabled to update the course', 'error');
             } finally {
@@ -55,19 +48,9 @@ const EditCourse = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_ADMIN_URL}/courses/${id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                credentials: "include",
-                body: JSON.stringify(formData),
-            });
-            const data = await response.json();
-            if (response.ok) {
-                addNotification(`The course ${data.course.title} has been updated successfully`, 'success');
-                navigate('/admin/courses');
-            } else {
-                addNotification(data.message || 'Failed to update the course', 'error');
-            }
+            const data = await adminApiClient.put(`/courses/${id}`, { body: formData });
+            addNotification(`The course ${data.course.title} has been updated successfully`, 'success');
+            navigate('/admin/courses');
         } catch (e) {
             addNotification('Error: Unable to update the course.' + e.message, 'error');
         }

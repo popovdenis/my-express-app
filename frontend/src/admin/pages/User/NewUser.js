@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import {useNavigate} from "react-router-dom";
 import { useNotification } from '../../../contexts/NotificationContext';
+import { adminApiClient } from '../../../api/AdminApiClient';
 
 const NewUser = () => {
     const navigate = useNavigate();
@@ -20,19 +21,9 @@ const NewUser = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_ADMIN_URL}/users`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData),
-                credentials: "include"
-            });
-            const data = await response.json();
-            if (response.ok) {
-                addNotification('A new user has been created successfully');
-                navigate('/admin/users');
-            } else {
-                addNotification(data.message || 'Failed to create user', 'error');
-            }
+            await adminApiClient.post(`/users`, { body: formData });
+            addNotification('A new user has been created successfully');
+            navigate('/admin/users');
         } catch (e) {
             addNotification('Error: Unable to create user.' + e.message, 'error');
         }

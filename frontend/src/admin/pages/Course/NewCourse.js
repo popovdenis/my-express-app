@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import { useNotification } from '../../../contexts/NotificationContext';
+import { adminApiClient } from '../../../api/AdminApiClient';
 
 const NewCourse = () => {
     const navigate = useNavigate();
@@ -18,16 +19,8 @@ const NewCourse = () => {
     useEffect(() => {
         const fetchCourseAttributes = async () => {
             try {
-                const response = await fetch(`${process.env.REACT_APP_API_ADMIN_URL}/attribute_entity/course`, {
-                    method: 'GET',
-                    credentials: 'include'
-                });
-                const data = await response.json();
-                if (response.ok) {
-                    setAttributes(data.attributes);
-                } else {
-                    addNotification(data.message || 'Failed to fetch course data', 'error');
-                }
+                const data = await adminApiClient.get(`/attribute_entity/course`);
+                setAttributes(data.attributes);
             } catch (error) {
                 addNotification(error.message || 'Failed to fetch course data', 'error');
             } finally {
@@ -62,19 +55,9 @@ const NewCourse = () => {
         }
 
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_ADMIN_URL}/courses`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData),
-                credentials: "include"
-            });
-            const data = await response.json();
-            if (response.ok) {
-                addNotification('Course created successfully', 'success');
-                navigate('/admin/courses');
-            } else {
-                addNotification(data.message || 'Failed to create course', 'error');
-            }
+            await adminApiClient.post(`/courses`, { body: formData });
+            addNotification('Course created successfully', 'success');
+            navigate('/admin/courses');
         } catch (e) {
             addNotification('Error: Unable to create course.' + e.message, 'error');
         }

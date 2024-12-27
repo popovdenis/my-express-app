@@ -4,6 +4,7 @@ import { formatDate } from '../../../utils/dateUtils';
 import DropdownActions from '../../components/DropdownActions';
 import ConfirmDelete from '../../components/ConfirmDelete';
 import { useNotification } from '../../../contexts/NotificationContext';
+import { adminApiClient } from '../../../api/AdminApiClient';
 
 const Courses = () => {
     const { addNotification } = useNotification();
@@ -30,13 +31,8 @@ const Courses = () => {
                 query.append('page', pagination.page);
                 query.append('limit', pagination.limit);
 
-                const response = await fetch(`${process.env.REACT_APP_API_ADMIN_URL}/courses?${query.toString()}`, {
-                    method: 'GET',
-                    credentials: 'include',
-                });
-
-                const data = await response.json();
-                if (response.ok && Array.isArray(data.courses)) {
+                const data = await adminApiClient.get(`/courses?${query.toString()}`);
+                if (Array.isArray(data.courses)) {
                     setCourses(data.courses);
                     setPagination((prev) => ({
                         ...prev,
@@ -82,18 +78,10 @@ const Courses = () => {
             return;
         }
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_ADMIN_URL}/courses/${selectedCourse._id}`, {
-                method: 'DELETE',
-                credentials: 'include'
-            });
-            if (response.ok) {
-                setCourses((prevCourses) => prevCourses.filter(course => course._id !== selectedCourse._id));
-                setShowConfirm(false);
-                setSelectedCourse(null);
-            } else {
-                const errData = await response.json();
-                addNotification(errData.message || 'Failed to delete course', 'error');
-            }
+            await adminApiClient.delete(`/courses/${selectedCourse._id}`);
+            setCourses((prevCourses) => prevCourses.filter(course => course._id !== selectedCourse._id));
+            setShowConfirm(false);
+            setSelectedCourse(null);
         } catch (err) {
             addNotification('Error: Unable to delete course.' + e.message, 'error');
         }

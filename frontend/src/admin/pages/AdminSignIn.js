@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {useAdminAuth} from '../contexts/AdminAuth';
 import { useNotification } from '../../contexts/NotificationContext';
+import { adminApiClient } from '../../api/AdminApiClient';
 
 const AdminSignIn = () => {
     const [formData, setFormData] = useState({ email: '', password: '' });
@@ -18,21 +19,10 @@ const AdminSignIn = () => {
         e.preventDefault();
 
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_ADMIN_URL}/signin`, {
-                method: 'POST',
-                credentials: 'include',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData),
-            });
-
-            const data = await response.json();
-            if (response.ok) {
-                login(data.user);
-                addNotification('You have successfully signed in');
-                navigate('/admin/dashboard');
-            } else {
-                addNotification(data.message || 'Failed to sign in', 'error');
-            }
+            const data = await adminApiClient.post(`/signin`, { body: formData });
+            login(data.user);
+            addNotification('You have successfully signed in');
+            navigate('/admin/dashboard');
         } catch (error) {
             addNotification('Error: Unable to connect to the server.', 'error');
         }

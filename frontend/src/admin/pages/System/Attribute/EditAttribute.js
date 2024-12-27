@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {Link, useNavigate, useParams} from "react-router-dom";
 import { useNotification } from '../../../../contexts/NotificationContext';
+import { adminApiClient } from '../../../../api/AdminApiClient';
 
 const EditAttribute = () => {
     const { id } = useParams();
@@ -19,16 +20,8 @@ const EditAttribute = () => {
     useEffect(() => {
         const fetchEntityTypes = async () => {
             try {
-                const response = await fetch(`${process.env.REACT_APP_API_ADMIN_URL}/attribute_entity/`, {
-                    method: 'GET',
-                    credentials: 'include',
-                });
-                const data = await response.json();
-                if (response.ok) {
-                    setEntityTypes(data.entityTypes);
-                } else {
-                    addNotification(data.message || 'Failed to fetch entity types', 'error');
-                }
+                const data = await adminApiClient.get(`/attribute_entity`);
+                setEntityTypes(data.entityTypes);
             } catch (error) {
                 addNotification(error.message || 'Error fetching entity types', 'error');
             }
@@ -36,22 +29,14 @@ const EditAttribute = () => {
 
         const fetchAttribute = async () => {
             try {
-                const response = await fetch(`${process.env.REACT_APP_API_ADMIN_URL}/attributes/${id}`, {
-                    method: 'GET',
-                    credentials: 'include',
+                const data = await adminApiClient.get(`/attributes/${id}`);
+                setFormData({
+                    attribute_code: data.attribute.attribute_code,
+                    label: data.attribute.label,
+                    options: data.attribute.options.join(', '),
+                    entity_type: data.attribute.entity_type,
+                    is_required: data.attribute.is_required,
                 });
-                const data = await response.json();
-                if (response.ok) {
-                    setFormData({
-                        attribute_code: data.attribute.attribute_code,
-                        label: data.attribute.label,
-                        options: data.attribute.options.join(', '), // Преобразуем массив в строку
-                        entity_type: data.attribute.entity_type,
-                        is_required: data.attribute.is_required,
-                    });
-                } else {
-                    addNotification(data.message || 'Failed to fetch attribute data', 'error');
-                }
             } catch (error) {
                 addNotification(error.message || 'Error fetching attribute data', 'error');
             } finally {
@@ -79,19 +64,9 @@ const EditAttribute = () => {
         };
 
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_ADMIN_URL}/attributes/${id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(updatedFormData),
-                credentials: "include",
-            });
-            const data = await response.json();
-            if (response.ok) {
-                addNotification(`The attribute ${formData.label} has been saved successfully`, 'success');
-                navigate('/admin/attributes');
-            } else {
-                addNotification(data.message || 'Failed to update the attribute', 'error');
-            }
+            await adminApiClient.put(`/attributes/${id}`, { body: updatedFormData });
+            addNotification(`The attribute ${formData.label} has been saved successfully`, 'success');
+            navigate('/admin/attributes');
         } catch (e) {
             addNotification('Error: Unable to update the attribute.' + e.message, 'error');
         }

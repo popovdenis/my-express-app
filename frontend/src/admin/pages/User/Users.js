@@ -3,6 +3,7 @@ import {Link, useNavigate} from 'react-router-dom';
 import DropdownActions from '../../components/DropdownActions';
 import ConfirmDelete from '../../components/ConfirmDelete';
 import { useNotification } from '../../../contexts/NotificationContext';
+import { adminApiClient } from '../../../api/AdminApiClient';
 
 const Users = () => {
     const [users, setUsers] = useState([]);
@@ -15,17 +16,8 @@ const Users = () => {
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const response = await fetch(`${process.env.REACT_APP_API_ADMIN_URL}/users`, {
-                    method: 'GET',
-                    credentials: 'include'
-                });
-
-                const data = await response.json();
-                if (response.ok) {
-                    setUsers(data.users);
-                } else {
-                    addNotification(errData.message || 'Failed to fetch users', 'error');
-                }
+                const data = await adminApiClient.get(`/users`);
+                setUsers(data.users);
             } catch (err) {
                 navigate('/signin');
             } finally {
@@ -39,18 +31,11 @@ const Users = () => {
             return;
         }
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_ADMIN_URL}/users/${selectedUser._id}`, {
-                method: 'DELETE',
-                credentials: 'include'
-            });
-            if (response.ok) {
-                setUsers((prevUsers) => prevUsers.filter(user => user._id !== selectedUser._id));
-                setShowConfirm(false);
-                setSelectedUser(null);
-                addNotification('The user has been deleted successfully');
-            } else {
-                addNotification(errData.message || 'Failed to delete user', 'error');
-            }
+            await adminApiClient.delete(`/users/${selectedUser._id}`);
+            setUsers((prevUsers) => prevUsers.filter(user => user._id !== selectedUser._id));
+            setShowConfirm(false);
+            setSelectedUser(null);
+            addNotification('The user has been deleted successfully');
         } catch (err) {
             addNotification('Error: Unable to delete user.' + e.message, 'error');
         }
