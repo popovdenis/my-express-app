@@ -5,23 +5,10 @@ exports.getList = async (req, res) => {
     try {
         const { filter, sort, page = 1, limit = 10 } = req.query;
 
-        const query = {};
-        if (filter) {
-            if (filter.attribute_code) query.attribute_code = { $regex: filter.attribute_code, $options: 'i' };
-        }
-
-        const sortQuery = {};
-        if (sort) {
-            const match = sort.match(/^(.*)_(asc|desc)$/);
-            if (match) {
-                const [_, field, direction] = match;
-                sortQuery[field] = direction === 'asc' ? 1 : -1;
-            }
-        }
-
+        const filters = filter ? JSON.parse(filter) : {};
         const skip = (page - 1) * limit;
 
-        const {items, total} = await AttributeRepository.getList(query, sortQuery, skip, Number(limit));
+        const { items, total } = await AttributeRepository.getList(filters, sort, skip, Number(limit));
 
         res.json({
             attributes: items,

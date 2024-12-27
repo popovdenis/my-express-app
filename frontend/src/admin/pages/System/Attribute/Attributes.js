@@ -1,14 +1,13 @@
 import React from 'react';
-import {Link, useNavigate} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import { useNotification } from '../../../../contexts/NotificationContext';
 import AdminGrid from '../../../../components/grids/AdminGrid';
 import AttributeApiClient from "../../../../api/AttributeApiClient";
 
 const Attributes = () => {
-    const navigate = useNavigate();
     const { addNotification } = useNotification();
 
-    const fetchAttributes = async ({ filters, sort, pagination }) => {
+    const fetchAttributes = async ({ filters = {}, sort, pagination }) => {
         const query = new URLSearchParams();
 
         Object.entries(filters).forEach(([key, value]) => {
@@ -31,9 +30,9 @@ const Attributes = () => {
         navigate(`/admin/attributes/${customer._id}`);
     };
 
-    const handleDelete = async (customer) => {
+    const handleDelete = async (attribute) => {
         try {
-            await AttributeApiClient.deleteAttribute(customer._id);
+            await AttributeApiClient.deleteAttribute(attribute._id);
             addNotification('The attribute has been deleted successfully', 'success');
             return true;
         } catch (err) {
@@ -49,15 +48,9 @@ const Attributes = () => {
         {
             label: 'Entity Type',
             field: 'entity_type',
-            sortable: true,
-            render: (value, row) => row.entity_type?.entity_type_code || 'N/A',
+            render: (value) => value?.entity_type_code || 'Unknown',
         },
-        {
-            label: 'Required',
-            field: 'is_required',
-            sortable: true,
-            render: (value, row) => row.is_required ? 'Yes' : 'No',
-        },
+        { label: 'Required', field: 'is_required', render: (value) => (value ? 'Yes' : 'No') },
         {
             label: 'Created At',
             field: 'createdAt',
