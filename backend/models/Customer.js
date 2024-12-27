@@ -36,7 +36,7 @@ const customerSchema = new mongoose.Schema(
         },
     }, { timestamps: true, collection: 'customer_entity' }
 );
-userSchema.methods.matchPassword = async function (password) {
+customerSchema.methods.matchPassword = async function (password) {
     return await bcrypt.compare(password, this.password);
 }
 

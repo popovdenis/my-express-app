@@ -1,10 +1,10 @@
 const bcrypt = require("bcryptjs");
-const UserRepository = require('../../models/UserRepository');
-const UserResource = require('../../models//resources/UserResource');
+const CustomerRepository = require('../../models/CustomerRepository');
+const CustomerResource = require('../../models//resources/CustomerResource');
 
 exports.getList = async (req, res) => {
     try {
-        const users = await UserResource.findAllExclPassword();
+        const users = await CustomerResource.findAllExclPassword();
         res.json({ users });
     } catch (error) {
         console.error('Error fetching users:', error);
@@ -20,7 +20,7 @@ exports.addEntity = async (req, res) => {
             return res.status(400).json({ message: 'All fields are required' });
         }
 
-        const existingUser = await UserResource.findByEmail(email);
+        const existingUser = await CustomerResource.findByEmail(email);
         if (existingUser) {
             return res.status(400).json({ message: 'User already exists' });
         }
@@ -28,7 +28,7 @@ exports.addEntity = async (req, res) => {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        const newUser = await UserRepository.createUser({
+        const newUser = await CustomerRepository.createUser({
             firstname,
             lastname,
             email,
@@ -45,7 +45,7 @@ exports.addEntity = async (req, res) => {
 
 exports.getEntity = async (req, res) => {
     try {
-        const user = await UserResource.findByIdExclPassword(req.params.id);
+        const user = await CustomerResource.findByIdExclPassword(req.params.id);
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
@@ -61,7 +61,7 @@ exports.updateEntity = async (req, res) => {
         const { id } = req.params;
         const { firstname, lastname, email, role } = req.body;
 
-        const user = await UserResource.findByIdExclPassword(id);
+        const user = await CustomerResource.findByIdExclPassword(id);
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
@@ -70,7 +70,7 @@ exports.updateEntity = async (req, res) => {
         user.email = email || user.email;
         user.role = role || user.role;
 
-        const updatedUser = await UserRepository.updateUser(id, user);
+        const updatedUser = await CustomerRepository.updateUser(id, user);
         res.status(200).json({ message: 'User updated successfully', user: updatedUser });
     } catch (error) {
         console.error('Error updating user:', error);
@@ -82,7 +82,7 @@ exports.deleteEntity = async (req, res) => {
     try {
         const { id } = req.params;
 
-        const user = await UserRepository.deleteUser(id);
+        const user = await CustomerRepository.deleteUser(id);
 
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
@@ -104,7 +104,7 @@ exports.updateUserRole = async (req, res) => {
             return res.status(400).json({ message: 'Invalid role' });
         }
 
-        const user = await UserResource.findByIdAndUpdate(id, { role }, { new: true });
+        const user = await CustomerResource.findByIdAndUpdate(id, { role }, { new: true });
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }

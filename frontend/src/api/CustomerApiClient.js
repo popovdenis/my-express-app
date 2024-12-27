@@ -7,7 +7,8 @@ class CustomerApiClient extends BaseApiClient {
 
     handleError(status, errorData) {
         if (status === 401) {
-            window.location.href = "/signin";
+            console.error(errorData.message)
+            // window.location.href = "/signin";
         } else {
             console.error(`[Customer API Error]: ${errorData.message}`);
         }

@@ -1,10 +1,10 @@
-const UserRepository = require('../models/UserRepository');
-const UserResource = require('../models/resources/UserResource');
+const CustomerRepository = require('../models/CustomerRepository');
+const CustomerResource = require('../models/resources/CustomerResource');
 const tokenService = require("../services/tokenService");
 
 exports.getCurrentUser = async (req, res) => {
     try {
-        const user = await UserResource.findByIdExclPassword(req.user.id);
+        const user = await CustomerResource.findByIdExclPassword(req.user.id);
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
@@ -34,7 +34,7 @@ exports.updateCurrentUser = async (req, res) => {
             updates.password = await bcrypt.hash(password, saltRounds);
         }
 
-        const updatedUser = await UserRepository.updateUser(userId, updates);
+        const updatedUser = await CustomerRepository.updateUser(userId, updates);
         const token = tokenService.generateRefreshToken(updatedUser);
 
         res.status(200).json({

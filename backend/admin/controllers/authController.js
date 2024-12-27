@@ -1,5 +1,5 @@
 const config = require('../../config/jwt.config');
-const UserResource = require('../../models/resources/UserResource');
+const CustomerResource = require('../../models/resources/CustomerResource');
 const tokenService = require('../../services/tokenService');
 
 exports.adminSignIn = async (req, res) => {
@@ -10,7 +10,7 @@ exports.adminSignIn = async (req, res) => {
     }
 
     try {
-        const user = await UserResource.findByEmail(email);
+        const user = await CustomerResource.findByEmail(email);
         if (!user || !(await user.matchPassword(password))) {
             return res.status(401).json({ message: 'Invalid email or password' });
         }
@@ -58,7 +58,7 @@ exports.checkAdminAction = async (req, res) => {
         if (!req.user.id) {
             return res.status(401).json({ message: 'Unauthorized: Invalid User ID' });
         }
-        const user = await UserResource.findByIdExclPassword(req.user.id);
+        const user = await CustomerResource.findByIdExclPassword(req.user.id);
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }

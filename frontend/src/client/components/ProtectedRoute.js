@@ -10,7 +10,7 @@ export const ProtectedAccountRoute = ({ children }) => {
     useEffect(() => {
         const verifyAuth = async () => {
             try {
-                const data = await customerApiClient.post('/customer/account');
+                const data = await customerApiClient.get('/customer/account');
                 setUser(data.user);
             } catch (error) {
                 console.error('Error fetching user:', error.message);

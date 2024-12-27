@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 const config = require('../config/jwt.config');
-const UserRepository = require('../models/UserRepository');
-const UserResource = require('../models/resources/UserResource');
+const CustomerRepository = require('../models/CustomerRepository');
+const CustomerResource = require('../models/resources/CustomerResource');
 const tokenService = require('../services/tokenService');
 
 exports.signIn = async (req, res) => {
@@ -12,7 +12,7 @@ exports.signIn = async (req, res) => {
     }
 
     try {
-        const user = await UserResource.findByEmail(email);
+        const user = await CustomerResource.findByEmail(email);
         if (!user || !(await user.matchPassword(password))) {
             return res.status(401).json({ message: 'Invalid email or password' });
         }
@@ -56,7 +56,7 @@ exports.signUp = async (req, res) => {
             return res.status(400).json({ message: 'All fields are required' });
         }
 
-        const existingUser = await UserResource.findByEmail(email);
+        const existingUser = await CustomerResource.findByEmail(email);
         if (existingUser) {
             return res.status(400).json({ message: 'User already exists' });
         }
@@ -64,7 +64,7 @@ exports.signUp = async (req, res) => {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        const newUser = await UserRepository.createUser({
+        const newUser = await CustomerRepository.createUser({
             firstname,
             lastname,
             email,
