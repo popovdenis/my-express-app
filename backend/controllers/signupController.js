@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const UserRepository = require('../models/UserRepository');
+const UserResource = require('../models/resources/UserResource');
 
 exports.handleSignUp = async (req, res) => {
     const { firstname, lastname, email, password } = req.body;
@@ -9,7 +10,7 @@ exports.handleSignUp = async (req, res) => {
     }
 
     try {
-        const userExists = await UserRepository.findByEmail(email);
+        const userExists = await UserResource.findByEmail(email);
         if (userExists) {
             return res.status(400).json({ message: 'User already exists' });
         }

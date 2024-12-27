@@ -1,10 +1,10 @@
 const bcrypt = require("bcryptjs");
-const User = require('../../models/User');
 const UserRepository = require('../../models/UserRepository');
+const UserResource = require('../../models//resources/UserResource');
 
 exports.getList = async (req, res) => {
     try {
-        const users = await User.find().select('-password');
+        const users = await UserResource.findAllExclPassword();
         res.json({ users });
     } catch (error) {
         console.error('Error fetching users:', error);
@@ -20,7 +20,7 @@ exports.addEntity = async (req, res) => {
             return res.status(400).json({ message: 'All fields are required' });
         }
 
-        const existingUser = await UserRepository.findByEmail(email);
+        const existingUser = await UserResource.findByEmail(email);
         if (existingUser) {
             return res.status(400).json({ message: 'User already exists' });
         }
@@ -45,7 +45,7 @@ exports.addEntity = async (req, res) => {
 
 exports.getEntity = async (req, res) => {
     try {
-        const user = await UserRepository.findByIdExclPassword(req.params.id);
+        const user = await UserResource.findByIdExclPassword(req.params.id);
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
@@ -61,7 +61,7 @@ exports.updateEntity = async (req, res) => {
         const { id } = req.params;
         const { firstname, lastname, email, role } = req.body;
 
-        const user = await UserRepository.findByIdExclPassword(id);
+        const user = await UserResource.findByIdExclPassword(id);
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
@@ -104,7 +104,7 @@ exports.updateUserRole = async (req, res) => {
             return res.status(400).json({ message: 'Invalid role' });
         }
 
-        const user = await User.findByIdAndUpdate(id, { role }, { new: true });
+        const user = await UserResource.findByIdAndUpdate(id, { role }, { new: true });
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }

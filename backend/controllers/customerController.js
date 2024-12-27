@@ -1,9 +1,10 @@
 const UserRepository = require('../models/UserRepository');
+const UserResource = require('../models/resources/UserResource');
 const tokenService = require("../services/tokenService");
 
 exports.getCurrentUser = async (req, res) => {
     try {
-        const user = await UserRepository.findByIdExclPassword(req.user.id);
+        const user = await UserResource.findByIdExclPassword(req.user.id);
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }

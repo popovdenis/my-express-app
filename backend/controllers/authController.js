@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const config = require('../config/jwt.config');
 const UserRepository = require('../models/UserRepository');
+const UserResource = require('../models/resources/UserResource');
 const tokenService = require('../services/tokenService');
 
 exports.signIn = async (req, res) => {
@@ -11,7 +12,7 @@ exports.signIn = async (req, res) => {
     }
 
     try {
-        const user = await UserRepository.findByEmail(email);
+        const user = await UserResource.findByEmail(email);
         if (!user || !(await user.matchPassword(password))) {
             return res.status(401).json({ message: 'Invalid email or password' });
         }
@@ -55,7 +56,7 @@ exports.signUp = async (req, res) => {
             return res.status(400).json({ message: 'All fields are required' });
         }
 
-        const existingUser = await UserRepository.findByEmail(email);
+        const existingUser = await UserResource.findByEmail(email);
         if (existingUser) {
             return res.status(400).json({ message: 'User already exists' });
         }

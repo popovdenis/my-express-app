@@ -1,8 +1,14 @@
 const User = require('../User');
 
 class UserResource {
+    async findAllExclPassword() {
+        return await User.findById().select('-password');
+    }
     async findByIdExclPassword(userId) {
         return User.findById(userId).select('-password');
+    }
+    async findByIdAndUpdate(userId, updates) {
+        return await User.findByIdAndUpdate(userId, updates, { new: true });
     }
     async findByEmail(email) {
         return await User.findOne({ email });
