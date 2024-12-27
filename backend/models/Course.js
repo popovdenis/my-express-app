@@ -46,10 +46,6 @@ const courseSchema = new mongoose.Schema(
             type: String,
             required: false,
         },
-        enrolledStudents: {
-            type: Number,
-            default: 0,
-        },
         isActive: {
             type: Boolean,
             default: true,

@@ -8,6 +8,7 @@ const AdminUserController = require('../controllers/AdminUserController');
 const CourseController = require('../controllers/CourseController');
 const AttributeController = require('../controllers/AttributeController');
 const EntityTypeController = require('../controllers/EntityTypeController');
+const EnrollmentController = require('../controllers/EnrollmentController');
 const uploadRoutes = require("../../routes/uploadRoutes");
 
 const router = express.Router();
@@ -51,6 +52,13 @@ router.delete('/attributes/:id', authenticateAdminToken, isAdmin, AttributeContr
 // attributes by entity
 router.get('/attribute_entity/:entityTypeCode', authenticateAdminToken, isAdmin, AttributeController.getAttributesByEntityType);
 
+// uploads
 router.use('/uploads', uploadRoutes);
+
+// course enrollments
+router.post('/enrollments/:courseId/enroll', authenticateAdminToken, EnrollmentController.enrollInCourse);
+router.put('/enrollments/:enrollmentId/status', authenticateAdminToken, EnrollmentController.updateEnrollmentStatus);
+
+module.exports = router;
 
 module.exports = router;
