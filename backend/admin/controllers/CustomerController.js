@@ -4,11 +4,34 @@ const CustomerResource = require('../../models//resources/CustomerResource');
 
 exports.getList = async (req, res) => {
     try {
-        const customers = await CustomerResource.findAllExclPassword();
-        res.json({ customers });
+        const { filter, sort, page = 1, limit = 10 } = req.query;
+
+        const query = {};
+        if (filter) {
+            if (filter.firstname) query.firstname = { $regex: filter.firstname, $options: 'i' };
+            if (filter.lastname) query.lastname = { $regex: filter.lastname, $options: 'i' };
+            if (filter.email) query.email = filter.email;
+        }
+
+        const sortQuery = {};
+        if (sort) {
+            const [field, direction] = sort.split('_');
+            sortQuery[field] = direction === 'asc' ? 1 : -1;
+        }
+
+        const skip = (page - 1) * limit;
+
+        const {customers, total} = await CustomerRepository.getList(query, sortQuery, skip, Number(limit));
+
+        res.json({
+            customers,
+            total,
+            page: Number(page),
+            pages: Math.ceil(total / Number(limit)),
+        });
     } catch (error) {
         console.error('Error fetching customers:', error);
-        res.status(500).json({ message: 'Failed to fetch customers' });
+        res.status(500).json({ message: 'Failed to fetch customers: ' + error.message });
     }
 };
 

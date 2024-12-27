@@ -34,7 +34,7 @@ const AdminGrid = ({ columns, fetchData, onEdit, onDelete }) => {
     };
 
     const handleSortChange = (field) => {
-        setSort((prev) => (prev === field ? `-${field}` : field));
+        setSort((prev) => (prev === `${field}_asc` ? `${field}_desc` : `${field}_asc`));
     };
 
     const handlePageChange = (newPage) => {

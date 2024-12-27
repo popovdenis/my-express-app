@@ -1,6 +1,12 @@
 const Customer = require('../Customer');
 
 class CustomerResource {
+    async countDocuments(query) {
+        return await Customer.countDocuments(query);
+    }
+    findByQuery(query) {
+        return Customer.find(query);
+    }
     async findAllExclPassword() {
         return await Customer.find().select('-password');
     }

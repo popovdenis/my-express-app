@@ -1,7 +1,7 @@
 import React from 'react';
-import AdminGrid from '../../../components/grids/AdminGrid';
 import { Link, useNavigate } from 'react-router-dom';
 import { useNotification } from '../../../contexts/NotificationContext';
+import AdminGrid from '../../../components/grids/AdminGrid';
 import CourseApiClient from "../../../api/CourseApiClient";
 
 const Courses = () => {
@@ -23,6 +23,7 @@ const Courses = () => {
         };
 
         const data = await CourseApiClient.fetchCourses(query, params);
+
         return { items: data.courses, total: data.total };
     };
 
