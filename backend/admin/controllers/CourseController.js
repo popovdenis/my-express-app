@@ -31,21 +31,10 @@ exports.getList = async (req, res) => {
     try {
         const { filter, sort, page = 1, limit = 10 } = req.query;
 
-        const query = {};
-        if (filter) {
-            if (filter.title) query.title = { $regex: filter.title, $options: 'i' };
-            if (filter.level) query.level = filter.level;
-        }
-
-        const sortQuery = {};
-        if (sort) {
-            const [field, direction] = sort.split('_');
-            sortQuery[field] = direction === 'asc' ? 1 : -1;
-        }
-
+        const filters = filter ? JSON.parse(filter) : {};
         const skip = (page - 1) * limit;
 
-        const { items, total } = await CourseRepository.getList(query, sortQuery, skip, Number(limit));
+        const { items, total } = await CourseRepository.getList(filters, sort, skip, Number(limit));
 
         res.json({
             courses: items,

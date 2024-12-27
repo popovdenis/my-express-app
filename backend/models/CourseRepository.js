@@ -1,6 +1,10 @@
+const AbstractRepository = require('./AbstractRepository');
 const CourseResource = require('./resources/CourseResource');
 
-class CourseRepository {
+class CourseRepository extends AbstractRepository {
+    constructor() {
+        super(CourseResource);
+    }
     async createCourse(data) {
         return await CourseResource.create(data);
     }
@@ -13,16 +17,21 @@ class CourseRepository {
     async deleteCourse(courseId) {
         return await CourseResource.delete(courseId);
     }
-    async getList(query, sortQuery, skip, limit) {
-        const items = await CourseResource
-            .find(query)
-            .sort(sortQuery)
-            .skip(skip)
-            .limit(limit);
-
-        const total = await CourseResource.countDocuments(query);
-
-        return { items, total };
+    processFilters(filters) {
+        const query = {};
+        if (filters) {
+            if (filters.title) query.title = { $regex: filters.title, $options: 'i' };
+            if (filters.level) query.level = filters.level;
+        }
+        return query;
+    }
+    async getList(filters, sort, skip, limit) {
+        return super.getList(
+            filters,
+            sort,
+            skip,
+            limit
+        );
     }
 }
 

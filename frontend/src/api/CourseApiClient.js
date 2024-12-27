@@ -1,7 +1,7 @@
 import { adminApiClient } from './AdminApiClient';
 
 const CourseApiClient = {
-    fetchCourses: async (query = {}, params = {}) => {
+    fetchItems: async (query = {}, params = {}) => {
         const endpoint =
             query instanceof URLSearchParams
                 ? `/courses?${query.toString()}`

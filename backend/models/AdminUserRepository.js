@@ -1,6 +1,10 @@
+const AbstractRepository = require('./AbstractRepository');
 const AdminUserResource = require('./resources/AdminUserResource');
 
-class AdminUserRepository {
+class AdminUserRepository extends AbstractRepository {
+    constructor() {
+        super(AdminUserResource);
+    }
     async createUser(data) {
         return await AdminUserResource.create(data);
     }
@@ -9,6 +13,15 @@ class AdminUserRepository {
     }
     async deleteUser(userId) {
         return await AdminUserResource.delete(userId);
+    }
+    processFilters(filters) {
+        const query = {};
+        if (filters) {
+            if (filter.firstname) query.firstname = { $regex: filter.firstname, $options: 'i' };
+            if (filter.lastname) query.lastname = { $regex: filter.lastname, $options: 'i' };
+            if (filter.email) query.email = filter.email;
+        }
+        return query;
     }
     async getList(query, sortQuery, skip, limit) {
         const items = await AdminUserResource

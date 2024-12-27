@@ -22,7 +22,7 @@ const Courses = () => {
             limit: pagination.limit,
         };
 
-        const data = await CourseApiClient.fetchCourses(query, params);
+        const data = await CourseApiClient.fetchItems(query, params);
 
         return { items: data.courses, total: data.total };
     };

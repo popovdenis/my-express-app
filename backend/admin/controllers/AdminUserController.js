@@ -6,22 +6,10 @@ exports.getList = async (req, res) => {
     try {
         const { filter, sort, page = 1, limit = 10 } = req.query;
 
-        const query = {};
-        if (filter) {
-            if (filter.firstname) query.firstname = { $regex: filter.firstname, $options: 'i' };
-            if (filter.lastname) query.lastname = { $regex: filter.lastname, $options: 'i' };
-            if (filter.email) query.email = filter.email;
-        }
-
-        const sortQuery = {};
-        if (sort) {
-            const [field, direction] = sort.split('_');
-            sortQuery[field] = direction === 'asc' ? 1 : -1;
-        }
-
+        const filters = filter ? JSON.parse(filter) : {};
         const skip = (page - 1) * limit;
 
-        const {items, total} = await AdminUserRepository.getList(query, sortQuery, skip, Number(limit));
+        const { items, total } = await AdminUserRepository.getList(filters, sort, skip, Number(limit));
 
         res.json({
             users: items,
