@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useNotification } from '../../../contexts/NotificationContext';
 import AdminGrid from '../../../components/grids/AdminGrid';
-import ClientCourseApiClient from "../../../api/ClientCourseApiClient";
+import AdminCourseApiClient from "../../../api/AdminCourseApiClient";
 
 const Courses = () => {
     const navigate = useNavigate();
@@ -22,7 +22,7 @@ const Courses = () => {
             limit: pagination.limit,
         };
 
-        const data = await ClientCourseApiClient.fetchItems(query, params);
+        const data = await AdminCourseApiClient.fetchItems(query, params);
 
         return { items: data.courses, total: data.total };
     };
@@ -33,7 +33,7 @@ const Courses = () => {
 
     const handleDelete = async (course) => {
         try {
-            await ClientCourseApiClient.deleteCourse(course._id);
+            await AdminCourseApiClient.deleteCourse(course._id);
             addNotification('Course deleted successfully', 'success');
             return true;
         } catch (err) {

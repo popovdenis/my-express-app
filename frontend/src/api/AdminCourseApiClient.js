@@ -1,6 +1,6 @@
 import { adminApiClient } from './AdminApiClient';
 
-const ClientCourseApiClient = {
+const AdminCourseApiClient = {
     fetchItems: async (query = {}, params = {}) => {
         const endpoint =
             query instanceof URLSearchParams
@@ -23,4 +23,4 @@ const ClientCourseApiClient = {
     },
 };
 
-export default ClientCourseApiClient;
+export default AdminCourseApiClient;
