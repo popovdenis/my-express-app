@@ -1,5 +1,5 @@
 const config = require('../../config/jwt.config');
-const CustomerResource = require('../../models/resources/CustomerResource');
+const AdminUserResource = require('../../models/resources/AdminUserResource');
 const tokenService = require('../../services/tokenService');
 
 exports.adminSignIn = async (req, res) => {
@@ -10,9 +10,12 @@ exports.adminSignIn = async (req, res) => {
     }
 
     try {
-        const user = await CustomerResource.findByEmail(email);
-        if (!user || !(await user.matchPassword(password))) {
-            return res.status(401).json({ message: 'Invalid email or password' });
+        const user = await AdminUserResource.findByEmail(email);
+        if (!user) {
+            return res.status(401).json({ message: 'Invalid email or password: ' + email });
+        }
+        if (!(await user.matchPassword(password))) {
+            return res.status(401).json({ message: 'Password is not matching' });
         }
 
         if (user.role !== 'admin') {
@@ -58,7 +61,7 @@ exports.checkAdminAction = async (req, res) => {
         if (!req.user.id) {
             return res.status(401).json({ message: 'Unauthorized: Invalid User ID' });
         }
-        const user = await CustomerResource.findByIdExclPassword(req.user.id);
+        const user = await AdminUserResource.findByIdExclPassword(req.user.id);
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }

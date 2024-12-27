@@ -1,4 +1,4 @@
-const User = require('../../models/User');
+const AdminUser = require('../../models/AdminUser');
 
 const isAdmin = async (req, res, next) => {
     try {
@@ -6,7 +6,7 @@ const isAdmin = async (req, res, next) => {
             return res.status(401).send('Not authorized');
         }
 
-        const user = await User.findById(req.user.id);
+        const user = await AdminUser.findById(req.user.id);
         if (!user) {
             return res.status(404).send('User not found');
         }

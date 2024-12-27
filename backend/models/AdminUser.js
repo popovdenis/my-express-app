@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
-const userSchema = new mongoose.Schema(
+const adminUserSchema = new mongoose.Schema(
     {
         firstname: {
             type: String,
@@ -39,10 +39,10 @@ const userSchema = new mongoose.Schema(
             type: Date,
             default: Date.now,
         },
-    }, { timestamps: true }
+    }, { timestamps: true, collection: 'admin_user' }
 );
-userSchema.methods.matchPassword = async function (password) {
+adminUserSchema.methods.matchPassword = async function (password) {
     return await bcrypt.compare(password, this.password);
 }
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model('AdminUser', adminUserSchema);

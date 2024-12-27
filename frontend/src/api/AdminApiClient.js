@@ -7,7 +7,7 @@ class AdminApiClient extends BaseApiClient {
 
     handleError(status, errorData) {
         if (status === 401) {
-            window.location.href = "/admin/signin";
+            // window.location.href = "/admin/signin";
         } else {
             console.error(`[Admin API Error]: ${errorData.message}`);
         }
