@@ -4,6 +4,7 @@ const isAdmin = require('../middlewares/isAdmin');
 
 const adminAuthController = require('../controllers/authController');
 const CustomerController = require('../controllers/CustomerController');
+const AdminUserController = require('../controllers/AdminUserController');
 const courseController = require('../controllers/courseController');
 const attributeController = require('../controllers/attributeController');
 const entityTypeController = require('../controllers/entityTypeController');
@@ -27,7 +28,12 @@ router.put('/courses/:id', authenticateAdminToken, isAdmin, courseController.upd
 router.delete('/courses/:id', authenticateAdminToken, isAdmin, courseController.deleteEntity);
 // entity
 router.get('/attribute_entity', authenticateAdminToken, isAdmin, entityTypeController.getList);
-
+// users
+router.get('/users', authenticateAdminToken, isAdmin, AdminUserController.getList);
+router.get('/users/:id', authenticateAdminToken, isAdmin, AdminUserController.getEntity);
+router.post('/users', authenticateAdminToken, isAdmin, AdminUserController.addEntity);
+router.put('/users/:id', authenticateAdminToken, isAdmin, AdminUserController.updateEntity);
+router.delete('/users/:id', authenticateAdminToken, isAdmin, AdminUserController.deleteEntity);
 // attributes
 router.get('/attributes', authenticateAdminToken, isAdmin, attributeController.getList);
 router.get('/attributes/code/:attributeCode', authenticateAdminToken, isAdmin, attributeController.getAttributeByCode);

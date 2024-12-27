@@ -109,13 +109,18 @@ const Sidebar = () => {
                                     Attributes
                                 </Link>
                             </li>
+                            <li>
+                                <Link to="/admin/users" className="block px-4 py-2 hover:bg-gray-600">
+                                    Users
+                                </Link>
+                            </li>
                         </ul>
                     )}
                 </li>
 
                 <li className="px-4 py-2 text-red-500 font-bold hover:bg-gray-700">
                     <button className="w-full text-left bg-transparent border-none cursor-pointer"
-                        onClick={handleLogout}>
+                            onClick={handleLogout}>
                         Log Out
                     </button>
                 </li>

@@ -4,10 +4,14 @@ import { Routes, Route } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import Dashboard from '../pages/Dashboard';
 import Settings from '../pages/Settings';
-// Customers
+// Customer Entities
 import Customers from '../pages/Customer/Customers';
-import NewUser from '../pages/Customer/NewUser';
+import NewCustomer from '../pages/Customer/NewCustomer';
 import EditCustomer from '../pages/Customer/EditCustomer';
+// Users
+import AdminUsers from '../pages/AdminUser/AdminUsers';
+import NewAdminUser from '../pages/AdminUser/NewAdminUser';
+import EditAdminUser from '../pages/AdminUser/EditAdminUser';
 // Courses
 import Courses from '../pages/Course/Courses';
 import NewCourse from '../pages/Course/NewCourse';
@@ -23,14 +27,23 @@ const BaseAdminRoutes = () => {
             <Sidebar />
             <div className="ml-64 p-4 w-full">
                 <Routes>
+                    {/* General */}
                     <Route path="/dashboard" element={ <Dashboard /> } />
+                    {/* Customer Entities */}
                     <Route path="/customers" element={ <Customers /> } />
-                    <Route path="/customers/new" element={ <NewUser /> } />
+                    <Route path="/customers/new" element={ <NewCustomer /> } />
                     <Route path="/customers/:id" element={ <EditCustomer /> } />
+                    {/* Courses */}
                     <Route path="/courses" element={ <Courses /> } />
                     <Route path="/courses/new" element={ <NewCourse /> } />
                     <Route path="/courses/:id" element={ <EditCourse /> } />
+                    {/* Admin Users */}
+                    <Route path="/users" element={ <AdminUsers /> } />
+                    <Route path="/users/new" element={ <NewAdminUser /> } />
+                    <Route path="/users/:id" element={ <EditAdminUser /> } />
+                    {/* Settings */}
                     <Route path="/settings" element={ <Settings /> } />
+                    {/* Attributes */}
                     <Route path="/attributes" element={ <Attributes /> } />
                     <Route path="/attributes/new" element={ <NewAttribute /> } />
                     <Route path="/attributes/:id" element={ <EditAttribute /> } />

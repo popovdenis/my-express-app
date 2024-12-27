@@ -1,6 +1,12 @@
 const AdminUser = require('../AdminUser');
 
 class AdminUserResource {
+    async countDocuments(query) {
+        return await AdminUser.countDocuments(query);
+    }
+    find(query) {
+        return AdminUser.find(query);
+    }
     async findByIdExclPassword(userId) {
         return AdminUser.findById(userId).select('-password');
     }

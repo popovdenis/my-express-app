@@ -1,0 +1,102 @@
+import React, { useState } from "react";
+import {useNavigate} from "react-router-dom";
+import { useNotification } from '../../../contexts/NotificationContext';
+import { adminApiClient } from '../../../api/AdminApiClient';
+
+const NewAdminUser = () => {
+    const navigate = useNavigate();
+    const { addNotification } = useNotification();
+    const [formData, setFormData] = useState({
+        firstname: '',
+        lastname: '',
+        email: '',
+        password: '',
+        role: 'admin'
+    });
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            await adminApiClient.post(`/users`, { body: formData });
+            addNotification('A new user has been created successfully');
+            navigate('/admin/users');
+        } catch (e) {
+            addNotification('Error: Unable to create user.' + e.message, 'error');
+        }
+    };
+    return (
+        <div>
+            <h1 className="text-2xl font-bold mb-4">Add New User</h1>
+            <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                    <label htmlFor="firstname" className="block text-gray-700">First Name:</label>
+                    <input
+                        type="text"
+                        id="firstname"
+                        name="firstname"
+                        value={formData.firstname}
+                        onChange={handleChange}
+                        className="w-full border border-gray-300 rounded p-2"
+                    />
+                </div>
+                <div>
+                    <label htmlFor="lastname" className="block text-gray-700">Last Name:</label>
+                    <input
+                        type="text"
+                        id="lastname"
+                        name="lastname"
+                        value={formData.lastname}
+                        onChange={handleChange}
+                        className="w-full border border-gray-300 rounded p-2"
+                    />
+                </div>
+                <div>
+                    <label htmlFor="email" className="block text-gray-700">Email:</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        className="w-full border border-gray-300 rounded p-2"
+                    />
+                </div>
+                <div>
+                    <label htmlFor="password" className="block text-gray-700">Password:</label>
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        className="w-full border border-gray-300 rounded p-2"
+                    />
+                </div>
+                <div>
+                    <label htmlFor="role" className="block text-gray-700">Role:</label>
+                    <select
+                        id="role"
+                        name="role"
+                        value={formData.role}
+                        onChange={handleChange}
+                        className="w-full border border-gray-300 rounded p-2"
+                    >
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+                <button
+                    type="submit"
+                    className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+                >
+                    Add User
+                </button>
+            </form>
+        </div>
+    );
+};
+
+export default NewAdminUser;

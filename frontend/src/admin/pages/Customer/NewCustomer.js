@@ -3,7 +3,7 @@ import {useNavigate} from "react-router-dom";
 import { useNotification } from '../../../contexts/NotificationContext';
 import { adminApiClient } from '../../../api/AdminApiClient';
 
-const NewUser = () => {
+const NewCustomer = () => {
     const navigate = useNavigate();
     const { addNotification } = useNotification();
     const [formData, setFormData] = useState({
@@ -100,4 +100,4 @@ const NewUser = () => {
     );
 };
 
-export default NewUser;
+export default NewCustomer;
