@@ -3,6 +3,7 @@ const authRoutes = require('./authRoutes');
 const customerRoutes = require('./customerRoutes');
 const adminRoutes = require('../admin/routes/adminRoutes');
 const courseRoutes = require('./courseRoutes');
+const uploadRoutes = require("../routes/uploadRoutes");
 
 const router = express.Router();
 

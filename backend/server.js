@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const connectDB = require('./config/db');
 const errorHandler = require('./middlewares/errorHandler');
+const path = require("path");
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.use(cors({
     origin: 'http://localhost:3000',
     credentials: true,
 }));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/api', routes);
 app.use(errorHandler);
 

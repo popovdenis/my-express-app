@@ -9,11 +9,11 @@ const getCourseAttributes = async () => {
                 from: 'eav_entity_type',
                 localField: 'entityType',
                 foreignField: '_id',
-                as: 'entityType',
+                as: 'entityTypeDetails',
             },
         },
-        {$unwind: '$entityType'},
-        {$match: {'entityType.entityTypeCode': 'course'}},
+        {$unwind: '$entityTypeDetails'},
+        {$match: {'entityTypeDetails.entityTypeCode': 'course'}},
         {
             $project: {
                 _id: 1,
@@ -21,7 +21,7 @@ const getCourseAttributes = async () => {
                 label: 1,
                 options: 1,
                 isRequired: 1,
-                'entityType.entityTypeCode': 1,
+                entityTypeCode: '$entityTypeDetails.entityTypeCode',
             },
         },
     ]);
@@ -49,7 +49,8 @@ exports.getList = async (req, res) => {
 };
 exports.addEntity = async (req, res) => {
     try {
-        const { title, description, duration, level } = req.body;
+        console.log(req.body);
+        const { title, description, duration, level, image } = req.body;
 
         if (!title) {
             return res.status(400).json({ message: 'Please fill the required fields' });
@@ -64,7 +65,8 @@ exports.addEntity = async (req, res) => {
             title,
             description,
             duration,
-            level
+            level,
+            image
         });
 
         res.status(201).json({ message: 'Course created successfully', course: newEntity });
@@ -90,7 +92,13 @@ exports.getEntity = async (req, res) => {
 exports.updateEntity = async (req, res) => {
     try {
         const { id } = req.params;
-        const { title, description, duration, level } = req.body;
+        const {
+            title,
+            description,
+            duration,
+            level,
+            image
+        } = req.body;
 
         const course = await Course.findById(id);
         if (!course) {
@@ -100,6 +108,7 @@ exports.updateEntity = async (req, res) => {
         course.description = description || course.description;
         course.duration = duration || course.duration;
         course.level = level || course.level;
+        course.image = image || course.image;
 
         const updatedEntity = await CourseRepository.updateCourse(id, course);
         res.status(200).json({ message: 'Course updated successfully', course: updatedEntity });

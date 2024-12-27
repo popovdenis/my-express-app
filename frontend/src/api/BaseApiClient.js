@@ -14,13 +14,15 @@ export class BaseApiClient {
 
         if (body instanceof FormData) {
             delete headers["Content-Type"];
+        } else {
+            headers["Content-Type"] = "application/json";
         }
 
         try {
             const response = await fetch(url, {
                 method,
                 headers: {
-                    "Content-Type": "application/json",
+                    // "Content-Type": "application/json",
                     ...headers,
                 },
                 body: body instanceof FormData ? body : JSON.stringify(body),

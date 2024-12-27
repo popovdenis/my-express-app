@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import { useNotification } from '../../../contexts/NotificationContext';
 import { adminApiClient } from '../../../api/AdminApiClient';
+import {customerApiClient} from "../../../api/CustomerApiClient";
 
 const NewCourse = () => {
     const navigate = useNavigate();
@@ -15,6 +16,7 @@ const NewCourse = () => {
     const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(true);
     const [attributes, setAttributes] = useState([]);
+    const [image, setImage] = useState(null);
 
     useEffect(() => {
         const fetchCourseAttributes = async () => {
@@ -34,7 +36,6 @@ const NewCourse = () => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
-
     const validateForm = () => {
         const newErrors = {};
 
@@ -46,7 +47,9 @@ const NewCourse = () => {
 
         return Object.keys(newErrors).length === 0;
     };
-
+    const handleFileChange = (e) => {
+        setImage(e.target.files[0]);
+    }
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -54,8 +57,18 @@ const NewCourse = () => {
             return false;
         }
 
+        setLoading(true);
+
         try {
-            await adminApiClient.post(`/courses`, { body: formData });
+            let imagePath = '';
+            if (image) {
+                const fileData = new FormData();
+                fileData.append('file', image);
+                const response = await customerApiClient.post(`/uploads`, { body: fileData });
+                imagePath = response.filePath;
+            }
+            const courseData = { ...formData, image: imagePath };
+            await adminApiClient.post(`/courses`, { body: courseData });
             addNotification('Course created successfully', 'success');
             navigate('/admin/courses');
         } catch (e) {
@@ -103,7 +116,8 @@ const NewCourse = () => {
                             attributes.map((attribute) => {
                                 if (attribute.attributeCode === 'duration') {
                                     return attribute.options.map((option, index) => (
-                                        <option key={index} value={option}>{option.charAt(0).toUpperCase() + option.slice(1)}</option>
+                                        <option key={index}
+                                                value={option}>{option.charAt(0).toUpperCase() + option.slice(1)}</option>
                                     ))
                                 }
                             })
@@ -112,7 +126,7 @@ const NewCourse = () => {
                     {errors.duration && <p className="mt-1 text-red-500">{errors.duration}</p>}
                 </div>
                 <div>
-                <label htmlFor="level" className="block text-gray-700">Level:</label>
+                    <label htmlFor="level" className="block text-gray-700">Level:</label>
                     <select
                         id="level"
                         name="level"
@@ -125,7 +139,8 @@ const NewCourse = () => {
                             attributes.map((attribute) => {
                                 if (attribute.attributeCode === 'level') {
                                     return attribute.options.map((option, index) => (
-                                        <option key={index} value={option}>{option.charAt(0).toUpperCase() + option.slice(1)}</option>
+                                        <option key={index}
+                                                value={option}>{option.charAt(0).toUpperCase() + option.slice(1)}</option>
                                     ))
                                 }
                             })
@@ -133,11 +148,23 @@ const NewCourse = () => {
                     </select>
                     {errors.level && <p className="mt-1 text-red-500">{errors.level}</p>}
                 </div>
+                <div>
+                    <label htmlFor="image" className="block text-gray-700">Course Image:</label>
+                    <input
+                        type="file"
+                        id="image"
+                        name="image"
+                        accept="image/*"
+                        onChange={handleFileChange}
+                        className="w-full border border-gray-300 rounded p-2"
+                    />
+                </div>
                 <button
                     type="submit"
+                    disabled={loading}
                     className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
                 >
-                    Add Course
+                    {loading ? "Saving..." : "Add Course"}
                 </button>
                 <Link to="/admin/courses"
                       className="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600 ml-3.5">Back</Link>

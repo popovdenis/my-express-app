@@ -33,7 +33,7 @@ const courseSchema = new mongoose.Schema(
         instructor: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Customer',
-            required: true,
+            required: false,
             index: true,
         },
         price: {

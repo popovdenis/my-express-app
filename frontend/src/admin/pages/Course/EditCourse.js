@@ -2,12 +2,12 @@ import React, {useEffect, useState} from "react";
 import {Link, useNavigate, useParams} from "react-router-dom";
 import { useNotification } from '../../../contexts/NotificationContext';
 import { adminApiClient } from '../../../api/AdminApiClient';
+import { customerApiClient } from '../../../api/CustomerApiClient';
 
 const EditCourse = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const { addNotification } = useNotification();
-
     const [formData, setFormData] = useState({
         title: '',
         description: '',
@@ -16,6 +16,7 @@ const EditCourse = () => {
     });
     const [loading, setLoading] = useState(true);
     const [attributes, setAttributes] = useState([]);
+    const [image, setImage] = useState(null);
 
     useEffect(() => {
         const fetchCourse = async () => {
@@ -25,7 +26,8 @@ const EditCourse = () => {
                     title: data.course.title,
                     description: data.course.description,
                     duration: data.course.duration,
-                    level: data.course.level
+                    level: data.course.level,
+                    image: data.course.image,
                 });
                 if (data.attributes && data.attributes.length) {
                     setAttributes(data.attributes);
@@ -43,11 +45,25 @@ const EditCourse = () => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     }
+    const handleFileChange = (e) => {
+        setImage(e.target.files[0]);
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const data = await adminApiClient.put(`/courses/${id}`, { body: formData });
+            setLoading(true);
+
+            let imagePath = '';
+            if (image) {
+                const fileData = new FormData();
+                fileData.append('file', image);
+                const response = await adminApiClient.post(`/uploads`, { body: fileData });
+                imagePath = response.filePath;
+            }
+            const courseData = { ...formData, image: imagePath };
+            const data = await adminApiClient.put(`/courses/${id}`, { body: courseData });
+
             addNotification(`The course ${data.course.title} has been updated successfully`, 'success');
             navigate('/admin/courses');
         } catch (e) {
@@ -113,18 +129,45 @@ const EditCourse = () => {
                             attributes.map((attribute) => {
                                 if (attribute.attributeCode === 'level') {
                                     return attribute.options.map((option, index) => (
-                                        <option key={index} value={option}>{option.charAt(0).toUpperCase() + option.slice(1)}</option>
+                                        <option key={index}
+                                                value={option}>{option.charAt(0).toUpperCase() + option.slice(1)}</option>
                                     ))
                                 }
                             })
                         }
                     </select>
                 </div>
+                <div>
+                    <label htmlFor="image" className="block text-gray-700">Current Course Image:</label>
+                    {formData.image ? (
+                        <img
+                            src={formData.image.startsWith('http')
+                                ? formData.image
+                                : `${process.env.REACT_APP_API_BASE_URL}${formData.image}`}
+                            alt="Course Thumbnail"
+                            className="w-32 h-32 object-cover rounded border border-gray-300"
+                        />
+                    ) : (
+                        <p className="text-gray-500">No image uploaded</p>
+                    )}
+                </div>
+                <div>
+                    <label htmlFor="image" className="block text-gray-700">Course Image:</label>
+                    <input
+                        type="file"
+                        id="image"
+                        name="image"
+                        accept="image/*"
+                        onChange={handleFileChange}
+                        className="w-full border border-gray-300 rounded p-2"
+                    />
+                </div>
                 <button
                     type="submit"
+                    disabled={loading}
                     className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
                 >
-                    Update Course
+                    {loading ? "Saving..." : "Save Course"}
                 </button>
                 <Link to="/admin/courses"
                       className="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600 ml-3.5">Back</Link>
