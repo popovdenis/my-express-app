@@ -3,14 +3,19 @@ import { BrowserRouter } from 'react-router-dom';
 import Menu from './components/Menu';
 import AppRoutes from "./routes/AppRoutes";
 import { AuthProvider } from './contexts/Auth';
+import { NotificationProvider } from '../contexts/NotificationContext';
+import Notification from "../components/Notification";
 
 const ClientApp = () => {
     return (
         <AuthProvider>
-            <BrowserRouter>
-                <Menu />
-                <AppRoutes />
-            </BrowserRouter>
+            <NotificationProvider>
+                <BrowserRouter>
+                    <Menu />
+                    <Notification />
+                    <AppRoutes />
+                </BrowserRouter>
+            </NotificationProvider>
         </AuthProvider>
     );
 };

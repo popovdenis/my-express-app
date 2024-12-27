@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../contexts/Auth';
+import { customerApiClient } from '../../../api/CustomerApiClient';
+import { useNotification } from '../../../contexts/NotificationContext';
 
 const MyAccount = () => {
     const { user, login } = useAuth();
+    const { addNotification } = useNotification();
     const [formData, setFormData] = useState({
         firstname: user?.firstname || '',
         lastname: user?.lastname || '',
         email: user?.email || '',
         password: '',
     });
-    const [message, setMessage] = useState('');
-    const [error, setError] = useState('');
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -19,28 +20,12 @@ const MyAccount = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_URL}/customer/account`, {
-                method: 'PUT',
-                headers: {'Content-Type': 'application/json'},
-                credentials: "include",
-                body: JSON.stringify(formData),
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                login(data.user);
-                setMessage('Profile updated successfully');
-                setError('');
-            } else {
-                setError(data.message || 'Failed to update profile');
-                setMessage('');
-            }
+            const response = await customerApiClient.put('/customer/account', { body: formData });
+            login(response.user);
+            addNotification('Profile updated successfully', 'success');
         } catch (error) {
-            setError('Error: Unable to connect to the server.');
-            setMessage('');
+            addNotification(error.message || 'Failed to update profile', 'error');
         }
     };
 
@@ -99,8 +84,6 @@ const MyAccount = () => {
                     Save Changes
                 </button>
             </form>
-            {message && <p className="mt-4 text-green-500">{message}</p>} {/* Display success message */}
-            {error && <p className="mt-4 text-red-500">{error}</p>} {/* Display error message */}
         </div>
     );
 };

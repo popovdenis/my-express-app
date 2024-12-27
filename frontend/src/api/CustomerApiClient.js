@@ -1,3 +1,5 @@
+import { BaseApiClient } from "./BaseApiClient";
+
 class CustomerApiClient extends BaseApiClient {
     constructor() {
         super(process.env.REACT_APP_API_URL);

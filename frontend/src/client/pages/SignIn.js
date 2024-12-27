@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/Auth';
+import { customerApiClient } from '../../api/CustomerApiClient';
+import { useNotification } from '../../contexts/NotificationContext';
 
 const SignIn = () => {
     const [formData, setFormData] = useState({ email: '', password: '' });
-    const [message, setMessage] = useState('');
     const navigate = useNavigate();
+    const { addNotification } = useNotification();
     const { login } = useAuth();
 
     const handleChange = (e) => {
@@ -15,24 +17,12 @@ const SignIn = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         try {
-            const response = await fetch(`${process.env.REACT_APP_AUTH_URL}/signin`, {
-                method: 'POST',
-                credentials: "include",
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData),
-            });
-
-            const data = await response.json();
-            if (response.ok) {
-                login(data.user);
-                navigate('/');
-            } else {
-                setMessage(data.message || 'Sign In Failed');
-            }
+            const response = await customerApiClient.post('/auth/signin', { body: formData });
+            login(response.user);
+            navigate('/');
         } catch (error) {
-            setMessage('Error: Unable to connect to the server.');
+            addNotification(error.message || 'Error: Unable to connect to the server', 'error');
         }
     };
 
@@ -71,7 +61,6 @@ const SignIn = () => {
                     Sign In
                 </button>
             </form>
-            {message && <p className="mt-4 text-green-500">{message}</p>}
         </div>
     );
 };

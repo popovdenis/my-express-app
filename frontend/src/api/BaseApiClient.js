@@ -1,4 +1,4 @@
-class BaseApiClient {
+export class BaseApiClient {
     constructor(baseURL) {
         this.baseURL = baseURL;
     }
