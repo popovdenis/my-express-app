@@ -3,15 +3,18 @@ import { BrowserRouter } from 'react-router-dom';
 import AdminAppRoutes from "./admin/routes/AdminAppRoutes";
 import { NotificationProvider } from './contexts/NotificationContext';
 import Notification from './components/Notification';
+import { AdminAuthProvider } from './contexts/AdminAuth';
 
 const AdminApp = () => {
     return (
-        <NotificationProvider>
-            <BrowserRouter>
-                <Notification />
-                <AdminAppRoutes />
-            </BrowserRouter>
-        </NotificationProvider>
+        <AdminAuthProvider>
+            <NotificationProvider>
+                <BrowserRouter>
+                    <Notification />
+                    <AdminAppRoutes />
+                </BrowserRouter>
+            </NotificationProvider>
+        </AdminAuthProvider>
     );
 };
 

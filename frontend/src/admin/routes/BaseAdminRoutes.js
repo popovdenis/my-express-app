@@ -1,23 +1,23 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 // General
-import Sidebar from './components/Sidebar';
-import Dashboard from './pages/Dashboard';
-import Settings from './pages/Settings';
+import Sidebar from '../components/Sidebar';
+import Dashboard from '../pages/Dashboard';
+import Settings from '../pages/Settings';
 // Users
-import Users from './pages/User/Users';
-import NewUser from './pages/User/NewUser';
-import EditUser from './pages/User/EditUser';
+import Users from '../pages/User/Users';
+import NewUser from '../pages/User/NewUser';
+import EditUser from '../pages/User/EditUser';
 // Courses
-import Courses from './pages/Course/Courses';
-import NewCourse from './pages/Course/NewCourse';
-import EditCourse from './pages/Course/EditCourse';
+import Courses from '../pages/Course/Courses';
+import NewCourse from '../pages/Course/NewCourse';
+import EditCourse from '../pages/Course/EditCourse';
 // System
-import Attributes from './pages/System/Attribute/Attributes';
-import NewAttribute from './pages/System/Attribute/NewAttribute';
-import EditAttribute from './pages/System/Attribute/EditAttribute';
+import Attributes from '../pages/System/Attribute/Attributes';
+import NewAttribute from '../pages/System/Attribute/NewAttribute';
+import EditAttribute from '../pages/System/Attribute/EditAttribute';
 
-const AdminApp = () => {
+const BaseAdminRoutes = () => {
     return (
         <div className="flex">
             <Sidebar />
@@ -40,4 +40,4 @@ const AdminApp = () => {
     );
 };
 
-export default AdminApp;
+export default BaseAdminRoutes;
